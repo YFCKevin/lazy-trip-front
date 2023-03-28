@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      :root {
+        --nav_bg: rgb(36, 36, 36);
+        --section_bg: rgb(245, 245, 245);
+        --main_c: rgb(85, 184, 201);
+        --main_c_btn_hover: rgb(76, 139, 150);
+        --admin_btn_c: rgb(168, 168, 168);
+        --error_c: rgb(219, 132, 132);
+        --main_font: 16px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        font-size: 0;
+        box-sizing: border-box;
+        /* outline: 1px solid green; */
+      }
+
+      #fs_alert {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        /* display: block; */
+        display: none;
+        z-index: 999;
+      }
+      .fs_alert_bg {
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.671);
+        position: fixed;
+        top: 0;
+      }
+      .fs_alert_show {
+        max-width: 450px;
+        min-width: 400px;
+
+        background-color: white;
+        position: absolute;
+        top: 120px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        z-index: 2;
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .fs_alert_title {
+        font-size: 36px;
+        text-align: center;
+        margin: 35px;
+        font-weight: bold;
+      }
+      .fs_alert_title_suc {
+        color: var(--main_c);
+      }
+      .fs_alert_txt {
+        width: 80%;
+        word-wrap: break-word;
+        font-size: 16px;
+        padding: 0 20px;
+        text-align: center;
+        margin: 0px auto 15px auto;
+      }
+      #alert_ok {
+        margin: 20px auto 45px auto;
+      }
+      .btn_s {
+        width: 100px;
+        border-radius: 8px;
+        font-size: var(--main_font);
+        text-align: center;
+        padding: 10px;
+        cursor: pointer;
+        color: rgb(255, 255, 255);
+        background-color: var(--main_c);
+        margin: 10px;
+      }
+
+      .btn_s:hover {
+        background-color: var(--main_c_btn_hover);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="btn_s" id="alert_show">alert</div>
+
+    <div id="fs_alert">
+      <div class="fs_alert_bg"></div>
+      <div class="fs_alert_show">
+        <div class="fs_alert_title">成功</div>
+        <div class="fs_alert_txt">這就是彈窗</div>
+        <div class="btn_s" id="alert_ok">確認</div>
+      </div>
+    </div>
+  </body>
+  <script>
+    function close() {
+      document.querySelector("#fs_alert").style.display = "none";
+    }
+    function fs_alert() {
+      //打顯示你的彈窗
+      document.querySelector("#fs_alert").style.display = "block";
+    }
+
+    function init() {
+      //為你的按鈕註冊事件
+      document.querySelector("#alert_show").addEventListener("click", fs_alert);
+      document.querySelector("#alert_ok").addEventListener("click", close);
+    }
+    // 程式準備開始
+    window.addEventListener("load", init);
+  </script>
+</html>

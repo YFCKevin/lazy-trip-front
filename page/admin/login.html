@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../asset/css/my-bulma.css" />
+    <!-- 自定義 CSS -->
+    <link rel="stylesheet" href="../../asset/css/index-style.css" />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- jquery -->
+
+    <script src="../../asset/vendor/jquery/jquery-3.6.3.min.js"></script>
+
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../asset/js/components.js?ver=1"
+      type="text/javascript"
+    ></script>
+    <!-- 初始化 Bulma -->
+    <script defer src="../../asset/js/bulma-init.js"></script>
+    <style>
+      .content-company {
+        display: none;
+      }
+      .content-company.-on {
+        display: block;
+      }
+      .content-member {
+        display: none;
+      }
+      .content-member.-on {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <header-component></header-component>
+    <div class="columns">
+      <div class="column"></div>
+      <div class="column is-half">
+        <section class="section">
+          <!-- 標題 -->
+          <div class="content has-text-centered content-member -on">
+            <h1>管理員登入</h1>
+          </div>
+
+          <!-- 表單 -->
+          <form class="box" action="" method="post" id="form-login">
+            <p class="msg"></p>
+            <div class="field">
+              <label class="label" for="input-username">帳號</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  name="username"
+                  placeholder="e.g. alexyang"
+                  id="input-username"
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="input-password">密碼</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="password"
+                  name="password"
+                  placeholder="********"
+                  id="input-password"
+                />
+              </div>
+            </div>
+            <!-- 表單按鈕 -->
+            <div class="field is-grouped is-grouped-centered">
+              <div class="control">
+                <button
+                  class="button is-primary has-text-centered"
+                  type="button"
+                  id="btn-login"
+                  style="width: 100px"
+                >
+                  登入
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+      <div class="column"></div>
+    </div>
+
+    <footer-component></footer-component>
+
+    <script>
+      $(function () {
+        const account = $("input#input-username");
+        const password = $("input#input-password");
+        const check = $("div.content-member");
+
+        function getCookie(name) {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+
+        $(document).on(
+          "keydown",
+          "input#input-username, input#input-password",
+          function (e) {
+            if (e.keyCode == 13) {
+              $("button#btn-login").click();
+            }
+          }
+        );
+
+        $("button#btn-login").on("click", function () {
+          $("p.msg").text();
+          // 讀取資料
+          fetch("login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              account: account.val().trim(),
+              password: password.val(),
+            }),
+          })
+            .then((resp) => {
+              if (resp.redirected) {
+                location.href = resp.url;
+                alert("登入成功");
+              } else {
+                resp.json().then((body) => {
+                  $("p.msg").text(body.errorMessage);
+                  $("p.msg").css("color", "red");
+                  // alert(`errorMsg: ${body.errorMessage}`);
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

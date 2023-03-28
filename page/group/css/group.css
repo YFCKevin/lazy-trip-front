@@ -1,0 +1,318 @@
+* {
+  box-sizing: border-box;
+}
+
+.group_hr {
+  border-color: #cfcff8;
+  size: 0.8px;
+}
+
+ul.group_list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap; /*預設nowrap 改成wrap不夠的會往下掉  */
+  justify-content: center;
+}
+ul.group_list > li a div.one_gp {
+  /* border: 1px solid black; */
+  /* font-size:  */
+  height: 100px;
+  width: 400px;
+  background-color: white;
+  margin: 10px 10px;
+  border-radius: 10px;
+  padding: 10px;
+}
+/* ul.group_list > li p {
+  color: #000000cc;
+} */
+
+label.info {
+  font-size: 16px;
+}
+label.spe_need {
+  font-size: 16px;
+}
+div#mem_to_add {
+  padding: 1px;
+  margin: 1px;
+  border: rgb(220, 220, 220) 2px solid;
+  border-radius: 10px;
+  height: 250px;
+  overflow-y: auto;
+  font-size: 22px;
+}
+img.img_member_list {
+  width: 15px;
+  height: 15px;
+}
+img.img_inviteList {
+  width: 48px;
+  height: 48px;
+  margin-left: 10px;
+}
+div.is_applying {
+  border-bottom: 0.8px dashed rgb(243, 216, 127);
+  padding-bottom: 5px;
+  margin-bottom: 7px;
+}
+#search_fd {
+  cursor: pointer;
+}
+#group_main_fs_alert {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  /* display: block; */
+  display: none;
+  z-index: 999;
+}
+#group_main_fs_alert2 {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  /* display: block; */
+  display: none;
+  z-index: 999;
+}
+.group_main_fs_alert_bg {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.671);
+  position: fixed;
+  top: 0;
+}
+.group_main_fs_alert_bg2 {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.671);
+  position: fixed;
+  top: 0;
+}
+div.group_member_list {
+  height: 320px;
+  text-align: center;
+  margin-left: 15px;
+  margin-top: 15px;
+  border-radius: 10px;
+  border: rgba(0, 0, 0, 0.283) solid;
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 10px;
+}
+.group_main_fs_alert_show {
+  max-width: 800px;
+  min-width: 800px;
+
+  background-color: white;
+  position: absolute;
+  top: 120px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 2;
+  border-radius: 8px;
+  text-align: center;
+}
+.group_main_fs_alert_show2 {
+  max-width: 800px;
+  min-width: 800px;
+  max-height: 520px;
+  background-color: white;
+  position: absolute;
+  top: 120px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 2;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.group_main_fs_alert_title {
+  font-size: 26px;
+  text-align: center;
+  margin: 20px;
+  font-weight: bold;
+}
+.group_main_fs_alert_title2 {
+  font-size: 26px;
+  text-align: center;
+  margin: 20px;
+  font-weight: bold;
+}
+.group_main_fs_alert_title_suc {
+  color: var(--main_c);
+}
+.group_main_fs_alert_title_suc2 {
+  color: var(--main_c);
+}
+.fs_alert_txt {
+  width: 80%;
+  word-wrap: break-word;
+  font-size: 16px;
+  padding: 0 20px;
+  text-align: center;
+  margin: 0px auto 15px auto;
+}
+#alert_ok {
+  margin: 20px auto 45px auto;
+}
+.btn_s {
+  width: 100px;
+  border-radius: 8px;
+  font-size: var(--main_font);
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  margin: 10px;
+}
+.icon_setting {
+  cursor: pointer;
+}
+
+div.trip_info {
+  text-align: right;
+  position: relative;
+  font-size: 16px;
+}
+div.group_message {
+  padding: 10px;
+}
+div.group_member {
+  margin-left: 2px;
+  border-radius: 10px;
+  padding: 1px;
+}
+div.content_area {
+  border-radius: 10px;
+  padding: 1px;
+  overflow: auto;
+  overflow-x: hidden;
+  box-shadow: 0px 5px 5px 5px #88888842;
+}
+span.group_main_msg_time {
+  font-size: 14px;
+}
+img.group_main_img_content {
+  width: 100px;
+  height: 80px;
+}
+img.group_main_img_member_list {
+  width: 20px;
+  height: 20px;
+}
+div#search_rs {
+  display: none;
+  cursor: pointer;
+}
+span.group_main_member_content_name {
+  font-weight: bold;
+}
+div.group_main_member_list_title {
+  font-size: 15px;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.283);
+}
+div#group_setting_mem_to_del {
+  padding: 1px;
+  margin: 1px;
+  border: rgb(220, 220, 220) 2px solid;
+  border-radius: 10px;
+  height: 250px;
+}
+img.group_setting_img_member_list {
+  width: 15px;
+  height: 15px;
+}
+
+span.invite_reviewing{
+  font-size: 10px; color: white; background-color: red
+}
+span.invite_refused{
+  font-size: 10px; color: white; background-color: rgba(160, 156, 156, 0.747)
+}
+span.invite_new{
+  font-size: 10px; color: white; background-color: rgb(57 115 255);
+
+}
+span.need_approve{
+  font-size: 10px; color: white; background-color: rgb(0 163 3);
+
+}
+
+p.invite{
+    margin-bottom: 16px;font-size:24px 
+}
+div.btns-invite{
+  margin-top: 5px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+div.inviteList{
+  padding-left: 15px;
+}
+div.inviteMediaLeft{
+  display: flex;
+}
+
+span.trip_name{
+  cursor: pointer;
+}
+
+div.card1 {
+  width: 250px;
+  height: 200px;
+}
+div.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+div.item1{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+div.tourChosen{
+  background-color: #4fccfd;
+}
+.loading {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: 30px;
+}
+
+.loading p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.spinner {
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #333;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0);
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

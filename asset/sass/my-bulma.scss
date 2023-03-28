@@ -1,0 +1,57 @@
+@charset "utf-8";
+
+// ======= 匯入字體 =======
+// @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+@font-face {
+    font-family: FakePearl-ExtraLight;
+    src: url(https://cdn.jsdelivr.net/gh/max32002/FakePearl@1.1/webfont/FakePearl-ExtraLight.woff2) format("woff2")
+    , url(https://cdn.jsdelivr.net/gh/max32002/FakePearl@1.1/webfont/FakePearl-ExtraLight.woff) format("woff");
+  }
+
+// =======  設定品牌顏色 / 初始變數 (initial variables) =======
+$blue: hsl(197, 85%, 53%);
+// $turquoise: hsl(171, 100%, 41%);
+// #dd5b0b
+$secondary-orange: hsl(23, 91%, 45%);
+$red: hsl(351, 71%, 29%);
+
+$black:        hsl(197, 47%, 4%);
+$black-bis:    hsl(197, 47%, 7%);
+$black-ter:    hsl(197, 47%, 14%);
+
+$grey-darker:  hsl(197, 47%, 21%);
+$grey-dark:    hsl(197, 47%, 29%);
+$grey:         hsl(197, 47%, 48%);
+$grey-light:   hsl(197, 47%, 71%);
+$grey-lighter: hsl(197, 47%, 86%);
+$grey-lightest: hsl(197, 47%, 93%);
+
+$white-ter:    hsl(197, 47%, 96%);
+$white-bis:    hsl(197, 47%, 98%);
+
+// ======= 更新 Bulma 的衍生變數 (derived variables) =======
+$family-sans-serif: FakePearl-ExtraLight;
+// $grey-dark: $brown;
+// $grey-light: $beige-light;
+$primary: $blue;
+$link: $secondary-orange;
+// $widescreen-enabled: false;
+// $fullhd-enabled: false;
+
+// ======= 更新 Bulma 的元件變數 =======
+// $body-background-color: $beige-lighter;
+// $control-border-width: 2px;
+// $input-border-color: transparent;
+// $input-shadow: none;
+
+// $menu-item-hover-color: $text-strong !default
+// $menu-item-hover-background-color: $background !default
+// $menu-item-active-color: hsl(23, 100%, 21%);
+// $menu-item-active-background-color: hsl(23, 100%, 96%);
+$menu-item-active-color: hsl(23, 100%, 21%);
+$menu-item-active-background-color: hsl(23, 100%, 96%);
+
+
+// ======= 匯入所需的 Bulma 模組 =======
+@import "../vendor/bulma-0.9.4/bulma.sass";
+

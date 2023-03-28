@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io | 揪團</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../../asset/css/my-bulma.css" />
+    <!-- 自定義 CSS -->
+    <link rel="stylesheet" href="../../../asset/css/index-style.css" />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../../asset/js/components.js"
+      type="text/javascript"
+    ></script>
+
+    <!-- 初始化 Bulma -->
+    <script defer src="../../../asset/js/bulma-init.js"></script>
+    <!--GroupCss-->
+    <link rel="stylesheet" href=".././css/group.css" />
+  </head>
+  <body>
+    <!--預計加入:滑到內容若為登入者的留言要顯示刪除按鈕在右上角-->
+    <!-- 導覽列 -->
+    <header-component></header-component>
+    <!--彈窗(邀請)-->
+    <div id="group_main_fs_alert">
+      <div class="group_main_fs_alert_bg"></div>
+      <div class="group_main_fs_alert_show">
+        <div class="group_main_fs_alert_title">請選擇想邀請的朋友</div>
+        <div class="group_main_fs_alert_title" style="font-size: 16px">
+          邀請連結:
+          <input
+            type="text"
+            id="invite_link"
+            readonly
+            value=""
+            style="cursor: pointer"
+          />
+          <span class="icon_setting" id="create_link"
+            ><i class="fa-solid fa-link"></i>
+          </span>
+        </div>
+        <div id="fr_list">
+          <!-- <div class="field">
+            <label>
+              <input type="checkbox" name="to_add_mems" />
+              <img
+                class="group_setting_img_member_list"
+                src="./test.png"
+              />asdsadsa1
+            </label>
+          </div>
+          <div class="field">
+            <label>
+              <input type="checkbox" name="to_add_mems" />
+              <img
+                class="group_setting_img_member_list"
+                src="./test.png"
+              />asdsadsa1
+            </label> -->
+          <!-- </div> -->
+        </div>
+        <div class="btn_s button" id="alert_ok">OK</div>
+      </div>
+    </div>
+    <!--彈窗(行程)-->
+    <div id="group_main_fs_alert2">
+      <div class="group_main_fs_alert_bg2"></div>
+      <div
+        class="group_main_fs_alert_show2"
+        style="overflow-y: scroll; overflow-x: hidden"
+      >
+        <div class="group_main_fs_alert_title2">請選擇群組行程</div>
+        <div id="fr_list2">
+          <div class="columns">
+            <div class="column is-1"></div>
+            <div
+              class="column wrapper"
+              style="display: flex; flex-wrap: wrap"
+              id="trips"
+            >
+              <div id="my-div" class="loading">
+                <div class="spinner"></div>
+              </div>
+            </div>
+            <div class="column is-1"></div>
+          </div>
+        </div>
+        <div class="btn_s2 button" id="alert_ok2">OK</div>
+      </div>
+    </div>
+
+    <!--揪團名-->
+    <div class="column">
+      <div class="content has-text-centered">
+        <h1 id="gp_main_gpname"></h1>
+      </div>
+    </div>
+
+    <!--資訊欄-->
+    <div
+      class="columns"
+      style="border-bottom: 0.8px solid; border-color: #cfcff8"
+    >
+      <div class="column is-7"></div>
+      <div class="column is-4 trip_info">
+        <span>當前行程:</span>
+        <span class="trip_name">暫無行程</span>
+        <p></p>
+        <span> 日期:</span>
+        <span class="trip_date" id="group_start_date"></span>
+        <span class="trip_date" id="group_end_date"></span>
+      </div>
+      <div class="column is-1">
+        <span class="icon_setting" id="group_setting"
+          ><i class="fa-solid fa-gear"></i
+        ></span>
+      </div>
+    </div>
+
+    <!--討論區-->
+    <div class="columns">
+      <div class="column is-1"></div>
+      <div class="column is-9 content has-text" style="margin-bottom: 12px">
+        <h2>討論區</h2>
+      </div>
+      <button
+        class="button is-2 is-primary"
+        id="invite_fd"
+        style="border-radius: 10px; margin-top: 10px"
+      >
+        邀請朋友
+      </button>
+    </div>
+
+    <div class="columns" style="height: 350px">
+      <div class="column is-1"></div>
+      <div class="column is-9 content_area content">
+        <section
+          class="section content_section"
+          style="border-radius: 10px; padding: 20px"
+        >
+          <!--單一留言-->
+          <!-- <article class="message is-primary">
+            <div
+              class="columns group_message message-body"
+              style="position: relative"
+            >
+              <button
+                class="delete_content_btn"
+                style="position: absolute; top: 5px; right: 15px"
+              >
+                x
+              </button>
+              <img
+                src="./test.png"
+                class="column is-1 group_main_img_content"
+              />
+              <div class="column is-9">
+                <span class="group_main_member_content_name">會員名稱</span
+                ><br />
+                <span>內容內容</span>
+              </div>
+              <div class="column is-2 content_time">
+                <span class="group_main_msg_time">2023-1-26</span>
+                <p></p>
+                <span class="group_main_msg_time">16:08:08</span>
+              </div>
+            </div>
+          </article> -->
+        </section>
+      </div>
+      <div class="column is-1 group_member">
+        <div class="columns" style="height: 300px">
+          <div class="column group_member_list">
+            <div
+              class="field group_main_member_list_title"
+              style="justify-content: center"
+            >
+              <label>成員列表</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column is-1"></div>
+      <div class="field column is-9">
+        <label class="label">留言</label>
+        <div class="control">
+          <input
+            class="input input1"
+            id="new_content_input"
+            type="text"
+            placeholder="請輸入想說的話"
+            maxlength="20"
+          />
+        </div>
+        <button
+          class="button is-small is-info is-outlined"
+          id="new_content_btn"
+        >
+          提交
+        </button>
+      </div>
+      <div class="column is-1">
+        <button
+          class="button is-2 is-info is-small"
+          id="exit_group"
+          style="border-radius: 10px; margin-top: 35px; margin-left: 20%"
+        >
+          退出群組
+        </button>
+      </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+    <script>
+      window.addEventListener("load", function () {
+        //相對路徑宣告
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var contextPath = window.location.pathname.substring(
+          0,
+          window.location.pathname.indexOf("/", 1)
+        );
+        //api
+        const apiUrlGroup = baseUrl + contextPath + "/group";
+        const apiUrlInvite = baseUrl + contextPath + "/group/join";
+        const apiUrlGroupMembers = baseUrl + contextPath + "/groupmembers";
+        const apiUrlDiscussion = baseUrl + contextPath + "/discussion";
+        const apiUrlFriend = baseUrl + contextPath + "/api/friend";
+        const apiUrltourQueryOne = baseUrl + contextPath + "/tourQueryOne";
+
+        let invite_fd_el = document.getElementById("invite_fd");
+        let group_mem_total;
+        let member_limit;
+        let show_alert = document.getElementById("group_main_fs_alert");
+        let show_alert2 = document.getElementById("group_main_fs_alert2");
+        let close_alert = document.getElementById("alert_ok");
+        let gp_id_list = []; //for friend use
+        let user_id;
+        let tour_to_do_id = 0;
+        let tour_to_do_name = "";
+        let tour_to_do_startdate = "";
+        let tour_to_do_enddate = "";
+
+        //提交內容
+        $("#new_content_btn").click(function () {
+          var value = $("#new_content_input").val();
+          value = $.trim(value);
+          if (value == "") {
+            alert("請輸入內容");
+          } else {
+            // alert($("#new_content_input").val());
+            //新增
+            var myHeaders = new Headers();
+            myHeaders.append(
+              "Content-Type",
+              "application/x-www-form-urlencoded"
+            );
+            myHeaders.append(
+              "Cookie",
+              "JSESSIONID=65AEB3628907BAC51411185C78D24BC4"
+            );
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("action", "addContent");
+            urlencoded.append("content", value);
+            urlencoded.append("groupid", gpid);
+
+            var requestOptions = {
+              method: "POST",
+              headers: myHeaders,
+              body: urlencoded,
+              redirect: "follow",
+            };
+
+            fetch(apiUrlDiscussion, requestOptions)
+              .then((response) => response.text())
+              .then((result) => {
+                //重整留言內容
+                $(".content_section").html("");
+                showContents();
+                //重整輸入框
+                $("#new_content_input").val("");
+              })
+              .catch((error) => console.log("error", error));
+          }
+        });
+        //綁定enter提交
+        $("#new_content_input").keyup(function (event) {
+          if (event.which === 13) {
+            $("#new_content_btn").click();
+          }
+        });
+
+        //fetch獲取群組資訊
+        let getUrlString = location.href;
+        var url = new URL(getUrlString);
+        let gpid = url.searchParams.get("groupid"); // 回傳 groupid
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        myHeaders.append(
+          "Cookie",
+          "JSESSIONID=079AEC6D76AA16D5891CFD9E68BAAFDB"
+        );
+
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("groupid", gpid);
+
+        // var requestOptions = {
+        //   method: "GET",
+        //   headers: myHeaders,
+        //   body: urlencoded,
+        //   redirect: "follow",
+        // };
+        let url1 = apiUrlGroup + "?action=getOneGroup&groupid=";
+        let group_manager_id;
+        fetch(url1 + gpid)
+          .then((response) => response.json())
+          .then((data) => {
+            $("#gp_main_gpname").html(data[0].groupname);
+            group_manager_id = data[0].memberid;
+            member_limit = data[0].groupmembercount;
+            user_id = data[1].id;
+            //首次載入時顯示留言內容
+            showContents();
+            if (data[0].tourid != 0) {
+              var requestOptions = {
+                method: "GET",
+                redirect: "follow",
+              };
+
+              fetch(
+                apiUrlGroup + "?action=getTourInfo&tourid=" + data[0].tourid,
+                requestOptions
+              )
+                .then((response) => response.json())
+                .then((result) => {
+                  $(".trip_name").html(result.tourTitle);
+                  $("#group_start_date").html(result.startDate + " ->");
+                  $("#group_end_date").html(result.endDate);
+                })
+                .catch((error) => console.log("error", error));
+            }
+            //載入成員列表
+            fetch(apiUrlGroupMembers + "?action=getGroupMems&groupid=" + gpid)
+              .then((response) => response.json())
+              .then((data) => {
+                group_mem_total = data.length;
+                $.each(data, function (index, item) {
+                  var list_html = "";
+                  var mem_name = "";
+                  var mem_pic = "";
+                  var img_src = "";
+
+                  if (item.imgBase64Str != null) {
+                    img_src = "data:image/*;base64," + item.imgBase64Str;
+                  } else {
+                    img_src = "./test.png";
+                  }
+
+                  if (item.username != null) {
+                    mem_name = item.username;
+                  } else if (item.name != null) {
+                    mem_name = item.name;
+                  } else {
+                    mem_name = "暫無會員名";
+                  }
+
+                  // <label
+                  //   ><img
+                  //     class="group_main_img_member_list"
+                  //     src="./test.png"
+                  //   />中文中文中文中文</label
+                  // >
+                  list_html += '<div class="member_list_content is-size-6">';
+                  if (item.id == group_manager_id) {
+                    list_html +=
+                      '<i style="color: yellow;" class="fa-solid fa-crown"></i>';
+                  }
+                  list_html += '<label><img class="group_main_img_member_list"';
+                  list_html += ' src="';
+                  list_html += img_src;
+                  list_html += '"/>';
+                  list_html += mem_name;
+                  list_html += "</label>";
+                  list_html += "</div>";
+
+                  $(".group_member_list").append(list_html);
+                  gp_id_list.push(item.id);
+                });
+                //驗證使用者是否為群組成員;
+                if (!gp_id_list.includes(user_id)) {
+                  alert("非本群組成員!");
+                  history.back();
+                }
+              })
+              .catch((error) => console.log("error", error));
+          })
+          .then(() => {
+            if (user_id == group_manager_id) {
+              $("#exit_group").css("display", "none");
+            }
+          })
+          .catch((error) => console.log("error", error));
+
+        //旅程設定
+        $(".trip_name").click(function () {
+          if (group_manager_id == user_id) {
+            show_alert2.style.display = "block";
+            $(".wrapper")
+              .html(`<div id="my-div" class="loading" style="display: none;">
+                <div class="spinner"></div>
+              </div>`);
+            var tour_list_html;
+            var tour_img;
+            $(".loading").css("display", "flex");
+            var requestOptions = {
+              method: "GET",
+              redirect: "follow",
+            };
+
+            fetch(
+              apiUrltourQueryOne + "?memberId=" + group_manager_id,
+              requestOptions
+            )
+              .then((response) => response.json())
+              .then((result) => {
+                $(".loading").css("display", "none");
+                $.each(result, function (index, item) {
+                  if (item.tourImg != null) {
+                    tour_img = "data:image/*;base64," + item.tourImg;
+                  } else {
+                    tour_img = "./01.jpg";
+                  }
+                  tour_list_html = `<div class="column item item1" id="${item.tourId}">
+                    <input type="hidden" name="tour_id" value="${item.tourId}">
+                    <input type="hidden" name="tour_name" value="${item.tourTitle}">
+                    <input type="hidden" name="tour_start" value="${item.startDate}">
+                    <input type="hidden" name="tour_end" value="${item.endDate}">
+                <div class="card card1">
+                  <div class="card-image">
+                    <figure class="image is-2by1" style="overflow: hidden">
+                      <img class="trip_item_img" src=${tour_img} alt="" />
+                    </figure>
+                  </div>
+                  <div class="card-content tour" style="padding: 10px">
+                    <div class="trip_item_block">
+                      <h2 class="title is-4" style="margin: 0px">${item.tourTitle}</h2>
+                      <time datetime="2023-1-1">${item.startDate} ~ ${item.endDate}</time>
+                      <div class="trip_tag_place">
+                        <ul style="display: flex"></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>`;
+                  $(".wrapper").append(tour_list_html);
+                });
+              })
+              .then(() => {
+                $(".item1").click(function (e) {
+                  if ($(this).find(".card-content").hasClass("tourChosen")) {
+                    $(".tour").removeClass("tourChosen");
+                    tour_to_do_id = 0;
+                  } else {
+                    $(".tour").removeClass("tourChosen");
+                    $(this).find(".card-content").toggleClass("tourChosen");
+                    tour_to_do_id = $(this).find("input[name='tour_id']").val();
+                    tour_to_do_name = $(this)
+                      .find("input[name='tour_name']")
+                      .val();
+                    tour_to_do_startdate = $(this)
+                      .find("input[name='tour_start']")
+                      .val();
+                    tour_to_do_enddate = $(this)
+                      .find("input[name='tour_end']")
+                      .val();
+                  }
+                });
+              })
+              .catch((error) => console.log("error", error));
+          } else {
+            alert("沒有權限!");
+          }
+        });
+        //----------旅程ok
+        $("#alert_ok2").click(function () {
+          if (tour_to_do_id != 0) {
+            var requestOptions = {
+              method: "PUT",
+              redirect: "follow",
+            };
+
+            fetch(
+              apiUrlGroup +
+                "?action=groupSetTour&groupId=" +
+                gpid +
+                "&tourId=" +
+                tour_to_do_id,
+              requestOptions
+            )
+              .then((response) => response.text())
+              .then((result) => {
+                $(".trip_name").html(tour_to_do_name);
+                $("#group_start_date").html(tour_to_do_startdate + " ->");
+                $("#group_end_date").html(tour_to_do_enddate);
+              })
+              .catch((error) => console.log("error", error));
+          }
+          show_alert2.style.display = "none";
+        });
+        //----------
+        //點擊設定:
+        $("#group_setting").click(function () {
+          if (group_manager_id == user_id) {
+            fetch(url1 + gpid)
+              .then((response) => response.json())
+              .then((data) => {
+                $("#gp_main_gpname").html(data.groupname);
+                group_manager_id = data.memberid;
+                let a1 =
+                  baseUrl +
+                  contextPath +
+                  "/page/group/group_htmls/group_setting.html?groupid=";
+                location.href = a1 + data[0].groupid;
+              })
+              .catch((error) => console.log("error", error));
+          } else {
+            alert("沒有權限!");
+          }
+        });
+
+        //邀請朋友按鍵
+        var to_invite_frds;
+        invite_fd_el.onclick = () => {
+          if (group_mem_total < member_limit) {
+            //get所有狀態mems
+            var myHeaders = new Headers();
+            myHeaders.append(
+              "Content-Type",
+              "application/x-www-form-urlencoded"
+            );
+            myHeaders.append(
+              "Cookie",
+              "JSESSIONID=C6EA2AFEBD4A401564097DBC28F0F458"
+            );
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("action", "getGroupMemsInList");
+            urlencoded.append("groupid", gpid);
+
+            var requestOptions = {
+              method: "POST",
+              headers: myHeaders,
+              body: urlencoded,
+              redirect: "follow",
+            };
+
+            fetch(apiUrlGroupMembers, requestOptions)
+              .then((response) => response.json())
+              .then((result) => {
+                $.each(result, function (index, item) {
+                  gp_id_list.push(item.memberid);
+                });
+              })
+              .then(() => {
+                //get好友
+                fetch(
+                  `${apiUrlFriend}?member_id=${user_id}&query_type=friend&limit=10&offset=0&sortingColumn=member_account&sortingOrder=ASC`
+                )
+                  .then((response) => response.json())
+                  .then((result) => {
+                    $("#fr_list").html("");
+                    if (result.dataType != "none") {
+                      $.each(result.dataList, function (index, item) {
+                        if (!gp_id_list.includes(item.id)) {
+                          var fr_list_html;
+                          var mem_name = "";
+                          if (item.username != null) {
+                            mem_name = item.username;
+                          } else if (item.name != null) {
+                            mem_name = item.name;
+                          } else {
+                            mem_name = "暫無會員名";
+                          }
+                          fr_list_html = `<div class="field">
+                    <label>
+                    <input type="checkbox"  class="to_invite_frds"  value="${item.id}"/>
+                    ${mem_name}
+                  </label>
+                   </div>`;
+                        }
+                        $("#fr_list").append(fr_list_html);
+                      });
+                    }
+                  })
+                  .catch((error) => console.log("error", error));
+                show_alert.style.display = "block";
+              })
+              .catch((error) => console.log("error", error));
+          } else {
+            alert("人數已滿!");
+            show_alert.style.display = "none";
+          }
+        };
+        //邀請OK按鈕
+        close_alert.addEventListener("click", function () {
+          show_alert.style.display = "none";
+          to_invite_frds = $(".to_invite_frds:checked");
+          var to_invite_frds_obj = [];
+          if (to_invite_frds.length > 0) {
+            $.each(to_invite_frds, function (index, item) {
+              var mem_num = $(item).val();
+              to_invite_frds_obj[index] = mem_num;
+            });
+
+            //呼叫邀請朋友api
+            var myHeaders = new Headers();
+            myHeaders.append(
+              "Content-Type",
+              "application/x-www-form-urlencoded"
+            );
+            // myHeaders.append(
+            //   "Cookie",
+            //   "JSESSIONID=44157488CC9D80ACE1DA3D41E380D4B0"
+            // );
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("action", "inviteFriend");
+            for (var i = 0; i < to_invite_frds_obj.length; i++) {
+              urlencoded.append("mem" + i, to_invite_frds_obj[i]);
+            }
+            urlencoded.append("groupid", gpid);
+            var requestOptions = {
+              method: "POST",
+              headers: myHeaders,
+              body: urlencoded,
+              redirect: "follow",
+            };
+
+            fetch(apiUrlGroupMembers, requestOptions)
+              .then((response) => response.text())
+              .then((result) => {
+                $("#fr_list").html("");
+                alert("邀請成功!");
+              })
+              .catch((error) => alert("邀請失敗，請稍後再試"));
+          }
+        });
+        //限制字數
+        var maxLength = 20;
+        var limitTestFunc = function () {
+          $(".input1").keyup(function () {
+            var length = $(this).val().length;
+            if (length >= maxLength) {
+              // 截取超出的字符
+              $(this).val($(this).val().substring(0, maxLength));
+            }
+          });
+        };
+        limitTestFunc();
+        //顯示群組留言func()
+        var showContents = function () {
+          fetch(apiUrlDiscussion + "?action=getGroupCons&groupid=" + gpid)
+            .then((response) => response.json())
+            .then((data) => {
+              $.each(data, function (index, item) {
+                var list_html = "";
+                var mem_name = "";
+                var mem_pic = "";
+                var img_src = "";
+                var delete_btn_str = "";
+                var amend_btn_str = "";
+                var if_mem = "";
+                if (item.member.imgBase64Str != null) {
+                  img_src = "data:image/*;base64," + item.member.imgBase64Str;
+                } else {
+                  img_src = "./test.png";
+                }
+
+                //刪除按鈕顯示判斷
+                if (item.memberid === user_id || group_manager_id === user_id) {
+                  delete_btn_str = "";
+                } else {
+                  delete_btn_str = " display : none";
+                }
+
+                if (item.member.username != null) {
+                  mem_name = item.member.username;
+                } else if (item.member.name != null) {
+                  mem_name = item.member.name;
+                } else {
+                  mem_name = "暫無會員名";
+                }
+                list_html = `<article class="message is-primary">
+            <div
+              class="columns group_message message-body"
+              style="position: relative"
+              id="${item.discussion}"
+            >
+
+            <span id="span_del${item.discussion}" class="icon_delete" style="position: absolute; top: 5px; right: 15px;cursor: pointer ;${delete_btn_str}"
+          ><i class="fa-solid fa-trash-can"></i></span>
+
+              <img
+                src="${img_src}"
+                class="column is-1 group_main_img_content"
+              />
+              <div class="column is-9">
+                <span class="group_main_member_content_name">${mem_name}</span
+                >${if_mem}
+                <br />
+                <p id="p${item.discussion}">${item.discussioncontent}</p>
+              </div>
+              <div class="column is-2 content_time">
+                <span class="group_main_msg_time">${item.dicussionday}</span>
+                <p></p>
+                <span class="group_main_msg_time">${item.dicussiontime}</span>
+              </div>
+            </div>
+          </article>`;
+                $(".content_section").append(list_html);
+                var span_del = "#span_del" + item.discussion;
+                $(span_del).click(function (e) {
+                  e.stopPropagation();
+                  var that = this;
+                  var r = confirm("確定要刪除此筆留言嗎?");
+                  if (r == true) {
+                    //放入fetch delete 以及alert放在成功後
+                    var myHeaders = new Headers();
+                    myHeaders.append(
+                      "Content-Type",
+                      "application/x-www-form-urlencoded"
+                    );
+                    myHeaders.append(
+                      "Cookie",
+                      "JSESSIONID=65AEB3628907BAC51411185C78D24BC4"
+                    );
+
+                    var urlencoded = new URLSearchParams();
+                    urlencoded.append("action", "delDiscussion");
+
+                    var requestOptions = {
+                      method: "DELETE",
+                      headers: myHeaders,
+                      body: urlencoded,
+                      redirect: "follow",
+                    };
+
+                    fetch(
+                      apiUrlDiscussion +
+                        "?action=delDiscussion&discussionId=" +
+                        item.discussion,
+                      requestOptions
+                    )
+                      .then((response) => response.text())
+                      .then((result) => {
+                        alert("刪除成功!");
+                        //重整留言內容
+                        $(".content_section").html("");
+                        showContents();
+                      })
+                      .catch((error) => console.log("error", error));
+                  } else {
+                    e.preventDefault();
+                  }
+                });
+              });
+            })
+            .catch((error) => console.log("error", error));
+        };
+        //邀請連結
+        $("#create_link").click(function () {
+          var myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+          myHeaders.append(
+            "Cookie",
+            "JSESSIONID=F8305B8BF20B474C339C372DA0982511"
+          );
+
+          var urlencoded = new URLSearchParams();
+          urlencoded.append("action", "generateLink");
+          urlencoded.append("groupId", gpid);
+
+          var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: "follow",
+          };
+
+          fetch(apiUrlGroup, requestOptions)
+            .then((response) => response.text())
+            .then((result) => {
+              $("#invite_link").val(apiUrlInvite + "?UID=" + result);
+            })
+            .catch((error) => console.log("error", error));
+        });
+        //點擊複製邀請連結
+        $("#invite_link").click(function () {
+          var toInviteLink = document.getElementById("invite_link");
+          toInviteLink.select();
+          document.execCommand("Copy");
+          if (toInviteLink.value != "") {
+            alert("複製成功!");
+          }
+        });
+        //退出群組
+        $("#exit_group").click(function () {
+          var r = confirm("確定要退出此群組嗎");
+          if (r) {
+            var requestOptions = {
+              method: "DELETE",
+              redirect: "follow",
+            };
+
+            fetch(
+              apiUrlGroupMembers +
+                "?action=exitGroup&member=" +
+                user_id +
+                "&groupId=" +
+                gpid,
+              requestOptions
+            )
+              .then((response) => response.text())
+              .then((result) => {
+                alert("退出成功");
+                location.href =
+                  baseUrl +
+                  contextPath +
+                  "/page/group/group_htmls/group_all.html";
+              })
+              .catch((error) => console.log("error", error));
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

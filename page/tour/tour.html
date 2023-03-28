@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>行程規劃</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../asset/css/my-bulma.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+      integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../asset/js/components.js"
+      type="text/javascript"
+    ></script>
+    <link rel="stylesheet" href="css/tour_style.css" />
+  </head>
+  <body>
+    <!-- 導覽列 -->
+    <header-component></header-component>
+    <header>
+      <h1 class="title">行程</h1>
+    </header>
+    <main>
+      <div>
+        <div class="search_btn">
+          <input
+            id="tour_search"
+            class="input"
+            type="text"
+            placeholder="搜尋行程"
+          />
+          <button type="sumbit" class="button btn_create_trip is-primary">
+            + 創建新行程
+          </button>
+        </div>
+        <div class="recommend_tour">
+          <span style="font-weight: bold">新增推薦您的旅遊景點模板：</span>
+          <ul style="display: flex"></ul>
+        </div>
+      </div>
+      <hr />
+      <div class="columns">
+        <div class="column is-1"></div>
+        <div class="column wrapper"></div>
+        <div class="column is-1"></div>
+      </div>
+
+      <!-- 創建行程的彈跳視窗 -->
+      <div class="lightbox trip_create_lightbox none">
+        <div
+          class="message is-primary contents"
+          style="background-color: #ebf9ff"
+        >
+          <div class="message-header" style="background-color: #04b5fb">
+            創建行程
+          </div>
+          <div class="message-body contents">
+            <div
+              class="file is-primary has-name"
+              style="align-self: flex-end; margin-bottom: 12px"
+            >
+              <label class="file-label" for="tourImg">
+                <input
+                  class="file-input"
+                  type="file"
+                  name="tourImg"
+                  id="tourImg"
+                />
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                  </span>
+                  <span class="file-label"> 行程封面照片 </span>
+                </span>
+                <span class="file-name"></span>
+              </label>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label" for="tourTitle">行程名稱：</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <p class="control has-icons-left has-icons-right">
+                    <input
+                      type="text"
+                      name="tourTitle"
+                      id="tourTitle"
+                      class="input"
+                      placeholder="行程名稱"
+                    />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-mountain"></i>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label" for="startDate">出發日期：</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <p class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="date"
+                      name="startDate"
+                      id="startDate"
+                      placeholder="出發日期"
+                    />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-table"></i>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label" for="endDate">結束日期：</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <p class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="date"
+                      name="endDate"
+                      id="endDate"
+                      placeholder="結束日期"
+                    />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-table"></i>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <button
+                class="button is-danger is-outlined trip_close_btn"
+                style="float: right; margin: 24px 0px 24px 12px"
+              >
+                <span>取消</span>
+                <span class="icon is-small">
+                  <i class="fas fa-times"></i>
+                </span>
+              </button>
+              <button
+                class="button is-success trip_create_btn"
+                style="float: right; margin: 24px 0px 24px 0px"
+              >
+                <span class="icon is-small">
+                  <i class="fas fa-check"></i>
+                </span>
+                <span>儲存</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 行程刪除的彈跳視窗 -->
+      <div class="lightbox trip_delete_lightbox none">
+        <div
+          class="message is-primary contents"
+          style="background-color: #ebf9ff"
+        >
+          <div class="message-header" style="background-color: #04b5fb">
+            提示
+          </div>
+          <div class="message-body contents">
+            <h3 class="is-size-5">是否刪除此行程？</h3>
+            <div>
+              <button
+                class="button is-danger is-outlined trip_close_btn"
+                style="float: right; margin: 24px 0px 24px 12px"
+              >
+                <span>取消</span>
+                <span class="icon is-small">
+                  <i class="fas fa-times"></i>
+                </span>
+              </button>
+              <button
+                class="button is-success trip_delete_btn"
+                style="float: right; margin: 24px 0px 24px 0px"
+              >
+                <span class="icon is-small">
+                  <i class="fas fa-check"></i>
+                </span>
+                <span>確認</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 標籤的彈跳視窗 -->
+      <div class="lightbox trip_tag_lightbox none">
+        <div
+          class="message is-primary contents"
+          style="background-color: #ebf9ff"
+        >
+          <div class="message-header" style="background-color: #04b5fb">
+            <p>現有標籤管理</p>
+          </div>
+          <div class="message-body contents">
+            <div class="field">
+              <p class="control has-icons-left">
+                <input
+                  class="input trip_tag_search"
+                  type="search"
+                  name="trip_tag_search"
+                  id="trip_tag_search"
+                  placeholder="搜尋標籤"
+                />
+                <span class="icon is-small is-left">
+                  <i class="fas fa-search-location"></i>
+                </span>
+              </p>
+            </div>
+            <p style="font-weight: bold">標籤列表</p>
+            <ul class="trip_tag_detail">
+              <li data-tag="進行中" class="trip_tag_el">
+                <input
+                  type="checkbox"
+                  name="trip_tag_el_checkbox"
+                  id="trip_tag_el_checkbox"
+                />
+                <span>進行中</span>
+                <button class="button delete is-primary"></button>
+              </li>
+              <li data-tag="想去" class="trip_tag_el">
+                <input
+                  type="checkbox"
+                  name="trip_tag_el_checkbox"
+                  id="trip_tag_el_checkbox"
+                />
+                <span>想去</span>
+                <button class="button delete is-primary"></button>
+              </li>
+            </ul>
+
+            <div class="field" style="margin-top: 12px">
+              <p class="control has-icons-left">
+                <input
+                  class="input trip_tag_input"
+                  type="search"
+                  name="trip_tag_input"
+                  id="trip_tag_input"
+                  placeholder="輸入標籤"
+                />
+                <span class="icon is-small is-left">
+                  <i class="fas fa-tag"></i>
+                </span>
+              </p>
+            </div>
+
+            <div>
+              <button
+                class="button is-success trip_tag_create"
+                style="float: right"
+              >
+                <span class="icon is-small">
+                  <i class="fas fa-check"></i>
+                </span>
+                <span>創建新標籤</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+    <script src="../../asset/js/jquery-3.6.3.min.js"></script>
+    <script src="js/tour.js"></script>
+  </body>
+</html>

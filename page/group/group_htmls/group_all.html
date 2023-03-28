@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io | 揪團</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../../asset/css/my-bulma.css" />
+    <!-- 自定義 CSS -->
+    <link rel="stylesheet" href="../../../asset/css/index-style.css" />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../../asset/js/components.js"
+      type="text/javascript"
+    ></script>
+
+    <!-- 初始化 Bulma -->
+    <script defer src="../../../asset/js/bulma-init.js"></script>
+    <!--GroupCss-->
+    <link rel="stylesheet" href=".././css/group.css" />
+  </head>
+  <body>
+    <!-- 導覽列 -->
+    <header-component></header-component>
+
+    <div class="column">
+      <div class="content has-text-centered"><h1>已加入揪團</h1></div>
+    </div>
+    <hr class="group_hr" />
+
+    <section class="section" id="gps" style="margin: auto; text-align: center">
+      <ul class="group_list">
+        <li>
+          <a href="./new_group.html">
+            <div class="one_gp card">
+              <p class="title" style="font-size: 30px; text-align: center">
+                建立揪團
+              </p>
+              <p class="subtitle">與好友一起來趟旅遊吧</p>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </section>
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+    <script>
+      $(function () {
+        //相對路徑宣告
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var contextPath = window.location.pathname.substring(
+          0,
+          window.location.pathname.indexOf("/", 1)
+        );
+        //api
+        const apiUrlGroup = baseUrl + contextPath + "/group";
+        const apiUrlGroupMembers = baseUrl + contextPath + "/groupmembers";
+        const apiUrlDiscussion = baseUrl + contextPath + "/discussion";
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        var urlencoded1 = new URLSearchParams();
+
+        //預計之後更改為得到登入的memberid
+        //urlencoded1.append("memberid", "1");
+        urlencoded1.append("action", "getAllGroups");
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: urlencoded1,
+          redirect: "follow",
+        };
+
+        fetch(apiUrlGroupMembers, requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            let list_html = "";
+            if (result.length != 0) {
+              $.each(result, function (index, item) {
+                let a =
+                  baseUrl +
+                  contextPath +
+                  "/page/group/group_htmls/group_main.html?groupid=";
+
+                list_html += '<li><a href="';
+                list_html += a + item.groupid;
+                list_html += '">';
+                list_html += '<div class="one_gp card">';
+                list_html += '<p class="title">';
+                list_html += item.groupname;
+                list_html += "</p>";
+                list_html += '<p class="subtitle">';
+                list_html += "群組人數:";
+                list_html += item.groupmembercount;
+                list_html += "人";
+                list_html += "</p></div></a></li>";
+              });
+              $(".group_list").html(list_html);
+            }
+          })
+          .catch((error) => console.log("error", error));
+      });
+    </script>
+  </body>
+</html>

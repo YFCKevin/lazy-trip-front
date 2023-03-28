@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../asset/css/my-bulma.css" />
+    <!-- jQuery -->
+    <script src="../../asset/js/jquery-3.6.3.min.js"></script>
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../asset/js/components.js"
+      type="text/javascript"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css"
+    />
+    <link rel="stylesheet" href="./css/flatpickr-calendar-theme.css" />
+    <!-- 初始化 -->
+    <!-- <script defer src="../../asset/js/bulma-init.js"></script> -->
+    <style>
+      /* 飯店搜尋placeholder 文字大小 */
+      input#searchBar::placeholder {
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 導覽列 -->
+    <header-component></header-component>
+
+    <!-- 內容 -->
+
+    <!-- 功能列開始 -->
+    <!-- 內容跟導航列間距 高度長20px -->
+    <div style="height: 35px"></div>
+    <!-- 畫面結構 功能列 欄位寬度佔畫面8/12 欄位居中 高度長共115px -->
+    <div
+      class="columns is-mobile is-centered"
+      style="height: 115px; background-color: #f9fafa"
+    >
+      <div class="column is-8">
+        <!-- 功能列第一列 高度有設定 高度長50px-->
+        <div class="columns is-vcentered is-mobile" style="height: 50px">
+          <!-- 搜尋欄div -->
+          <div style="width: 45%">
+            <div class="control has-icons-left">
+              <input
+                id="searchBar"
+                type="search"
+                class="input is-info is-outlined"
+                value="台北市"
+                minlength="2"
+                style="width: 95%"
+                placeholder="輸入飯店名稱或目的縣市區域 例如:台北市、中山區"
+              />
+              <span class="icon is-left">
+                <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
+              </span>
+            </div>
+          </div>
+          <!-- 入住日期div -->
+          <div style="width: 20%">
+            <div class="control has-icons-left">
+              <input
+                id="inputCheckInDate"
+                type="text"
+                class="button is-outlined is-hovered"
+                style="width: 90%"
+                placeholder="&emsp;選擇入住日期"
+              />
+              <span class="icon is-left">
+                <i class="fa-regular fa-calendar"></i>
+              </span>
+            </div>
+          </div>
+          <!-- 退房日期div -->
+          <div style="width: 20%">
+            <div class="control has-icons-left">
+              <input
+                id="inputCheckOutDate"
+                type="text"
+                class="button is-outlined is-hovered"
+                style="width: 90%"
+                placeholder="&emsp;選擇退房日期"
+              />
+              <span class="icon is-left">
+                <i class="fa-regular fa-calendar"></i>
+              </span>
+            </div>
+          </div>
+          <!-- 搜尋按鈕div -->
+          <div style="width: 15%">
+            <div class="control">
+              <button
+                id="searchBtn"
+                type="button"
+                class="button is-info"
+                style="width: 100%"
+              >
+                <span class="is-size-6">&emsp;&emsp;搜尋&emsp;&emsp;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- 功能列第二列 高度長65px-->
+        <div
+          class="columns is-vcentered is-narrow is-mobile"
+          style="height: 85px"
+        >
+          <!-- 價格最高優先排序按鈕 -->
+          <div style="width: 30%">
+            <div class="control">
+              <strong class="is-size-6">&nbsp;最高預算:&emsp;</strong>
+              <span class="is-size-6" id="inputRangeValue"></span>
+              <p>
+                <input
+                  type="range"
+                  style="width: 100%"
+                  id="highestPriceCeiling"
+                />
+              </p>
+            </div>
+          </div>
+          <!-- 垂直灰線 -->
+          <div style="width: 10%; display: flex; justify-content: center">
+            <div style="border-left: 1px solid #cccfd6; height: 40px"></div>
+          </div>
+          <!-- 價格最低優先排序按鈕 -->
+          <div style="width: 25%">
+            <div class="control">
+              <button
+                class="button is-outlined is-info"
+                style="color: black; width: 100%"
+                id="lowestPriceFirstBtn"
+              >
+                價格最低優先
+              </button>
+            </div>
+          </div>
+          <!-- 垂直灰線 -->
+          <div style="width: 10%; display: flex; justify-content: center">
+            <div style="border-left: 1px solid #cccfd6; height: 40px"></div>
+          </div>
+
+          <!-- 價格範圍按鈕 -->
+          <div style="width: 25%">
+            <div class="control" style="text-align: right">
+              <button
+                class="button is-outlined is-info"
+                style="color: black; width: 100%; float: right"
+                id="highestPriceFirstBtn"
+              >
+                價格最高優先
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 與功能列保持10px高度距離 -->
+    <div style="height: 15px"></div>
+    <!-- 功能列結束 -->
+
+    <!-- 飯店資料結構 欄位寬度佔畫面8/12 欄位居中 -->
+    <div
+      class="columns is-mobile is-centered"
+      style="background-color: #f3f4f5"
+    >
+      <div id="companyChildrenStart" class="column is-8"></div>
+    </div>
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+
+    <script>
+      const ROOT = location.origin;
+      // const ROOT = "http://localhost:8080";
+
+      // 子元素要放飯店資料的標籤
+      let companyChildrenStart = $("#companyChildrenStart");
+      // 日期選擇標籤
+      let inputCheckInDate = document.querySelector("#inputCheckInDate");
+      let inputCheckOutDate = document.querySelector("#inputCheckOutDate");
+      let searchBtn = $("#searchBtn");
+      let searchBar = $("#searchBar");
+      let cmVOList = new Array();
+      let ceilingPrice = 0;
+      let highestPriceCeiling = document.querySelector("#highestPriceCeiling");
+      let inputRangeValue = document.querySelector("#inputRangeValue");
+      $(function () {
+        init();
+        search();
+        selectCompany();
+        dateBtn();
+
+        // 在搜尋框按下enter後綁定搜尋按鈕事件
+        searchBar.on("keydown", function (e) {
+          if (e.keyCode === 13) {
+            searchBtn.click();
+          }
+        });
+
+        // 價格最低優先按鈕綁定事件
+        $("#lowestPriceFirstBtn").on("click", function () {
+          $(this).addClass("is-loading");
+          cmVOList.sort(
+            (a, b) => a.roomTypeVO.roomTypePrice - b.roomTypeVO.roomTypePrice
+          );
+          companyChildrenStart.empty();
+          for (let i = 0; i < cmVOList.length; i++) {
+            pasteCompany(cmVOList[i]);
+          }
+          $(this).removeClass("is-loading");
+        });
+
+        // 價格最高優先按鈕綁定事件
+        $("#highestPriceFirstBtn").on("click", function () {
+          $(this).addClass("is-loading");
+          cmVOList.sort(
+            (a, b) => b.roomTypeVO.roomTypePrice - a.roomTypeVO.roomTypePrice
+          );
+          companyChildrenStart.empty();
+          for (let i = 0; i < cmVOList.length; i++) {
+            pasteCompany(cmVOList[i]);
+          }
+          $(this).removeClass("is-loading");
+        });
+
+        // 最高預算篩選
+        highestPriceCeiling.addEventListener("input", (event) => {
+          const rangeValue = parseInt(event.target.value);
+          inputRangeValue.innerText = "$" + rangeValue;
+          companyChildrenStart.empty();
+          for (let i = 0; i < cmVOList.length; i++) {
+            if (cmVOList[i].roomTypeVO.roomTypePrice < rangeValue) {
+              pasteCompany(cmVOList[i]);
+            }
+          }
+        });
+      });
+
+      function init() {
+        sendSearchKeyFun("臺北市");
+      }
+
+      function dateBtn() {
+        // 入住日期checkInFlatpickr
+        const checkInFlatpickr = flatpickr(inputCheckInDate, {
+          theme: "confetti",
+          minDate: "today",
+          dateFormat: "Y/m/d",
+
+          onChange: function (selectedDates, dateStr, instance) {
+            // 設定退房日期選擇器的最小日期為選擇的入住日期的隔天並自動打開退房日期視窗
+            checkOutFlatpickr.set(
+              "minDate",
+              new Date(selectedDates[0].getTime() + 24 * 60 * 60 * 1000)
+            );
+            inputCheckOutDate.focus();
+          },
+        });
+
+        // 退房日期checkOutFlatpickr
+        const checkOutFlatpickr = flatpickr(inputCheckOutDate, {
+          theme: "confetti",
+          minDate: new Date().getTime() + 24 * 60 * 60 * 1000,
+          // 最大可選擇天數是六個月後 大約183天
+          maxDate: new Date().getTime() + 183 * 24 * 60 * 60 * 1000,
+          dateFormat: "Y/m/d",
+        });
+      }
+
+      // 搜尋
+      function search() {
+        searchBtn.on("click", function () {
+          let searchBarVal = searchBar.val().trim().replace("台", "臺");
+          if (searchBarVal.length > 1) {
+            // 清空所有飯店資料
+            companyChildrenStart.empty();
+            // 執行搜尋關鍵字方法
+            sendSearchKeyFun(searchBarVal);
+          }
+        });
+      }
+
+      // 傳送搜尋關鍵字方法
+      function sendSearchKeyFun(keyword) {
+        // 按鈕變成跑圈圈
+        searchBtn.addClass("is-loading");
+        let companyHtml;
+
+        fetch(
+          `${ROOT}/lazy-trip-back/BookingSearch.do?type=showCompanyListByCompanyNameOrCountyOrArea&keyword=${keyword}`
+        )
+          .then((response) => response.json())
+          .then((cmVOs) => {
+            cmVOs.forEach((cmVO) => {
+              cmVOList.push(cmVO);
+              pasteCompany(cmVO);
+              if (cmVO.roomTypeVO.roomTypePrice > ceilingPrice) {
+                ceilingPrice = cmVO.roomTypeVO.roomTypePrice;
+              }
+            });
+            highestPriceCeiling.max = ceilingPrice;
+            highestPriceCeiling.value = ceilingPrice;
+            inputRangeValue.innerText = "$" + ceilingPrice;
+
+            searchBtn.removeClass("is-loading");
+            console.log("search companys success!");
+          })
+          .catch((error) => {
+            searchBtn.removeClass("is-loading");
+            console.log("search companys fail.");
+          });
+      }
+
+      function pasteCompany(cmVO) {
+        let introduction;
+
+        if (cmVO.introduction.length > 111) {
+          introduction = cmVO.introduction.substring(0, 110) + "...";
+        } else {
+          introduction = cmVO.introduction;
+        }
+
+        companyHtml = `
+                    <!-- 飯店資料開始 -->
+                    <div
+          class="columns is-mobile"
+          style="
+          border-radius: 10px 10px 10px 10px;
+          height: 170px;
+          background-color: #ffffff;
+          box-shadow: 0px 0px 5px 1px rgba(137, 200, 232, 0.5);
+          "
+          >
+          <div
+          style="
+          border-radius: 10px 0px 0px 10px;
+          width: 23%;
+          height: 170px;
+          "
+          >
+          <img
+          class="companyImg"
+          src="data:image/*;base64,${cmVO.companyImg}"
+          alt="無圖片"
+          onerror="this.src='../../asset/img/noPicture.png'"
+          style="
+          border-radius: 10px 0px 0px 10px;
+          height: 100%;
+          width: 100%;
+          "
+          />
+          </div>
+          <!-- 飯店資訊概述 -->
+          <div style="height: 170px; width: 44%">
+          <div class="is-flex" style="height: 25%">
+          <span class="is-size-4 has-text-weight-bold pt-3 pl-3 companyName"
+          >${cmVO.companyName}</span
+          >
+          </div>
+          <div class="is-flex" style="height: 20%">
+          <p class="control pt-2 pl-3">
+          <span class="icon"
+            ><i class="fa-solid fa-location-dot"></i
+          ></span>
+          <span class="is-size-6 addressCounty">${cmVO.addressCounty},</span>
+          <span class="is-size-6 addressArea">${cmVO.addressArea}</span>
+          </p>
+          </div>
+          <div class="is-flex" style="height: 43%">
+          <span class="is-size-7 pt-2 pl-3 pr-2 introduction"
+          >${introduction}</span
+          >
+          </div>
+          </div>
+          <!-- 飯店價格概述及選擇按鈕 -->
+          <div
+          style="
+          height: 150px;
+          width: 32%;
+          margin-top: 9px;
+          margin-right: 10px;
+
+          border-radius: 10px 10px 10px 10px;
+          border: 1px #dbdde1 solid;
+          background-color: #f1f8ea;
+          "
+          >
+          <!-- <div style="border: 1px green solid"></div> -->
+          <div style="display: flex; flex-direction: row">
+          <div style="flex-basis: 50%; height: 170px">
+          <div
+            class="control"
+            style="padding-top: 60%; padding-left: 13%"
+            ;
+          >
+            <div>
+              <span class="is-size-7">每晚最低價格</span>
+            </div>
+            <div style="padding-bottom: 25px">
+              <span class="is-size-4 has-text-weight-bold roomTypePrice"
+                >$${cmVO.roomTypeVO.roomTypePrice}</span
+              >
+            </div>
+          </div>
+          </div>
+          <div
+          style="
+            flex-basis: 50%;
+            height: 170px;
+            border-radius: 0px 10px 10px 0px;
+          "
+          >
+          <div class="control" style="padding-top: 70%">
+            <button data-company-id="${cmVO.companyID}" class="button is-info companyID">
+              <span>選擇房型&nbsp;</span>
+              <span class="icon"><i class="fas fa-angle-right"></i></span>
+            </button>
+          </div>
+          </div>
+          </div>
+          </div>
+          </div>
+          <!-- 飯店資料與資料之間的間距 -->
+          <div style="height: 10px"></div>
+          <!-- 飯店資料結束 -->
+          `;
+        companyChildrenStart.append(companyHtml);
+      }
+
+      // 按下房型按鈕把資訊存到sessionStorage
+      function selectCompany() {
+        $(document).on("click", "button[class*='companyID']", function () {
+          // 抓取companyID放進session
+          let companyID = $(this).data("company-id");
+          // 抓取有設定入住與退房的日期放進session
+          let dateInfo = {};
+          let dateNum = 0;
+          if (inputCheckInDate.value.trim != "") {
+            dateInfo.inputCheckInDate = inputCheckInDate.value;
+            dateNum++;
+          }
+          if (inputCheckOutDate.value.trim != "") {
+            (dateInfo.inputCheckOutDate = inputCheckOutDate.value), dateNum++;
+          }
+          if (dateNum === 2) {
+            sessionStorage.setItem("dateInfo", JSON.stringify(dateInfo));
+          }
+
+          sessionStorage.setItem("showCompanyInformation", companyID);
+
+          window.open(
+            `${ROOT}/lazy-trip-back/page/order/order_show_company.html`,
+            "_blank"
+          );
+        });
+      }
+    </script>
+  </body>
+</html>

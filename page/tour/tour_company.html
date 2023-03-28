@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>廠商後台</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../asset/css/company-bulma.css" />
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../asset/js/company-components.js"
+      type="text/javascript"
+    ></script>
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- 初始化 Bulma -->
+    <script defer src="../../asset/js/bulma-init.js"></script>
+    <style>
+      .-none {
+        display: none;
+      }
+      div.card-content {
+        overflow-x: auto;
+      }
+      .vibrate {
+        animation: vibrate 0.3s linear infinite;
+      }
+
+      @keyframes vibrate {
+        0% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(-2px, 2px);
+        }
+        40% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, -2px);
+        }
+        80% {
+          transform: translate(2px, 2px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+      input.mamage-attraction {
+        margin-right: 10px;
+      }
+      /* scroll捲軸功能css */
+      /* 隱藏捲軸，只有當滑鼠移到捲軸區域時才顯示 */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        cursor: pointer;
+      }
+      /* 捲軸軌道（背景） */
+      ::-webkit-scrollbar-track {
+        background: white;
+        border-radius: 10px;
+      }
+      /* 捲軸滑塊 */
+      ::-webkit-scrollbar-thumb {
+        background: hsl(96deg, 61%, 37%);
+        border-radius: 10px;
+      }
+      /* 拖曳捲軸時的樣式 */
+      ::-webkit-scrollbar-thumb:hover {
+        background: hsl(96, 61%, 22%);
+      }
+      /* 捲軸滑塊在滑鼠移過捲軸區域時顯示的樣式 */
+      ::-webkit-scrollbar-thumb:active {
+        background: hsl(96, 61%, 22%);
+      }
+      div.card-content {
+        height: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 導覽列 -->
+    <header-component></header-component>
+
+    <!-- 主體 -->
+    <div class="columns mb-0 pb-0" style="min-height: 800px">
+      <!-- 左側欄 -->
+      <div class="column mb-0 pb-0">
+        <div class="section">
+          <aside class="menu" style="width: 100%">
+            <ul class="menu-list has-text-centered has-text-weight-semibold">
+              <li id="li-basic-info">
+                <a class="is-size-4 py-5 is-active">新增主行程模板</a>
+              </li>
+              <li id="li-search-add-attraction">
+                <a class="is-size-4 py-5">查詢/加入景點到主行程模板</a>
+              </li>
+              <li id="li-mamage-attraction">
+                <a class="is-size-4 py-5">行程模板管理</a>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+      <!-- 右側內容 -->
+
+      <div class="column is-three-quarters mb-0 pb-0">
+        <div class="section">
+          <div id="div-results" class="block">
+            <!-- 行程基本資料 -->
+            <div class="card mb-6 basic-info">
+              <div class="card-content">
+                <section class="trip_query_page">
+                  <article style="display: flex; flex-direction: column">
+                    <div
+                      class="file is-primary"
+                      style="align-self: flex-end; margin-bottom: 12px"
+                    >
+                      <label class="file-label">
+                        <input
+                          class="file-input"
+                          type="file"
+                          name="trip_img_upload"
+                          id="trip_img_upload"
+                        />
+                        <span class="file-cta">
+                          <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                          </span>
+                          <span class="file-label"> 圖片上傳 </span>
+                        </span>
+                        <span class="file-name"></span>
+                      </label>
+                    </div>
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="trip_start_date"
+                          >行程名稱：</label
+                        >
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <p class="control has-icons-left has-icons-right">
+                            <input
+                              type="text"
+                              name="trip_name"
+                              id="trip_name"
+                              class="input"
+                              placeholder="行程名稱"
+                            />
+                            <span class="icon is-small is-left">
+                              <i class="fas fa-mountain"></i>
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="trip_start_date"
+                          >出發日期：</label
+                        >
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <p class="control has-icons-left">
+                            <input
+                              class="input"
+                              type="date"
+                              name="trip_start_date"
+                              id="trip_start_date"
+                              placeholder="出發日期"
+                            />
+                            <span class="icon is-small is-left">
+                              <i class="fas fa-table"></i>
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="trip_end_date"
+                          >結束日期：</label
+                        >
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <p class="control has-icons-left">
+                            <input
+                              class="input"
+                              type="date"
+                              name="trip_end_date"
+                              id="trip_end_date"
+                              placeholder="結束日期"
+                            />
+                            <span class="icon is-small is-left">
+                              <i class="fas fa-table"></i>
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="people">人數：</label>
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <p class="control has-icons-left">
+                            <input
+                              class="input"
+                              type="number"
+                              name="people"
+                              id="people"
+                              placeholder="人數"
+                            />
+                            <span class="icon is-small is-left">
+                              <i class="fas fa-users"></i>
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="trip_price">總價：</label>
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <p class="control has-icons-left">
+                            <input
+                              class="input"
+                              type="number"
+                              name="trip_price"
+                              id="trip_price"
+                              placeholder="總價"
+                            />
+                            <span class="icon is-small is-left">
+                              <i class="fas fa-dollar-sign"></i>
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="trip_feature"
+                          >自訂特色：</label
+                        >
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <p class="control has-icons-left">
+                            <input
+                              class="input"
+                              type="text"
+                              name="trip_feature"
+                              id="trip_feature"
+                              placeholder="特色"
+                            />
+                            <span class="icon is-small is-left">
+                              <i class="fas fa-tag"></i>
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <button
+                        type="reset"
+                        class="button is-danger is-outlined trip_clear_btn"
+                        style="float: right; margin: 24px 0px 24px 12px"
+                      >
+                        <span>清除</span>
+                        <span class="icon is-small">
+                          <i class="fas fa-times"></i>
+                        </span>
+                      </button>
+                      <button
+                        class="button is-success trip_comfirm_btn"
+                        style="float: right; margin: 24px 0px 24px 0px"
+                      >
+                        <span class="icon is-small">
+                          <i class="fas fa-check"></i>
+                        </span>
+                        <span>儲存</span>
+                      </button>
+                    </div>
+                  </article>
+                </section>
+              </div>
+            </div>
+
+            <!-- 查詢 / 加入景點 -->
+            <div class="card mb-6 search-add-attraction -none">
+              <div class="card-content" style="height: max-content">
+                <div class="field has-addons">
+                  <input
+                    class="input search-add-attraction"
+                    name="search-add-attraction-title"
+                    type="text"
+                    id="search-add-attraction-title"
+                    placeholder="輸入行程名稱"
+                    style="width: 200px"
+                  />
+                  <button
+                    class="button is-primary"
+                    id="btn-search-add-attraction"
+                  >
+                    開始搜尋
+                  </button>
+                </div>
+                <hr />
+                <br />
+                <section class="tour-planning">
+                  <article style="display: flex; flex-direction: column">
+                    <div class="buttons tour_info has-addons is-right"></div>
+                    <h3 class="tour_title is-size-4"></h3>
+                    <h5 class="tour_date is-size-6"></h5>
+                    <br />
+
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="attraction_search"
+                          >搜尋景點：</label
+                        >
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <p class="control has-icons-left">
+                            <input
+                              class="input"
+                              type="search"
+                              name="attraction_search"
+                              id="attraction_search"
+                            />
+                            <span class="icon is-small is-left">
+                              <i class="fas fa-search-location"></i>
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="trip_date">日期：</label>
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <p class="control has-icons-left">
+                            <input
+                              class="input"
+                              type="date"
+                              name="trip_date"
+                              id="trip_date"
+                            />
+                            <span class="icon is-small is-left">
+                              <i class="fas fa-table"></i>
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="attraction_time"
+                          >開始時間：</label
+                        >
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <p class="control has-icons-left">
+                            <input
+                              class="input"
+                              type="time"
+                              name="attraction_time"
+                              id="attraction_time"
+                            />
+                            <span class="icon is-small is-left">
+                              <i class="fas fa-clock"></i>
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="field is-horizontal">
+                      <div class="field-label is-normal">
+                        <label class="label" for="attraction_stay_hour"
+                          >預計停留時間(分)：</label
+                        >
+                      </div>
+                      <div class="field-body">
+                        <div class="field">
+                          <p class="control has-icons-left">
+                            <input
+                              class="input"
+                              type="number"
+                              name="attraction_stay_min"
+                              id="attraction_stay_min"
+                            />
+                            <span class="icon is-small is-left">
+                              <i class="fas fa-clock"></i>
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <button
+                        class="button is-danger is-outlined clear_btn"
+                        style="float: right; margin: 24px 0px 24px 12px"
+                      >
+                        <span>清除</span>
+                        <span class="icon is-small">
+                          <i class="fas fa-times"></i>
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        class="button is-success comfirm_add_attraction_btn"
+                        style="float: right; margin: 24px 0px 24px 0px"
+                      >
+                        <span class="icon is-small">
+                          <i class="fas fa-check"></i>
+                        </span>
+                        <span>儲存</span>
+                      </button>
+                    </div>
+                  </article>
+                  <div id="map" class="-none"></div>
+                  <footer></footer>
+                </section>
+              </div>
+            </div>
+
+            <!-- 行程管理 -->
+            <div class="card mb-6 mamage-attraction-search -none">
+              <div class="card-content" style="height: fit-content">
+                <div
+                  class="field has-addons"
+                  style="display: flex; justify-content: space-around"
+                >
+                  <input
+                    class="input mamage-attraction"
+                    name="mamage-attraction-title"
+                    type="text"
+                    id="mamage-attraction-title"
+                    placeholder="輸入行程名稱"
+                  />
+                  <input
+                    class="input mamage-attraction"
+                    type="date"
+                    name="mamage-attraction-date"
+                    id="mamage-attraction-startDate"
+                    placeholder="選擇起始日期"
+                  />
+                  <input
+                    class="input mamage-attraction"
+                    type="date"
+                    name="mamage-attraction-date"
+                    id="mamage-attraction-endDate"
+                    placeholder="選擇結束日期"
+                  />
+                  <input
+                    class="input mamage-attraction"
+                    type="number"
+                    name="mamage-attraction-cost"
+                    id="mamage-attraction-cost"
+                    placeholder="輸入總價"
+                  />
+                  <input
+                    class="input mamage-attraction"
+                    type="text"
+                    name="mamage-attraction-feature"
+                    id="mamage-attraction-feature"
+                    placeholder="輸入自訂特色"
+                  />
+                  <button class="button is-primary" id="btn-mamage-attraction">
+                    開始搜尋
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card mb-6 mamage-attraction -none">
+              <div class="card-content">
+                <section class="trip_list_page">
+                  <article>
+                    <table class="table is-hoverable is-bordered is-fullwidth">
+                      <thead>
+                        <tr>
+                          <th><abbr title="trip_name">行程名稱</abbr></th>
+                          <th><abbr title="trip_start_date">出發日期</abbr></th>
+                          <th><abbr title="trip_end_date">結束日期</abbr></th>
+                          <th><abbr title="people">人數</abbr></th>
+                          <th><abbr title="trip_price">總價</abbr></th>
+                          <th><abbr title="trip_feature">特色</abbr></th>
+                          <th><abbr title="trip_img_upload">圖片</abbr></th>
+                          <th>
+                            <abbr title="trip_detail">明細</abbr>
+                          </th>
+                          <th>
+                            <abbr title="edit">修改</abbr>
+                          </th>
+                          <th>
+                            <abbr title="delete">刪除</abbr>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody class="tbody_tour"></tbody>
+                    </table>
+                  </article>
+                </section>
+              </div>
+            </div>
+            <div class="card mb-6 basic-schedule-info -none">
+              <div class="card-content">
+                <section class="trip_list_page">
+                  <article>
+                    <table class="table is-hoverable is-bordered is-fullwidth">
+                      <thead>
+                        <tr>
+                          <th><abbr title="date_sche">日期</abbr></th>
+                          <th><abbr title="start_time_sche">出發時間</abbr></th>
+                          <th><abbr title="stayTime_sche">結束時間</abbr></th>
+                          <th>
+                            <abbr title="endTime_sche">停留時間(分)</abbr>
+                          </th>
+                          <th>
+                            <abbr title="attraction_title">景點名稱</abbr>
+                          </th>
+                          <th>
+                            <abbr title="attraction_address">景點地址</abbr>
+                          </th>
+                          <th>
+                            <abbr title="delete">刪除</abbr>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody class="tbody_sche"></tbody>
+                    </table>
+                  </article>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+    <script src="../../asset/js/jquery-3.6.3.min.js"></script>
+    <script src="../tour/js/tour_company.js"></script>
+    <script
+      async
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVt74yqJGFBhStd3r1MO9kLZoEXHZ7BBc&libraries=places&callback=initMap&region=TW&language=zh-TW"
+    ></script>
+  </body>
+</html>

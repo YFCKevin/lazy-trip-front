@@ -1,0 +1,271 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+button {
+	cursor: pointer;
+}
+
+.card:hover {
+	box-shadow: 5px 5px 10px 3px rgb(0 0 0/ 20%);
+}
+
+div.search_btn {
+	width: 200px;
+	margin: 0px 0px 20px 120px;
+}
+
+div.recommend_tour {
+	margin: 0px 0px 0px 120px;
+}
+
+div.icon_total>.icon {
+	border-radius: 50%;
+}
+
+div.icon_total>.icon:hover {
+	transition: ease-in 0.15s;
+}
+
+time.startDate, time.endDate {
+	font-size: 1.2rem;
+}
+
+div.nav_tab>div.tabs {
+	margin: 0 100px 20px 100px;
+}
+
+h1.title {
+	margin: 20px 0px 20px 120px;
+}
+
+div.search_btn
+.icon_total {
+	margin: 5px 5px 0px 0px;
+}
+
+div.card {
+	width: 350px;
+	height: 300px;
+}
+
+.trip_create_lightbox {
+	/*   border: 1px solid red; */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: hsla(0, 0%, 0%, 0.5);
+}
+
+.none {
+	display: none;
+}
+
+/* 元素 article 置中及基本樣式 */
+.contents {
+	display: flex;
+	flex-direction: column;
+}
+
+.trip_create_lightbox>.contents {
+	width: 600px;
+	border-radius: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.trip_delete_lightbox {
+	/*   border: 1px solid red; */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: hsla(0, 0%, 0%, 0.5);
+}
+
+.trip_delete_lightbox>.contents {
+	width: 600px;
+	border-radius: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.trip_coedit_lightbox {
+	/*   border: 1px solid red; */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: hsla(0, 0%, 0%, 0.5);
+}
+
+.trip_coedit_lightbox>.contents {
+	width: 600px;
+	border-radius: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.is-primary {
+	background-color: #ebf9ff;
+}
+
+.message-header {
+	background-color: #04b5fb;
+}
+
+.trip_tag_lightbox {
+	/*   border: 1px solid red; */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: hsla(0, 0%, 0%, 0.5);
+}
+
+.trip_tag_lightbox>.contents {
+	width: 600px;
+	border-radius: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+/* tag input:text */
+input.trip_tag_text {
+	border: none;
+	border-radius: 10px;
+	opacity: 0.4;
+}
+
+/* trip_tag_detail */
+.trip_tag_detail {
+	height: 200px;
+	overflow-y: scroll;
+}
+
+div.icon_total {
+	right: 0;
+	position: absolute;
+	z-index: 10
+}
+
+div.card-content {
+	padding: 10px;
+}
+
+div.trip_item_block>h2.title {
+	margin: 10px 0px;
+	font-size: 1.5rem;
+}
+
+div.wrapper {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+/* 行程圖放大與縮小 */
+figure.image {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+	display: block;
+	cursor: pointer;
+}
+
+figure.image>img.trip_item_img {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	transition: transform 0.5s;
+}
+
+figure.image:hover>img.trip_item_img {
+	transform: scale(1.2, 1.2);
+}
+
+div.lightbox {
+	z-index: 990;
+}
+
+/* 創建行程中 圖片輪播 */
+.trip_pic_box {
+	width: 400px;
+}
+
+#show_el img {
+	width: 100%;
+}
+
+.all_img {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+}
+
+.all_img img {
+	width: 80%;
+	cursor: pointer;
+}
+/* tag */
+div.trip_tag_place>ul li {
+	border-radius: 20px;
+	padding: 4px;
+	margin: 2px;
+}
+div.icon_total {
+  background-color: rgba(217, 217, 219,0.4);
+}
+/* 主行程內的各個標記標籤 */
+li[data-tag]:hover {
+	cursor: pointer;
+	font-weight: bold;
+}
+/* scroll捲軸功能css */
+/* 隱藏捲軸，只有當滑鼠移到捲軸區域時才顯示 */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+	cursor: pointer;
+}
+/* 捲軸軌道（背景） */
+::-webkit-scrollbar-track {
+	background: white;
+	border-radius: 10px;
+}
+/* 捲軸滑塊 */
+::-webkit-scrollbar-thumb {
+	background: #dd5b0b;
+	border-radius: 10px;
+}
+/* 拖曳捲軸時的樣式 */
+::-webkit-scrollbar-thumb:hover {
+	background: #7a3306;
+}
+/* 捲軸滑塊在滑鼠移過捲軸區域時顯示的樣式 */
+::-webkit-scrollbar-thumb:active {
+	background: #7a3306;
+}
+
+/* recommend_tour */
+li.recommend_tour:hover {
+	cursor: pointer;
+	text-decoration: underline;
+	font-weight: bold;
+}
+.-none {
+	display: none;
+}

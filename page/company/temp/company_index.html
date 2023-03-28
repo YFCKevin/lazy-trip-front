@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../../asset/css/company-bulma.css" />
+    <!-- 自定義 CSS -->
+    <!-- <link rel="stylesheet" href="asset/css/index-style.css" /> -->
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- jquery -->
+    <script src="../../../asset/vendor/jquery/jquery-3.6.3.min.js"></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../../asset/js/company-components.js"
+      type="text/javascript"
+    ></script>
+    <!-- 初始化 Bulma -->
+    <script defer src="../../../asset/js/bulma-init.js"></script>
+  </head>
+  <body>
+    <header-component></header-component>
+    <!-- 內容 -->
+
+    <div class="columns">
+      <div class="column">
+        <section class="section">
+          <div class="content">
+            <h4>內容</h4>
+            <ul>
+              <li>廠商行程</li>
+              <li>推薦文章</li>
+              <li>...</li>
+            </ul>
+
+            <article class="message is-primary">
+              <div class="message-header">
+                <p>切版</p>
+              </div>
+              <div class="message-body">
+                <ul>
+                  <li>AAA</li>
+                  <li>BBB</li>
+                  <li>CCC</li>
+                </ul>
+              </div>
+            </article>
+            <div class="buttons">
+              <button class="button is-primary">Primary</button>
+              <button class="button is-link">Link</button>
+            </div>
+
+            <div class="buttons">
+              <button class="button is-info">Info</button>
+              <button class="button is-success">Success</button>
+              <button class="button is-warning">Warning</button>
+              <button class="button is-danger">Danger</button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="column">
+        <section class="section">
+          <aside class="menu">
+            <p class="menu-label">General</p>
+            <ul class="menu-list">
+              <li><a>Dashboard</a></li>
+              <li><a>Customers</a></li>
+            </ul>
+            <p class="menu-label">Administration</p>
+            <ul class="menu-list">
+              <li><a>Team Settings</a></li>
+              <li>
+                <a class="is-active">Manage Your Team</a>
+                <ul>
+                  <li><a>Members</a></li>
+                  <li><a>Plugins</a></li>
+                  <li><a>Add a member</a></li>
+                </ul>
+              </li>
+              <li><a>Invitations</a></li>
+              <li><a>Cloud Storage Environment Settings</a></li>
+              <li><a>Authentication</a></li>
+            </ul>
+            <p class="menu-label">Transactions</p>
+            <ul class="menu-list">
+              <li><a>Payments</a></li>
+              <li><a>Transfers</a></li>
+              <li><a>Balance</a></li>
+            </ul>
+          </aside>
+        </section>
+      </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+    <!-- <script src="asset/js/checkLogin.js?ver=1"></script> -->
+  </body>
+</html>

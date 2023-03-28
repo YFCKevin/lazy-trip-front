@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../asset/css/my-bulma.css" />
+    <!-- 自定義 CSS -->
+    <link rel="stylesheet" href="extra-custom.css" />
+    <!-- jQuery -->
+    <script src="../../asset/js/jquery-3.6.3.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/animate.css@4.0.0/animate.min.css"
+    />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../asset/js/components.js"
+      type="text/javascript"
+    ></script>
+    <!-- 好友功能元件 -->
+    <script
+      defer
+      src="js/comp/fr-components.js"
+      type="text/javascript"
+    ></script>
+    <script
+      defer
+      src="js/comp/ch-components.js"
+      type="text/javascript"
+    ></script>
+    <script
+      defer
+      src="js/comp/ut-components.js"
+      type="text/javascript"
+    ></script>
+    <!-- 初始化 -->
+    <script defer src="js/notification-receiver.js"></script>
+  </head>
+  <body>
+    <!-- 導覽列 -->
+    <header-component></header-component>
+
+    <!-- 主體 -->
+    <div class="columns mb-0 pb-0 _main_body">
+      <!-- 左側欄 -->
+      <div class="column mb-0 pr-0 pb-0 _left_menu">
+        <div class="section">
+          <aside class="menu" style="width: 100%">
+            <ul
+              class="menu-list has-text-centered has-text-weight-semibold"
+              id="left-menu"
+            >
+              <li id="li-suggestions">
+                <a class="is-size-4 py-5 is-active">你可能感興趣</a>
+              </li>
+              <li id="li-friends">
+                <a class="is-size-4 py-5">我的好友</a>
+              </li>
+              <li id="li-sent-requests">
+                <a class="is-size-4 py-5">送出邀請</a>
+              </li>
+              <li id="li-received-requests">
+                <a class="is-size-4 py-5">收到邀請</a>
+              </li>
+              <li id="li-chatrooms">
+                <a class="is-size-4 py-5">聊天室</a>
+              </li>
+              <li id="li-blocklists">
+                <a class="is-size-4 py-5">封鎖名單</a>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+      <!-- 右側內容 -->
+      <div class="column is-three-quarters m-0 p-0">
+        <control-panel-component control-target=""></control-panel-component>
+
+        <hr class="mb-0" />
+        <div
+          id="div-no-result"
+          class="content box is-shadowless pt-6 pl-6"
+          style="display: none"
+        >
+          <h3>目前沒有相關結果</h3>
+        </div>
+        <div id="div-results" class="block"></div>
+        <div
+          id="div-loading-result"
+          class="box content is-shadowless pt-6 pl-6"
+          style="display: none"
+        >
+          <h3>Loading ...</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- 聊天訊息框 -->
+    <div id="cols-chatlog-area" class="columns"></div>
+
+    <!-- 聊天室設定的 Modal -->
+    <chatroom-setting-modal chatroom-id=""></chatroom-setting-modal>
+
+    <!-- 建立聊天室的 Modal -->
+    <create-chatroom-modal></create-chatroom-modal>
+
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+    <script src="js/friend_main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bulma-toast@2.4.2/dist/bulma-toast.min.js"></script>
+  </body>
+</html>

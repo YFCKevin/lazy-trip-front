@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../asset/css/my-bulma.css" />
+    <!-- 自定義 CSS -->
+    <link rel="stylesheet" href="../asset/css/index-style.css" />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- jquery -->
+    <script src="../asset/js/jquery-3.6.3.min.js"></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../asset/js/components.js?ver=2"
+      type="text/javascript"
+    ></script>
+    <!-- 初始化 Bulma -->
+    <script defer src="../asset/js/bulma-init.js"></script>
+    <style>
+      .onoffswitch {
+        position: relative;
+        width: 90px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+      }
+      .onoffswitch-checkbox {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .onoffswitch-label {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid #b5b5b5;
+        border-radius: 20px;
+      }
+      .onoffswitch-inner {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+      }
+      .onoffswitch-inner:before,
+      .onoffswitch-inner:after {
+        display: block;
+        float: left;
+        width: 50%;
+        height: 30px;
+        padding: 0;
+        line-height: 30px;
+        font-size: 14px;
+        color: white;
+
+        font-weight: bold;
+        box-sizing: border-box;
+      }
+      .onoffswitch-inner:before {
+        content: "會員";
+        padding-left: 10px;
+        background-color: hsl(197, 85%, 53%);
+        color: #ffffff;
+      }
+      .onoffswitch-inner:after {
+        content: "廠商";
+        padding-right: 10px;
+        background-color: #f2a142;
+        color: #595454;
+        text-align: right;
+      }
+      .onoffswitch-switch {
+        display: block;
+        width: 23px;
+        margin: 3.5px;
+        background: #ffffff;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 56px;
+        border: 2px solid #999999;
+        border-radius: 25px;
+        transition: all 0.3s ease-in 0s;
+      }
+      .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+        margin-left: 0;
+      }
+      .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+        right: 3px;
+      }
+      .content-company {
+        display: none;
+      }
+      .content-company.-on {
+        display: block;
+      }
+      .content-member {
+        display: none;
+      }
+      .content-member.-on {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <header-component></header-component>
+    <div class="columns">
+      <div class="column"></div>
+      <div class="column is-half">
+        <section class="section">
+          <!-- 標題 -->
+          <div class="content has-text-centered content-member -on">
+            <h1>會員註冊</h1>
+          </div>
+          <div class="content has-text-centered content-company">
+            <h1>廠商註冊</h1>
+          </div>
+          <div class="field">
+            <div class="onoffswitch">
+              <input
+                type="checkbox"
+                name="onoffswitch"
+                class="onoffswitch-checkbox"
+                id="myonoffswitch"
+                tabindex="0"
+                checked
+              />
+              <label class="onoffswitch-label" for="myonoffswitch">
+                <span class="onoffswitch-inner"></span>
+                <span class="onoffswitch-switch"></span>
+              </label>
+            </div>
+          </div>
+          <!-- 表單 -->
+          <form class="box" action="#" method="post" id="form-member-signup">
+            <div class="content msg"><p>請填寫以下欄位</p></div>
+            <!-- 會員 -->
+            <div class="content-member -on">
+              <div class="field account">
+                <p class="mt-1"></p>
+                <label class="label" for="input-account">帳號</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="email"
+                    name="account"
+                    placeholder="alexyang@email.com"
+                    id="input-account"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field password">
+                <p class="mt-1"></p>
+                <label class="label" for="input-password">密碼</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="password"
+                    name="password"
+                    placeholder="********"
+                    id="input-password"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field username">
+                <p class="mt-1"></p>
+                <label class="label" for="input-username">暱稱</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="text"
+                    name="username"
+                    placeholder="暱稱"
+                    id="input-username"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-user"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field gender">
+                <p class="mt-1"></p>
+                <label class="label" for="input-gender">性別</label>
+                <div class="control">
+                  <label
+                    ><input type="radio" name="gender" value="男" />男</label
+                  >
+                  <label
+                    ><input type="radio" name="gender" value="女" />女</label
+                  >
+                  <label
+                    ><input
+                      type="radio"
+                      name="gender"
+                      value="其他"
+                    />其他</label
+                  >
+                </div>
+              </div>
+
+              <div class="field birthday">
+                <p class="mt-1"></p>
+                <label class="label" for="input-birthday">生日</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="date"
+                    name="birthday"
+                    id="input-birthday"
+                    min="1900-01-01"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- 廠商 -->
+            <div class="content-company">
+              <div class="field account">
+                <p class="mt-1"></p>
+                <label class="label" for="company-account">帳號</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="email"
+                    name="account"
+                    placeholder="alexyang@email.com"
+                    id="company-account"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field password">
+                <p class="mt-1"></p>
+                <label class="label" for="company-password">密碼</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="password"
+                    name="password"
+                    placeholder="********"
+                    id="company-password"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field taxid">
+                <p class="mt-1"></p>
+                <label class="label" for="company-taxid">統一編號</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="number"
+                    name="taxid"
+                    placeholder="0123-4567"
+                    id="company-taxid"
+                    min="0"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-user"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field name">
+                <p class="mt-1"></p>
+                <label class="label" for="company-name">名稱</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="text"
+                    name="name"
+                    placeholder="名稱"
+                    id="company-name"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-user"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field intro">
+                <p class="mt-1"></p>
+                <label class="label" for="company-intro">介紹</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="text"
+                    name="intro"
+                    placeholder="介紹"
+                    id="company-intro"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-user"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field country">
+                <p class="mt-1"></p>
+                <label class="label" for="company-country">縣市</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="text"
+                    name="country"
+                    placeholder="縣市"
+                    id="company-country"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-user"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field area">
+                <p class="mt-1"></p>
+                <label class="label" for="company-area">鄉鎮市區</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="text"
+                    name="area"
+                    placeholder="鄉鎮市區"
+                    id="company-area"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-user"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field street">
+                <p class="mt-1"></p>
+                <label class="label" for="company-street">地址</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="text"
+                    name="street"
+                    placeholder="OO路O段OOO號O樓"
+                    id="company-street"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-user"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field lat">
+                <p class="mt-1"></p>
+                <label class="label" for="company-lat">緯度</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="number"
+                    name="lat"
+                    placeholder="緯度"
+                    id="company-lat"
+                    min="0"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-user"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field longitude">
+                <p class="mt-1"></p>
+                <label class="label" for="company-longitude">經度</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="text"
+                    name="longitude"
+                    placeholder="經度"
+                    id="company-longitude"
+                    min="0"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-user"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- 表單按鈕 -->
+            <div class="field is-grouped mt-3">
+              <div class="control">
+                <button
+                  class="button is-primary has-text-centered"
+                  type="button"
+                  id="btn-signup"
+                >
+                  註冊
+                </button>
+              </div>
+              <div class="control">
+                <button
+                  class="button is-light has-text-centered"
+                  type="button"
+                  id="btn-back"
+                >
+                  回到首頁
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+      <div class="column"></div>
+    </div>
+    <footer-component></footer-component>
+    <script src="../asset/js/checkLogin.js"></script>
+    <script>
+      $(function () {
+        const account = $("input#input-account");
+        const password = $("input#input-password");
+        const username = $("input#input-username");
+        const birth = document.querySelector("#input-birthday");
+        const check = $("div.content-member");
+
+        birth.max = new Date(
+          new Date().getTime() - new Date().getTimezoneOffset() * 60000
+        )
+          .toISOString()
+          .split("T")[0];
+        birth.value = new Date(
+          new Date().getTime() - new Date().getTimezoneOffset() * 60000
+        )
+          .toISOString()
+          .split("T")[0];
+        // function-------------------
+
+        window.addEventListener("pageshow", function (e) {
+          $(document).find("input#myonoffswitch").prop("checked", true);
+        });
+
+        $("input#myonoffswitch").on("change", function () {
+          $("div.content-member").toggleClass("-on");
+          $("div.content-company").toggleClass("-on");
+          $("p.mt-1").empty();
+        });
+
+        $("button#btn-signup").on("click", function () {
+          if (check.hasClass("-on")) {
+            var gender = $("input[type=radio][name=gender]:checked");
+            let error;
+            let mail_regex = new RegExp(/^[^@\s]+@[^@\s]+\.[^@\s]+$/);
+            // 6 ~ 16 字中英文組成，至少包含 1 個大寫英文與小寫英文，至少包含 1 個數字
+            let ps_regex = new RegExp(
+              /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,16}$/
+            );
+
+            error = false;
+            $("div.field.account > p").empty();
+            $("div.field.password > p").empty();
+            $("div.field.username > p").empty();
+            $("div.field.gender > p").empty();
+            $("div.field.birthday > p").empty();
+            if (!mail_regex.test(account.val().trim())) {
+              let msg = `帳號須為電子信箱`;
+              $("div.field.account > p").prepend(msg);
+              $("div.field.account > p").css("color", "red");
+              error = true;
+            }
+            if (!ps_regex.test(password.val().trim())) {
+              let msg = `密碼需為 6 ~ 16 字中英文組成，至少包含 1 個大寫英文與小寫英文，至少包含 1 個數字`;
+              $("div.field.password > p").prepend(msg);
+              $("div.field.password > p").css("color", "red");
+              error = true;
+            }
+            if (username.val().trim() == "") {
+              let msg = `暱稱不能為空`;
+              $("div.field.username > p").prepend(msg);
+              $("div.field.username > p").css("color", "red");
+              error = true;
+            }
+            if (gender.val() == null) {
+              let msg = `性別不能為空`;
+              $("div.field.gender > p").prepend(msg);
+              $("div.field.gender > p").css("color", "red");
+              error = true;
+            }
+            if (birth.value == null) {
+              let msg = `生日不能為空`;
+              $("div.field.birthday > p").prepend(msg);
+              $("div.field.birthday > p").css("color", "red");
+              error = true;
+            }
+
+            if (error) {
+              $("html,body").animate({ scrollTop: 0 }, "fast");
+            } else {
+              fetch("register", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  account: account.val().trim(),
+                  password: password.val().trim(),
+                  username: username.val().trim(),
+                  gender: gender.val(),
+                  birthday: birth.value,
+                }),
+              }).then((resp) => {
+                resp.json().then((body) => {
+                  if (body.successful == false) {
+                    let msg = body.message;
+                    $("div.msg").text(msg);
+                    $("div.msg").css("color", "red");
+                    $("html,body").animate({ scrollTop: 0 }, "fast");
+                  } else {
+                    alert(
+                      `successful: ${body.successful} message: ${body.message}`
+                    );
+
+                    location.href =
+                      location.origin + "/lazy-trip-back/page/login.html";
+                  }
+                });
+              });
+            }
+          } else {
+            //廠商傳送ajax資料寫在這
+            console.log("company");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

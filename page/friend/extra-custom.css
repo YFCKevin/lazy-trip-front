@@ -1,0 +1,43 @@
+/* ul#left-menu li {
+  border-top: 2px solid hsl(197deg, 47%, 96%);
+  border-left: 2px solid hsl(197deg, 47%, 96%);
+  border-right: 2px solid hsl(197deg, 47%, 96%);
+}
+
+ul#left-menu li:last-child {
+  border-bottom: 2px solid hsl(197deg, 47%, 96%);
+} */
+
+div._main_body {
+  min-height: 700px;
+}
+
+div._left_menu {
+  border-right: 2px solid hsl(197deg, 47%, 96%);
+}
+
+div._chat_layout {
+  height: max-content;
+}
+
+div._chatroom_container {
+  min-height: 650px;
+  border-right: 2px solid hsl(197deg, 47%, 96%);
+}
+
+div#div-results suggestion-component:first-child div.card,
+div#div-results friend-component:first-child div.card,
+div#div-results sent-request-component:first-child div.card,
+div#div-results received-request-component:first-child div.card {
+  margin-top: 48px !important;
+}
+
+/* friend-component .icon .fas:hover{
+  font-size: 1.4em;
+  transition: 0.2s ease-out-elastic;
+}  */
+
+#navbar-logo-area:hover {
+  background-color: hsl(197deg, 47%, 98%) !important;
+  color: #04b5fb !important;
+}

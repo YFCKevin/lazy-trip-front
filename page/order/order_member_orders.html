@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../asset/css/my-bulma.css" />
+    <!-- jQuery -->
+    <script src="../../asset/js/jquery-3.6.3.min.js"></script>
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../asset/js/components.js"
+      type="text/javascript"
+    ></script>
+    <!-- 初始化 -->
+    <!-- <script defer src="../../asset/js/bulma-init.js"></script> -->
+  </head>
+  <body>
+    <!-- 導覽列 -->
+    <header-component></header-component>
+
+    <!-- 內容 -->
+    <!-- 飯店資料結構 欄位寬度佔畫面8/12 欄位居中 -->
+    <div
+      class="columns is-mobile is-centered"
+      style="background-color: #f3f4f5"
+    >
+      <div id="myOrderStart" class="column is-8">
+        <!-- 我的訂單開始 -->
+        <div style="height: 40px"></div>
+        <div
+          style="
+            min-height: 500px;
+            background-color: white;
+            border-radius: 15px 15px 15px 15px;
+            box-shadow: 0px 0px 5px 2px rgba(137, 200, 232, 0.5);
+          "
+        >
+          <!-- 間距 20px-->
+          <div style="height: 20px"></div>
+          <div style="height: 55px">
+            <span class="is-size-3" style="padding-left: 3%">我的訂單</span>
+          </div>
+          <!-- 水平線 -->
+          <div style="height: 5px; display: flex; justify-content: center">
+            <div
+              style="height: 1px; width: 95%; border: 1px solid #cbe3ec"
+            ></div>
+          </div>
+          <!-- 分類等待付款 -->
+          <div id="waitPay">
+            <!-- display開始 -->
+            <div
+              id="waitPayChildStart"
+              style="display: block; padding-left: 3%; padding-right: 3%"
+            >
+              <div style="height: 30px">
+                <span class="is-size-4">等待付款:</span>
+              </div>
+              <!-- 間距 -->
+              <div style="height: 10px"></div>
+              <!-- waitPay order paste here -->
+            </div>
+            <!-- display結束 -->
+            <!-- 分類等待付款結束 -->
+          </div>
+
+          <!-- 訂單狀態區塊間距 -->
+          <div style="height: 20px"></div>
+
+          <!-- 分類已付款 -->
+          <div id="alreadyPay">
+            <!-- display開始 -->
+            <div
+              id="alreadyPayChildStart"
+              style="display: block; padding-left: 3%; padding-right: 3%"
+            >
+              <div style="height: 30px">
+                <span class="is-size-4">已付款:</span>
+              </div>
+              <!-- 間距 -->
+              <div style="height: 10px"></div>
+              <!-- alreadyPay order paste here -->
+            </div>
+            <!-- 訂單狀態區塊間距 -->
+            <div style="height: 20px"></div>
+            <!-- 分類已完成 -->
+            <div id="alreadyFinish">
+              <!-- display開始 -->
+              <div
+                id="alreadyFinishChildStart"
+                style="display: block; padding-left: 3%; padding-right: 3%"
+              >
+                <div style="height: 30px">
+                  <span class="is-size-4">已完成:</span>
+                </div>
+                <!-- 間距 -->
+                <div style="height: 10px"></div>
+                <!-- alreadyFinish order paste here -->
+
+                <!-- 訂單與訂單間距 -->
+                <div style="height: 15px"></div>
+              </div>
+              <!-- display結束 -->
+              <!-- 分類已完成結束 -->
+            </div>
+            <!-- 大區塊與小區塊間距 -->
+            <div style="height: 70px"></div>
+          </div>
+          <!-- 與頁腳間距 -->
+          <div style="height: 50px"></div>
+          <!-- 我的訂單結束 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+
+    <script>
+      // 訂單狀態父元素綁定
+      let waitPayChildStart = $("#waitPayChildStart");
+      let alreadyPayChildStart = $("#alreadyPayChildStart");
+      let alreadyFinishChildStart = $("#alreadyFinishChildStart");
+
+      const ROOT = location.origin;
+      // const ROOT = "http://localhost:8080";
+      // console.log("ROOT假資料");
+      const ROOT_PROJ = "/lazy-trip-back";
+      const LOGIN = "/page/login.html";
+
+      // -------------------------
+      function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(";").shift();
+      }
+      // -------------------------
+
+      $(function () {
+        init();
+        seeMoreBtnAddListen();
+        payBtn();
+      });
+
+      //已付款訂單並貼進標籤裡
+      function alreadyPayOrderAppend(html) {
+        alreadyPayChildStart.append(html);
+      }
+      // 已完成訂單貼進標籤裡
+      function alreadyFinishOrderAppend(html) {
+        console.log(html);
+        alreadyFinishChildStart.append(html);
+      }
+
+      // 網頁初始
+      function init() {
+        if (getCookie("memId") == null) {
+          let loc = location.href;
+          sessionStorage.setItem("loc", loc);
+          location.href = ROOT + ROOT_PROJ + LOGIN;
+        } else {
+          let memberID = getCookie("memId");
+          // let memberID = 31;
+          // console.log("假資料會員編號" + memberID);
+
+          fetch(
+            `${ROOT}/lazy-trip-back/Order.do?type=showOrderAllByMemberID&memberID=${memberID}`
+          )
+            .then(function (response) {
+              return response.json();
+            })
+            .then(function (orderMap) {
+              console.log(orderMap);
+              try {
+                // 訂單狀態各進入if後改成true，代表此分類有訂單出現，沒有的話就把標籤改成display:none
+                let waitPayBoolean = false;
+                let alreadyPayBoolean = false;
+                let alreadyFinishBoolean = false;
+                for (let orderID in orderMap) {
+                  let order = orderMap[orderID];
+                  console.log(order);
+                  if (order.orderStatus == "等待付款") {
+                    waitPayBoolean = true;
+                    waitPayOrderHtmlProduceAndAppend(order);
+                  } else if (order.orderStatus == "已付款") {
+                    alreadyPayBoolean = true;
+                    let html = alreadyPayAndFinishHtmlProduce(order);
+
+                    alreadyPayOrderAppend(html);
+                  } else if (order.orderStatus == "已完成") {
+                    alreadyFinishBoolean = true;
+                    let html = alreadyPayAndFinishHtmlProduce(order);
+                    alreadyFinishOrderAppend(html);
+                  }
+                }
+                // 如果該訂單狀態無訂單，訂單狀態隱藏
+                if (waitPayBoolean === false) {
+                  waitPayChildStart.hide();
+                }
+                if (alreadyPayBoolean === false) {
+                  alreadyPayChildStart.hide();
+                }
+                if (alreadyFinishBoolean === false) {
+                  alreadyFinishChildStart.hide();
+                }
+              } catch (e) {
+                console.log("catch: " + e);
+              }
+            })
+            .catch(function (error) {
+              console.log("create order all failed");
+            });
+        }
+      }
+
+      function seeMoreBtnAddListen() {
+        // 綁定查看更多按鈕，做展開或收回
+        $(document).on("click", "button.seeMoreBtn", function () {
+          let that = $(this);
+          let moreDetailOrLess = $(this)
+            .closest("div.seeMoreBtnFather")
+            .find("div.moreDetailOrLess");
+
+          if (moreDetailOrLess.data("detail-type") == "less") {
+            moreDetailOrLess.data("detail-type", "more");
+            that.html(
+              `
+      <span class="icon"><i class="fa-solid fa-angles-up"></i></span>`
+            );
+            moreDetailOrLess.show();
+          } else if (moreDetailOrLess.data("detail-type") == "more") {
+            moreDetailOrLess.data("detail-type", "less");
+            that.html(
+              `
+      <span class="icon"><i class="fa-solid fa-angles-down"></i></span>`
+            );
+            moreDetailOrLess.hide();
+          }
+        });
+      }
+      // 綁定付款按鈕事件並前往付款連結
+      function payBtn() {
+        $(document).on("click", "button[class*='payBtn']", function () {
+          let orderID = $(this)
+            .closest("tr")
+            .find("span[class*=orderID]")
+            .text();
+          sessionStorage.setItem("showPayTableFromTheOrderID", orderID);
+          location = `${ROOT}/lazy-trip-back/page/order/order_pay_order.html`;
+          //   // 創建送出支付Json物件
+          //   let payJson = {
+          // productName: $(this)
+          //   .closest("tr")
+          //   .find("span[class*=companyName]")
+          //   .text(),
+          //     amount: $(this)
+          //       .closest("tr")
+          //       .find("span[class*=orderTotalPrice]")
+          //       .text(),
+          //     currency: "TWD",
+          //     confirmUrl: `${ROOT}/lazy-trip-back/Pay.do`,
+          //     linePayOrderID: new Date().getTime().toString(),
+          //     orderID: $(this).closest("tr").find("span[class*=orderID]").text(),
+          //   };
+          //   console.log(payJson);
+
+          //   // 送出Json物件
+          //   fetch(`${ROOT}/lazy-trip-back/Pay.do`, {
+          //     method: "POST",
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //     },
+          //     body: JSON.stringify(payJson),
+          //   })
+          //     .then(function (response) {
+          //       return response.json();
+          //     })
+          //     .then(function (payData) {
+          //       try {
+          //         console.log(payData);
+          //         alert("前往LinePay頁面，請登入LinePay並開始支付訂單");
+          //         location = payData.info.paymentUrl.web;
+          //       } catch (e) {
+          //         console.log(e);
+          //       }
+          //     })
+          //     .catch(function (error) {
+          //       console.log("get pay data資料失敗");
+          //     });
+        });
+      }
+
+      // 訂單明細產生 接收orderDetailVOList陣列
+      function orderDetailHtmlProduce(order) {
+        let pasteDetail = "";
+        for (let i = 0; i < order.orderDetailVOList.length; i++) {
+          pasteDetail += `
+            <div
+                              style="
+                                height: 50px;
+                                padding-top: 15px;
+                                padding-left: 10%;
+                              "
+                            >
+                              <strong class="is-size-6">
+                                <span>${order.orderDetailVOList[i].roomTypeName}</span
+                                >&emsp;$<span>${order.orderDetailVOList[i].orderDetailRoomPrice}(x${order.orderNumberOfNights}晚)</span>&emsp;x<span>${order.orderDetailVOList[i].orderDetailRoomQuantity}</span>間
+                              </strong>
+                            </div>
+                            `;
+        }
+        return pasteDetail;
+      }
+
+      // 等待付款訂單html產生並貼進標籤裡
+      function waitPayOrderHtmlProduceAndAppend(order) {
+        let pasteDetailHtml = orderDetailHtmlProduce(order);
+
+        let waitPayOrderHtml = `
+              <!-- 等待付款表格 -->
+                    <div
+                    class="seeMoreBtnFather"
+                      style="
+                        border-radius: 15px 15px 15px 15px;
+                        box-shadow: 0px 0px 5px 2px rgba(137, 200, 232, 0.5);
+                      "
+                    >
+                      <table
+                        class="table is-fullwidth is-narrow is-hoverable"
+                        style="border-radius: 15px 15px 15px 15px"
+                      >
+                        <thead>
+                          <tr style="height: 35px">
+                            <th
+                              style="
+                                width: 11%;
+                                text-align: center;
+                                vertical-align: middle;
+                              "
+                            >
+                              <span class="is-size-6">訂單編號</span>
+                            </th>
+                            <th
+                              style="
+                                width: 19%;
+                                text-align: center;
+                                vertical-align: middle;
+                              "
+                            >
+                              <span class="is-size-6">住宿期間</span>
+                            </th>
+                            <th style="text-align: center; vertical-align: middle">
+                              <span class="is-size-6">飯店名稱</span>
+                            </th>
+                            <th
+                              style="
+                               // width: 11%;
+                                text-align: center;
+                                vertical-align: middle;
+                              "
+                            >
+                              <span class="is-size-6">總金額</span>
+                            </th>
+                            <th
+                              style="
+                                width: 15%;
+                                text-align: center;
+                                vertical-align: middle;
+                              "
+                            >
+                              <span class="is-size-6">成立時間</span>
+                            </th>
+                            <th
+                              style="
+                                width: 13%;
+                                text-align: center;
+                                vertical-align: middle;
+                              "
+                            >
+                              <span class="is-size-6">付款</span>
+                            </th>
+                            <th
+                              style="
+                                width: 11%;
+                                text-align: center;
+                                vertical-align: middle;
+                              "
+                            >
+                              <span class="is-size-6">查看更多</span>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr style="height: 40px">
+                            <td style="text-align: center; vertical-align: middle">
+                              <span class="is-size-6 orderID">${order.orderID}</span>
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                              <span class="is-size-6">${order.orderCheckInDate}</span>
+                              <p class="is-size-6">~</p>
+                              <span class="is-size-6"
+                                >${order.orderCheckOutDate}</span
+                              >
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                              <span class="is-size-6 companyName"
+                                >${order.companyVO.companyName}</span
+                              >
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                              <span class="is-size-6">$<span class=orderTotalPrice>${order.orderTotalPrice}</span></span>
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                              <span class="is-size-6"
+                                >${order.orderCreateDatetime}</span
+                              >
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                              <button
+                                class="button is-link is-rounded is-small payBtn"
+                              >
+                                前往付款
+                              </button>
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                              <button
+                                class="button is-link is-outlined is-rounded is-small seeMoreBtn"
+                              >
+                                <span class="icon"
+                                  ><i class="fa-solid fa-angles-down"></i>
+                                </span>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <!-- 訂單明細開始 -->
+                      <div
+                      data-detail-type="less"
+                      class="moreDetailOrLess"
+                        style="
+                          display: none;
+                          background-color: white;
+                          border-radius: 0px 0px 15px 15px;
+                        "
+                      >
+                        <!-- 水平線 -->
+                        <div
+                          style="height: 5px; display: flex; justify-content: center;"
+                        >
+                          <div
+                            style="height: 1px; width: 95%; border: 1px solid #cbe3ec"
+                          ></div>
+                        </div>
+                        <!-- 飯店資訊 -->
+                        <div
+                          style="height: 30px; padding-left: 35px; padding-top: 5px"
+                        >
+                          <strong class="is-size-6 is-italic">訂單明細:</strong>
+                        </div>
+
+                        <div
+                          style="
+                            display: flex;
+                            flex-direction: row;
+                            min-height: 110px;
+                          "
+                        >
+                          <!-- 訂單明細左欄 -->
+                          <div style="flex-basis: 56%">
+                            <div
+                              style="
+                                display: flex;
+                                flex-direction: row;
+                                height: 130px;
+                              "
+                            >
+                              <div div style="flex-basis: 7%"></div>
+                              <!-- 圖片欄 -->
+                              <div style="flex-basis: 30%">
+                                <img
+                                  src="data:image/*;base64,${order.companyVO.companyImg}"
+                                  alt="無圖片"
+                                  onerror="this.src='../../asset/img/noPicture.png'"
+                                  class="roomTypeImg"
+                                  style="
+                                    height: 80px;
+                                    margin-top: 10px;
+                                    border-radius: 10px 10px 10px 10px;
+                                  "
+                                />
+                              </div>
+                              <!-- 飯店資訊欄 -->
+                              <div style="flex-basis: 63%">
+                                <div style="height: 45px; padding-top: 5px">
+                                  <span class="is-size-4">${order.companyVO.companyName}</span>
+                                </div>
+                                <div>
+                                  <span class="is-size-6"
+                                    >${order.companyVO.addressCounty}, ${order.companyVO.addressArea}, ${order.companyVO.addressStreet}</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div style="padding-left: 30px; height: 50px">
+                              <strong class="is-size-5 ;">旅客登記資料:</strong>
+                            </div>
+                            <div
+                              style="
+                                display: flex;
+                                flex-direction: row;
+                                height: 100px;
+                              "
+                            >
+                              <div style="flex-basis: 30%; padding-left: 30px">
+                                <div style="float: left">
+                                  <span class="is-size-6">姓名:</span>
+                                </div>
+                                <div style="float: left">
+                                  <span class="is-size-6">身分證字號:</span>
+                                </div>
+                                <div style="float: left">
+                                  <span class="is-size-6">電子信箱:</span>
+                                </div>
+                                <div style="float: left">
+                                  <span class="is-size-6">手機號碼:</span>
+                                </div>
+                              </div>
+
+                              <div style="flex-basis: 3%"></div>
+                              <div style="flex-basis: 70%">
+                                <div style>
+                                  <span class="is-size-6">${order.travelerName}</span>
+                                </div>
+                                <div>
+                                  <span class="is-size-6">${order.travelerIDNumber}</span>
+                                </div>
+                                <div>
+                                  <span class="is-size-6"
+                                    >${order.travelerEmail}</span
+                                  >
+                                </div>
+                                <div>
+                                  <span class="is-size-6">${order.travelerPhone}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- 訂單明細左欄結束 -->
+                          <!-- 訂單明細右欄 -->
+                          <div style="flex-basis: 44%">
+                            <!-- detail paste here -->
+                            ${pasteDetailHtml}<div
+                              style="height: 40px"
+                            ></div>
+                            <strong class="is-size-4" style="padding-left: 10%">
+                              <span>總金額:&emsp;</span
+                              ><span style="color: #3bc0e8"
+                                >$${order.orderTotalPrice}</span
+                              >
+                            </strong>
+                          </div>
+                        </div>
+
+                        <!-- 訂單明細右欄結束 -->
+
+                        <!-- 間距 -->
+                        <div style="height: 40px"></div>
+                      </div>
+                      <!-- 訂單明細結束 -->
+                    </div>
+                    <!-- 等待付款表格結束 -->
+                    <!-- 訂單與訂單間距 -->
+                    <div style="height: 20px"></div>
+                  `;
+        waitPayChildStart.append(waitPayOrderHtml);
+      }
+
+      // 已付款和已完成訂單html產生
+      function alreadyPayAndFinishHtmlProduce(order) {
+        let pasteDetail = orderDetailHtmlProduce(order);
+
+        let alreadyPayAndFinishHtml = `
+            <!-- 已付款或已完成表格 -->
+                    <div
+                    class="seeMoreBtnFather"
+                      style="
+                        border-radius: 15px 15px 15px 15px;
+                        box-shadow: 0px 0px 5px 2px rgba(137, 200, 232, 0.5);
+                      "
+                    >
+                      <table
+                        class="table is-fullwidth table is-narrow is-hoverable"
+                        style="border-radius: 15px 15px 15px 15px"
+                      >
+                        <thead>
+                          <tr style="height: 35px">
+                            <th
+                              style="
+                                width: 11%;
+                                text-align: center;
+                                vertical-align: middle;
+                              "
+                            >
+                              <span class="is-size-6">訂單編號</span>
+                            </th>
+                            <th
+                              style="
+                                width: 18%;
+                                text-align: center;
+                                vertical-align: middle;
+                              "
+                            >
+                              <span class="is-size-6">住宿期間</span>
+                            </th>
+                            <th style="text-align: center; vertical-align: middle">
+                              <span class="is-size-6">飯店名稱</span>
+                            </th>
+                            <th
+                              style="
+                                width: 11%;
+                                text-align: center;
+                                vertical-align: middle;
+                              "
+                            >
+                              <span class="is-size-6">總金額</span>
+                            </th>
+                            <th
+                              style="
+                                width: 14%;
+                                text-align: center;
+                                vertical-align: middle;
+                              "
+                            >
+                              <span class="is-size-6">付款時間</span>
+                            </th>
+                            <th
+                              style="
+                                width: 14%;
+                                text-align: center;
+                                vertical-align: middle;
+                              "
+                            >
+                              <span class="is-size-6">成立時間</span>
+                            </th>
+
+                            <th
+                              style="
+                                width: 11%;
+                                text-align: center;
+                                vertical-align: middle;
+                              "
+                            >
+                              <span class="is-size-6">查看更多</span>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr style="height: 40px">
+                            <td style="text-align: center; vertical-align: middle">
+                              <span class="is-size-6">${order.orderID}</span>
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                              <span id="orderCheckInDate" class="is-size-6"
+                                >${order.orderCheckInDate}</span
+                              >
+                              <p class="is-size-7">~</p>
+                              <span id="orderCheckOutDate" class="is-size-6"
+                                >${order.orderCheckOutDate}</span
+                              >
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                              <span class="is-size-6">${order.companyVO.companyName}</span>
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                              <span class="is-size-6">$${order.orderTotalPrice}</span>
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                              <span class="is-size-6">${order.orderPayDatetime}</span>
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                              <span class="is-size-6">${order.orderCreateDatetime}</span>
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">
+                              <button
+                                class="button is-link is-outlined is-rounded is-small seeMoreBtn"
+                              >
+                                <span class="icon"
+                                  ><i class="fa-solid fa-angles-down"></i>
+                                </span>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <!-- 訂單明細開始 -->
+                      <div
+                        data-detail-type="less"
+                        class="moreDetailOrLess"
+                        style="
+                          display: none;
+                          background-color: white;
+                          border-radius: 0px 0px 15px 15px;
+                        "
+                      >
+                        <!-- 水平線 -->
+                        <div
+                          style="height: 5px; display: flex; justify-content: center"
+                        >
+                          <div
+                            style="height: 1px; width: 95%; border: 1px solid #cbe3ec"
+                          ></div>
+                        </div>
+                        <!-- 飯店資訊 -->
+                        <div
+                          style="height: 30px; padding-left: 35px; padding-top: 5px"
+                        >
+                          <strong class="is-size-6 is-italic">訂單明細:</strong>
+                        </div>
+
+                        <div
+                          style="
+                            display: flex;
+                            flex-direction: row;
+                            min-height: 110px;
+                          "
+                        >
+                          <!-- 訂單明細左欄 -->
+                          <div style="flex-basis: 56%">
+                            <div
+                              style="
+                                display: flex;
+                                flex-direction: row;
+                                height: 130px;
+                              "
+                            >
+                              <div div style="flex-basis: 7%"></div>
+                              <!-- 圖片欄 -->
+                              <div style="flex-basis: 30%">
+                                <img
+                                  src="data:image/*;base64,${order.companyVO.companyImg}"
+                                  alt="無圖片"
+                                  onerror="this.src='../../asset/img/noPicture.png'"
+                                  style="
+                                    height: 80px;
+                                    margin-top: 10px;
+                                    border-radius: 10px 10px 10px 10px;
+                                  "
+                                />
+                              </div>
+                              <!-- 飯店資訊欄 -->
+                              <div style="flex-basis: 63%">
+                                <div style="height: 45px; padding-top: 5px">
+                                  <span class="is-size-4">${order.companyVO.companyName}</span>
+                                </div>
+                                <div>
+                                  <span class="is-size-6"
+                                    >${order.companyVO.addressCounty}, ${order.companyVO.addressArea}, ${order.companyVO.addressStreet}</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div style="padding-left: 30px; height: 50px">
+                              <strong class="is-size-5 ;">旅客登記資料:</strong>
+                            </div>
+                            <div
+                              style="
+                                display: flex;
+                                flex-direction: row;
+                                height: 100px;
+                              "
+                            >
+                              <div style="flex-basis: 30%; padding-left: 30px">
+                                <div style="float: left">
+                                  <span class="is-size-6">姓名:</span>
+                                </div>
+                                <div style="float: left">
+                                  <span class="is-size-6">身分證字號:</span>
+                                </div>
+                                <div style="float: left">
+                                  <span class="is-size-6">電子信箱:</span>
+                                </div>
+                                <div style="float: left">
+                                  <span class="is-size-6">手機號碼:</span>
+                                </div>
+                              </div>
+
+                              <div style="flex-basis: 3%"></div>
+                              <div style="flex-basis: 70%">
+                                <div style>
+                                  <span class="is-size-6">${order.travelerName}</span>
+                                </div>
+                                <div>
+                                  <span class="is-size-6">${order.travelerIDNumber}</span>
+                                </div>
+                                <div>
+                                  <span class="is-size-6"
+                                    >${order.travelerEmail}</span
+                                  >
+                                </div>
+                                <div>
+                                  <span class="is-size-6">${order.travelerPhone}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- 訂單明細左欄結束 -->
+                          <!-- 訂單明細右欄 -->
+                          <div style="flex-basis: 44%">
+                            <!-- detail paste here -->
+                            ${pasteDetail}
+                            <div style="height: 40px"></div>
+                            <strong class="is-size-4" style="padding-left: 10%">
+                              <span>總金額:&emsp;</span
+                              ><span style="color: #3bc0e8">$${order.orderTotalPrice}</span>
+                            </strong>
+                          </div>
+                        </div>
+
+                        <!-- 訂單明細右欄結束 -->
+
+                        <!-- 間距 -->
+                        <div style="height: 40px"></div>
+                      </div>
+                      <!-- 訂單明細結束 -->
+                    </div>
+                    <!-- 已付款或已完成表格結束 -->
+                  </div>
+                  <!-- display結束 -->
+                  <!-- 分類已付款結束 -->
+                  <!-- 訂單與訂單間距 -->
+                  <div style="height: 20px"></div>
+            `;
+
+        return alreadyPayAndFinishHtml;
+      }
+    </script>
+  </body>
+</html>

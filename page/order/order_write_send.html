@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../asset/css/my-bulma.css" />
+    <!-- jQuery -->
+    <script src="../../asset/js/jquery-3.6.3.min.js"></script>
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../asset/js/components.js"
+      type="text/javascript"
+    ></script>
+    <!-- 初始化 -->
+    <!-- <script defer src="../../asset/js/bulma-init.js"></script> -->
+  </head>
+  <body>
+    <!-- 導覽列 -->
+    <header-component></header-component>
+
+    <!-- 內容 -->
+
+    <!-- 飯店資料結構 欄位寬度佔畫面8/12 欄位居中 -->
+    <div
+      class="columns is-mobile is-centered"
+      style="background-color: #f3f4f5"
+    >
+      <div id="bookingChildrenStart" class="column is-8">
+        <!-- 填寫訂單開始 -->
+        <!-- 與導覽列間距 -->
+        <div style="height: 40px"></div>
+        <div style="display: flex; flex-direction: row; height: 500px">
+          <!-- 左邊主要旅客資訊 -->
+          <div
+            style="
+              height: 100%;
+              flex-basis: 55%;
+              background-color: white;
+              border-radius: 15px 15px 15px 15px;
+              box-shadow: 0px 0px 5px 2px rgba(137, 200, 232, 0.5);
+            "
+          >
+            <div style="height: 13px"></div>
+            <div style="height: 50px">
+              <span class="is-size-3" style="padding-left: 5%"
+                >主要旅客資訊</span
+              >
+            </div>
+            <div style="height: 5px; display: flex; justify-content: center">
+              <div
+                style="height: 1px; width: 90%; border: 1px solid #cbe3ec"
+              ></div>
+            </div>
+            <div style="height: 30px; margin-top: 10px">
+              <strong class="is-size-6" style="padding-left: 5%"
+                >請填寫以下資訊(參與住宿的旅客其中一人資料):</strong
+              >
+            </div>
+            <div style="padding-left: 5%">
+              <input type="checkbox" id="checkIsMember" />&nbsp;<span
+                class="is-size-6"
+                >同會員資料(需再加填身分證字號)</span
+              >
+            </div>
+            <div style="height: 90px; padding-left: 5%">
+              <label class="label is-size-6"
+                >姓名<span class="is-size-5" style="color: red"
+                  >&nbsp;*</span
+                ></label
+              >
+              <input
+                type="input"
+                id="travelerName"
+                class="input is-info is-outlined"
+                style="width: 45%"
+              />
+            </div>
+            <div style="height: 90px; padding-left: 5%">
+              <label class="label is-size-6"
+                >身分證號碼<span class="is-size-5" style="color: red"
+                  >&nbsp;*</span
+                ></label
+              >
+              <input
+                type="input"
+                id="travelerIDNumber"
+                class="input is-info is-outlined"
+                style="width: 50%"
+              />
+            </div>
+            <div style="height: 90px; padding-left: 5%">
+              <label class="label is-size-6"
+                >電子信箱<span class="is-size-5" style="color: red"
+                  >&nbsp;*</span
+                ></label
+              >
+              <input
+                type="input"
+                id="travelerEmail"
+                class="input is-info is-outlined"
+                style="width: 75%"
+              />
+            </div>
+            <div style="height: 90px; padding-left: 5%">
+              <label class="label is-size-6"
+                >手機號碼<span class="is-size-5" style="color: red"
+                  >&nbsp;*</span
+                ></label
+              >
+              <input
+                type="input"
+                id="travelerPhone"
+                class="input is-info is-outlined"
+                style="width: 40%"
+              />
+            </div>
+          </div>
+          <!-- 中間行距 -->
+          <div style="flex-basis: 2%"></div>
+          <!-- 右邊訂房資訊總覽 -->
+          <div style="height: 100%; flex-basis: 43%">
+            <!-- 飯店資訊 -->
+            <div
+              style="
+                overflow: auto;
+                height: 32%;
+                background-color: white;
+                border-radius: 15px 15px 15px 15px;
+                box-shadow: 0px 0px 5px 2px rgba(137, 200, 232, 0.5);
+              "
+            >
+              <!-- 日期 -->
+              <!-- 間距 -->
+              <div style="height: 7%"></div>
+              <div style="height: 19%; display: flex; justify-content: center">
+                <span class="is-size-5">日期:&nbsp;</span>
+                <span id="orderCheckInDate" class="is-size-5"></span>
+                <span class="is-size-5">&nbsp;~&nbsp;</span>
+                <span id="orderCheckOutDate" class="is-size-5"></span>
+              </div>
+              <div style="height: 5%; display: flex; justify-content: center">
+                <div
+                  style="height: 1px; width: 88%; border: 1px solid #cbe3ec"
+                ></div>
+              </div>
+              <div style="height: 60%; display: flex; flex-direction: row">
+                <!-- 飯店照片 -->
+                <div style="flex-basis: 6%"></div>
+                <div style="flex-basis: 32%">
+                  <img
+                    id="companyImg"
+                    src=""
+                    style="
+                      height: 100%;
+                      width: 100%;
+                      border-radius: 5px 5px 5px 5px;
+                    "
+                    alt="無圖片"
+                    onerror="this.src='../../asset/img/noPicture.png'"
+                  />
+                </div>
+                <!-- 飯店地址 -->
+                <div style="flex-basis: 3%"></div>
+                <div style="flex-basis: 52%">
+                  <div stlye="height:50%;">
+                    <span id="companyName" class="is-size-5"></span>
+                  </div>
+                  <div stlye="height:50%">
+                    <span id="address" class="is-size-6"></span>
+                  </div>
+                </div>
+                <div style="flex-basis: 6%"></div>
+              </div>
+              <!-- 間距 -->
+              <div style="height: 7%"></div>
+            </div>
+            <!-- 中間間距 -->
+            <div style="height: 3%"></div>
+            <!-- 價格明細 -->
+            <div
+              style="
+                overflow: auto;
+                height: 65%;
+                background-color: white;
+                border-radius: 15px 15px 15px 15px;
+                box-shadow: 0px 0px 5px 2px rgba(137, 200, 232, 0.5);
+              "
+            >
+              <div style="height: 65px; display: flex; align-items: center">
+                <span class="is-size-4" style="padding-left: 7%">價格明細</span>
+              </div>
+
+              <div style="height: 5px; display: flex; justify-content: center">
+                <div
+                  style="height: 1px; width: 90%; border: 1px solid #cbe3ec"
+                ></div>
+              </div>
+              <!-- 房型明細 -->
+              <div id="orderDetailChild">
+                <!-- <div
+                  style="
+                    display: flex;
+                    flex-direction: row;
+                    height: 80px;
+                    align-items: center;
+                  "
+                >
+                  <div style="flex-basis: 40%">
+                    <span
+                      class="is-size-5 roomTypeName"
+                      style="padding-left: 18%"
+                    ></span>
+                  </div>
+                  <div style="flex-basis: 30%">
+                    <span class="is-size-5" style="padding-left: 5%">$</span>
+                    <span class="is-size-5 roomTypePrice"></span>
+                  </div>
+                  <div style="flex-basis: 25%">
+                    <span class="is-size-5 roomTypeQuantity"></span>
+                    <span class="is-size-5">間</span>
+                  </div>
+                </div>
+                <div
+                  style="height: 5px; display: flex; justify-content: center"
+                >
+                  <div
+                    style="height: 1px; width: 90%; border: 1px solid #cbe3ec"
+                  ></div>
+                </div> -->
+              </div>
+              <!-- 應付總額 -->
+              <div
+                style="
+                  display: flex;
+                  flex-direction: row;
+                  height: 80px;
+                  align-items: center;
+                "
+              >
+                <div style="flex-basis: 50%">
+                  <span class="is-size-5" style="padding-left: 15%"
+                    >應付總額:</span
+                  >
+                </div>
+                <div style="flex-basis: 50%; text-align: right">
+                  <strong
+                    class="is-size-4"
+                    style="padding-right: 25%; color: #3bc0e8"
+                    >$<span id="orderTotalPrice"></span
+                  ></strong>
+                </div>
+              </div>
+              <div style="height: 5px; display: flex; justify-content: center">
+                <div style="height: 1px; width: 90%"></div>
+              </div>
+              <!-- 按鈕 -->
+              <div
+                id="sendOrder"
+                style="
+                  height: 80px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <button class="button is-info">
+                  &emsp;&emsp;&emsp;送出訂單&emsp;&emsp;&emsp;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 填寫訂單結束 -->
+        <!-- 與頁腳間距 -->
+        <div style="height: 30px"></div>
+      </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+
+    <script>
+      // 元素綁定
+      let cmBookingList;
+      let orderDetailChild = $("#orderDetailChild");
+      let companyImg = $("#companyImg");
+      let companyName = $("#companyName");
+      let address = $("#address");
+      let orderCheckInDate = $("#orderCheckInDate");
+      let orderCheckOutDate = $("#orderCheckOutDate");
+      let orderTotalPrice = $("#orderTotalPrice");
+      let travelerName = $("#travelerName");
+      let travelerIDNumber = $("#travelerIDNumber");
+      let travelerEmail = $("#travelerEmail");
+      let travelerPhone = $("#travelerPhone");
+      let orderNumberOfNights;
+      let checkIsMember = $("#checkIsMember");
+      const ROOT = location.origin;
+
+      // const ROOT = "http://localhost:8080";
+      const ROOT_PROJ = "/lazy-trip-back";
+      const LOGIN = "/page/login.html";
+
+      // -------------------------
+      function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(";").shift();
+      }
+      // -------------------------
+
+      let orderDetailHtml = `
+      <div
+                  style="
+                    display: flex;
+                    flex-direction: row;
+                    height: 80px;
+                    align-items: center;
+                  "
+                >
+                  <div style="flex-basis: 35%">
+                    <span
+                      class="is-size-6 roomTypeName"
+                      style="padding-left: 18%"
+                    ></span>
+                  </div>
+                  <div style="flex-basis: 45%">
+                    <span class="is-size-6" style="padding-left: 5%">$</span>
+                    <span class="is-size-6 roomTypePrice"></span>
+                  </div>
+                  <div style="flex-basis: 20%">
+                    <span class="is-size-6 roomTypeQuantity"></span>
+                    <span class="is-size-6">間</span>
+                  </div>
+                </div>
+                <div
+                  style="height: 5px; display: flex; justify-content: center"
+                >
+                  <div
+                    style="height: 1px; width: 90%; border: 1px solid #cbe3ec"
+                  ></div>
+                </div>
+                `;
+
+      // 送出訂單按鈕事件綁定
+      $("#sendOrder").on("click", function () {
+        if (travelerName.val().trim() == "") {
+          alert("旅客姓名不能空白");
+          return;
+        }
+        if (travelerIDNumber.val().trim() == "") {
+          alert("旅客身分證字號不能空白");
+          return;
+        }
+        if (travelerEmail.val().trim() == "") {
+          alert("旅客電子郵件不能空白");
+          return;
+        }
+        if (travelerPhone.val().trim() == "") {
+          alert("旅客手機號碼不能空白");
+          return;
+        }
+        // 正則表達式
+        let regExpTravelerName = /^[a-zA-Z\u4e00-\u9fa5]+$/;
+        let regExpTravelerIDNumber = /^[A-Z][0-9]{9}$/;
+        let regExpTravelerEmail =
+          /^([a-zA-Z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+        let regExpTravelerPhone = /^(09)[0-9]{8}$/;
+
+        if (!regExpTravelerName.test(travelerName.val().trim())) {
+          alert("旅客姓名格式不正確，必須是英文或中文字");
+          return;
+        }
+        if (!regExpTravelerIDNumber.test(travelerIDNumber.val().trim())) {
+          alert(
+            "旅客身分證字號格式不正確，開頭號碼必須為大寫英文，後面九碼為數字"
+          );
+          return;
+        }
+        if (!regExpTravelerEmail.test(travelerEmail.val().trim())) {
+          alert("旅客電子郵件格式不正確，請麻煩確認");
+          return;
+        }
+        if (!regExpTravelerPhone.test(travelerPhone.val().trim())) {
+          alert("旅客手機號碼格式不正確，必須為09開頭，共10個數字");
+          return;
+        }
+
+        sendOrder();
+      });
+
+      $(function () {
+        init();
+
+        checkIsMember.on("click", function () {
+          if ($(this).prop("checked")) {
+            let member = JSON.parse(sessionStorage.getItem("member"));
+            travelerName.val(member.name);
+            travelerEmail.val(member.account);
+            travelerPhone.val(member.phone);
+          }
+        });
+      });
+
+      function init() {
+        if (getCookie("memId") == null) {
+          alert("您尚未登入，轉至登入畫面");
+          let loc = location.href;
+
+          sessionStorage.setItem("loc", loc);
+          location.href = ROOT + ROOT_PROJ + LOGIN;
+        } else {
+          getMemberData(getCookie("memId"));
+          cmBookingList = JSON.parse(sessionStorage.getItem("cmBookingList"));
+          let dateInfo = JSON.parse(sessionStorage.getItem("dateInfo"));
+
+          // 插入選擇日期
+          orderCheckInDate.text(dateInfo.inputCheckInDate);
+          orderCheckOutDate.text(dateInfo.inputCheckOutDate);
+          orderNumberOfNights = dateInfo.inputOrderNumberOfNights;
+
+          let num = 0;
+          for (let i = 0; i < cmBookingList.length; i++) {
+            if (
+              !isNaN(parseInt(cmBookingList[i].roomTypeVO.roomTypeQuantity))
+            ) {
+              if (parseInt(cmBookingList[i].roomTypeVO.roomTypeQuantity) != 0) {
+                // 插入每個房型html
+                orderDetailChild.append(orderDetailHtml);
+              }
+            }
+          }
+          let roomTypeName = $("span[class*='roomTypeName']");
+          let roomTypePrice = $("span[class*='roomTypePrice']");
+          let roomTypeQuantity = $("span[class*='roomTypeQuantity']");
+          let k = 0;
+          for (let i = 0; i < cmBookingList.length; i++) {
+            // 插入飯店資料
+            if (i === 0) {
+              companyImg.attr(
+                "src",
+                "data:image/*;base64," + cmBookingList[0].companyImg
+              );
+              companyName.text(cmBookingList[0].companyName);
+              address.text(
+                cmBookingList[0].addressCounty +
+                  ", " +
+                  cmBookingList[0].addressArea +
+                  ", " +
+                  cmBookingList[0].addressStreet
+              );
+            }
+            if (parseInt(cmBookingList[i].roomTypeVO.roomTypeQuantity) != 0) {
+              roomTypeName.eq(k).text(cmBookingList[i].roomTypeVO.roomTypeName);
+              roomTypePrice
+                .eq(k)
+                .text(
+                  cmBookingList[i].roomTypeVO.roomTypePrice +
+                    "(x" +
+                    orderNumberOfNights +
+                    "晚)"
+                );
+              roomTypeQuantity
+                .eq(k)
+                .text(cmBookingList[i].roomTypeVO.roomTypeQuantity);
+              num +=
+                cmBookingList[i].roomTypeVO.roomTypePrice *
+                orderNumberOfNights *
+                parseInt(cmBookingList[i].roomTypeVO.roomTypeQuantity);
+              k++;
+            }
+          }
+          orderTotalPrice.text(num);
+        }
+      }
+
+      function getMemberData(id) {
+        fetch(
+          `${ROOT}/lazy-trip-back/Order.do?type=showMemberByMemberID&memberID=${id}`
+        )
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (memberData) {
+            try {
+              sessionStorage.setItem("member", JSON.stringify(memberData));
+              console.log("get member資料成功");
+            } catch (e) {
+              console.log(e);
+            }
+          })
+          .catch(function (error) {
+            console.log("get member資料失敗");
+          });
+      }
+
+      function sendOrder() {
+        // 一個空陣列 orderVOs
+        // let memberID = getCookie("memId");
+        let member = JSON.parse(sessionStorage.getItem("member"));
+
+        let memberID = member.id;
+
+        let orderVOs = new Array();
+        for (let i = 0; i < cmBookingList.length; i++) {
+          // 一個 新 orderVO 物件裝進訂單與訂單明細資料
+          if (parseInt(cmBookingList[i].roomTypeVO.roomTypeQuantity) > 0) {
+            let orderVO = {
+              memberID: memberID,
+              companyID: cmBookingList[i].companyID,
+              orderCheckInDate: orderCheckInDate.text().replaceAll("\/", "-"),
+              orderCheckOutDate: orderCheckOutDate.text().replaceAll("\/", "-"),
+              orderNumberOfNights: orderNumberOfNights,
+              orderTotalPrice: orderTotalPrice.text(),
+              travelerName: travelerName.val().trim(),
+              travelerIDNumber: travelerIDNumber.val().trim(),
+              travelerEmail: travelerEmail.val().trim(),
+              travelerPhone: travelerPhone.val().trim(),
+              orderDetailVO: {
+                roomTypeID: cmBookingList[i].roomTypeVO.roomTypeID,
+                roomTypeName: cmBookingList[i].roomTypeVO.roomTypeName,
+                roomTypePerson: cmBookingList[i].roomTypeVO.roomTypePerson,
+                orderDetailRoomPrice: cmBookingList[i].roomTypeVO.roomTypePrice,
+                orderDetailRoomQuantity:
+                  cmBookingList[i].roomTypeVO.roomTypeQuantity,
+              },
+            };
+            orderVOs.push(orderVO);
+          }
+        }
+        console.log("物件準備完畢等待傳送");
+
+        fetch(`${ROOT}/lazy-trip-back/CreateOrderAll`, {
+          method: "POST",
+          body: JSON.stringify(orderVOs),
+        })
+          .then(function (response) {
+            if (response) return response.json();
+          })
+          .then(function (orderID) {
+            try {
+              if (orderID === 0) {
+                alert("發生一些問題，請重新登入再填寫訂單");
+              } else if (orderID > 0) {
+                sessionStorage.setItem("showPayTableFromTheOrderID", orderID);
+                if (confirm("送出訂單成功! 立即付款請按確定")) {
+                  location = `${ROOT}/lazy-trip-back/page/order/order_pay_order.html`;
+                } else {
+                  location = `${ROOT}/lazy-trip-back/page/order/order_member_orders.html`;
+                }
+              }
+            } catch (e) {
+              console.log("catch: " + e);
+            }
+          })
+          .catch(function (error) {
+            console.log("create order all failed");
+          });
+      }
+    </script>
+  </body>
+</html>

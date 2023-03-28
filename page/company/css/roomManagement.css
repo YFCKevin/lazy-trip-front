@@ -1,0 +1,213 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+<!--測試-->
+/* div {
+  border: 1px black solid;
+  background-color: green;
+} */
+.-none{
+  display: none; 
+}
+button {
+  cursor: pointer;
+}
+.card:hover {
+  box-shadow: 5px 5px 10px 3px rgb(0 0 0 / 20%);
+}
+
+div.icon_total > .icon{
+  border-radius: 50%;
+}
+
+div.icon_total > .icon:hover {
+  /* opacity: 0.5; */
+  /* background-color: hsla(0, 2%, 90%, 0.5); */
+  transition: ease-in 0.15s;
+
+}
+
+/* span.icon i:hover {
+  color: #04b5fb;
+  
+} */
+div.trip_item_block h2.title {
+  font-size: 1.2rem;
+}
+
+div.nav_tab > div.tabs {
+  margin: 0 100px 20px 100px;
+}
+h1.title {
+  margin: 20px 0px 20px 120px;
+}
+.icon_total {
+  margin: 5px 5px 0px 0px;
+}
+div.card{
+  
+  width: 250px;
+  height: 200px;
+  
+}
+.trip_create_lightbox {
+  /*   border: 1px solid red; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: hsla(0, 0%, 0%, 0.5);
+}
+.none {
+  display: none;
+}
+
+/* 元素 article 置中及基本樣式 */
+.trip_create_lightbox > .contents {
+  width: 600px;
+  border-radius: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.trip_delete_lightbox {
+  /*   border: 1px solid red; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: hsla(0, 0%, 0%, 0.5);
+}
+
+.trip_delete_lightbox > .contents {
+  width: 600px;
+  border-radius: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.trip_coedit_lightbox {
+  /*   border: 1px solid red; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: hsla(0, 0%, 0%, 0.5);
+}
+
+.trip_coedit_lightbox > .contents {
+  width: 600px;
+  border-radius: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.is-primary {
+  background-color: #ebf9ff;
+}
+
+.message-header {
+  background-color: #04b5fb;
+}
+
+.trip_tag_lightbox {
+  /*   border: 1px solid red; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: hsla(0, 0%, 0%, 0.5);
+}
+
+.trip_tag_lightbox > .contents {
+  width: 600px;
+  border-radius: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* tag input:text */
+input.trip_tag_text{
+  border: none;
+  border-radius: 10px;
+  opacity: 0.4;
+  
+}
+
+div.icon_total {
+  right: 0; 
+  position: absolute; 
+  z-index: 10
+}
+
+div.card-content {
+  padding: 10px;
+}
+
+div.trip_item_block > h2.title {
+  margin: 0px;
+}
+
+div.wrapper {
+  display: flex; 
+  flex-wrap: wrap;
+}
+
+
+/* 行程圖放大與縮小 */
+figure.image{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  cursor: pointer;
+}
+figure.image > img.trip_item_img{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s;
+ 
+}
+figure.image:hover > img.trip_item_img{
+  transform: scale(1.2,1.2);
+} 
+
+div.lightbox{
+  z-index: 990;
+}
+
+/*日曆*/
+/* FullCalendar styles */
+#calendar {
+  max-width: 100px;
+  margin: 0 auto;
+}
+.calendar-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.calendar-nav button {
+  width: 5%;
+}
+.datetimepicker-header {
+  display: none;
+}
+.calendar-container

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io</title>
+    <link rel="stylesheet" href="./css/roomManagement.css" />
+    <link rel="stylesheet" href="./css/bulma-calendar.min.css" />
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../asset/css/company-bulma.css" />
+
+    <!-- 自定義 CSS --> 
+    <link rel="stylesheet" href="#" />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../asset/js/company-components.js"
+      type="text/javascript"
+    ></script>
+
+    <!-- 初始化 Bulma -->
+    <script defer src="../../asset/js/bulma-init.js"></script>
+    <!-- 連線 -->
+    <style>
+      .-none {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- 導覽列 -->
+    <header-component></header-component>
+
+    <!-- 主體 -->
+    <div class="columns mb-0 pb-0" style="min-height: 800px">
+      <!-- 左側欄 -->
+      <div class="column mb-0 pb-0">
+        <div class="section">
+          <aside class="menu" style="width: 100%">
+            <ul class="menu-list has-text-centered has-text-weight-semibold">
+              <li id="">
+                <a class="is-size-4 py-5 is-active">房間管理</a>
+              </li>
+              <ul id="left-roomAdd">
+                <a class="is-size-4 py-5">房型新增</a>
+              </ul>
+
+              <li id="left-roomManagement">
+                <a class="is-size-4 py-5">房間總覽</a>
+              </li>
+
+              <li id="">
+                <a class="is-size-4 py-5 is-active">廠商訂單管理</a>
+              </li>
+              <li id="left-orderShow">
+                <a class="is-size-4 py-5">廠商訂單</a>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+      <!-- 右側內容 -->
+      <div class="column is-three-quarters mb-0 pb-0">
+        <div class="section">
+          <!-- 包裝轉換頁面 -->
+          <div class="trans-right-roomManagement">
+            <nav class="level">
+              <div class="level-left">
+                <div class="level-item">
+                  <!-- 搜尋框 -->
+                  <div class="field has-addons">
+                    <p class="control">
+                      <input
+                        class="input"
+                        type="text"
+                        id="searchRoomTypeID"
+                        placeholder="輸入房型編號"
+                      />
+                    </p>
+                    <p class="control">
+                      <button class="button roomTypeIDSearch">搜尋</button>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="level-right">
+                <div class="level-item">
+                  <!-- 右上房型種類 -->
+                  <div class="buttons has-addons is-right">
+                    <button class="button twoRoom">豪華雙人房</button>
+                    <button class="button threeRoom">尊爵三人房</button>
+                  </div>
+                </div>
+              </div>
+            </nav>
+            <!-- 廠商照片顯示 -->
+            <div style="display: flex; flex-direction: row">
+              <div style="flex-basis: 30%">
+                <img
+                  class="companyID"
+                  style="max-width: 100%; height: auto"
+                  alt=""
+                  id="companyImg"
+                />
+              </div>
+              <div style="flex-basis: 70%">
+                <ul class="companyInfo">
+                  <li class="comapnyName">
+                    <p id="showCompanyName"></p>
+                  </li>
+                </ul>
+              </div>
+              <button class="button 3dbtn" id="3dbtn">3D環景</button>
+              <!-- <a class="button is-primary"> </a> -->
+            </div>
+
+            <hr />
+            <!-- demo資料框框 -->
+            <div class="box">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th colspan="9"></th>
+                  </tr>
+                  <tr class="roomInfo">
+                    <th>
+                      <abbr title="roomTypeID" class="roomTypeID"
+                        >房型編號</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="roomTypeName" class="roomTypeName"
+                        >房型種類</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="roomtypePerson" class="roomtypePerson"
+                        >房間人數</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="roomTypeQuantity" class="roomTypeQuantity"
+                        >房間總數</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="roomTypeImg" class="roomTypeImg"
+                        >房間照片</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="roomTypePrice" class="roomTypePrice"
+                        >房間價格</abbr
+                      >
+                    </th>
+                    <th><abbr title="edit" class="roomInfo"></abbr></th>
+                    <th><abbr title="delete" class="roomInfo"></abbr></th>
+                    <th><abbr title="delete" class="roomInfo"></abbr></th>
+                  </tr>
+                </thead>
+                <tbody class="tbody1 roomList"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 上傳成功彈跳視窗 -->
+          <div class="lightbox trip_delete_lightbox none">
+            <div
+              class="message is-primary contents"
+              style="background-color: #ebf9ff"
+            >
+              <div class="message-header" style="background-color: #04b5fb">
+                提示
+              </div>
+              <div class="message-body contents">
+                <p id="ligthtboxText"></p>
+                <br />
+                <button class="button trip_delete_btn" id="ligthtboxSuccess">
+                  確認
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 包裝轉換roomAdd頁面 -->
+          <div class="trans-right-roomAdd">
+            <div class="box">
+              <img id="preview" />
+            </div>
+            <input
+              type="file"
+              name="fileToUpload"
+              id="fileToUpload"
+              onchange="previewImage()"
+            />
+            <hr />
+            <div class="box">
+              <input type="hidden" name="action" value="insert" />
+
+              <div class="content-company">
+                <div class="roomTypeID none">
+                  <label class="label">房型編號</label>
+                  <div class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="text"
+                      name="roomTypeID"
+                      id="roomTypeID"
+                    />
+                  </div>
+                </div>
+
+                <div class="content-company">
+                  <div class="add-roomTypeName">
+                    <p class="mt-1"></p>
+                    <label class="label" for="roomTypeName">房型名稱</label>
+                    <div class="control has-icons-left">
+                      <input
+                        class="input"
+                        type="text"
+                        name="roomTypeName"
+                        placeholder="豪華雙人房or尊爵三人房"
+                        id="roomTypeName"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="roomTypePerson">
+                  <label class="label" for="roomTypePerson">房間人數</label>
+                  <div class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="number"
+                      name="roomTypePerson"
+                      placeholder="2 or 3"
+                      id="roomTypePerson"
+                      min="2"
+                      max="3"
+                    />
+                  </div>
+
+                  <div class="add-roomTypeQuantity">
+                    <p class="mt-1"></p>
+                    <label class="label" for="roomTypeQuantity">房間總數</label>
+                    <div class="control has-icons-left">
+                      <input
+                        class="input"
+                        type="number"
+                        name="roomTypeQuantity"
+                        id="roomTypeQuantity"
+                        min="0"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="add-roomTypePrice">
+                    <label class="label" for="roomTypePrice">房間價格</label>
+                    <div class="control has-icons-left">
+                      <input
+                        class="input"
+                        type="number"
+                        name="roomTypePrice"
+                        id="roomTypePrice"
+                        min="500"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button class="button is-primary" id="roomAddInsert">新增</button>
+              <button
+                class="button is-primary updateBtn -none"
+                id="roomAddUpdateSubmit"
+              >
+                修改
+              </button>
+            </div>
+          </div>
+
+          <!-- 包裝轉換orderShow頁面 -->
+          <div class="trans-right-orderShow">
+            <!-- demo資料框框 -->
+            <div class="table-container is-size-7">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th colspan="21"></th>
+                  </tr>
+                  <tr class="orderShow">
+                    <th><abbr title="order_id">編號</abbr></th>
+                    <th class="-none">
+                      <abbr title="company_id" class="companyID">廠商編號</abbr>
+                    </th>
+                    <th class="-none">
+                      <abbr title="member_id" class="memberID">會員編號</abbr>
+                    </th>
+                    <th>
+                      <abbr title="order_check_in_date" class="orderCheckInDate"
+                        >入住日期</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr
+                        title="order_check_out_date"
+                        class="orderCheckOutDate"
+                        >退房日期</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr
+                        title="orderNumberOfNights"
+                        class="orderNumberOfNights"
+                        >入住天數</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="order_total_price" class="orderTotalPrice"
+                        >總金額</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="order_status" class="orderStatus">狀態</abbr>
+                    </th>
+                    <th>
+                      <abbr
+                        title="order_create_datetime"
+                        class="orderCreateDatetime"
+                        >成立日期時間</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="order_pay_deadline" class="orderPayDeadline"
+                        >付款截止日期</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="order_pay_datetime" class="orderPayDatetime"
+                        >付款時間</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="traveler_name" class="travelerName"
+                        >旅客姓名</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="traveler_id_number" class="travelerIDNumber"
+                        >旅客身分證號碼</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="traveler_email" class="travelerEmail"
+                        >旅客電子信箱</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="traveler_phone" class="travelerPhone"
+                        >旅客手機號碼</abbr
+                      >
+                    </th>
+                    <th><abbr title="orderdetailbutton"></abbr></th>
+                  </tr>
+                </thead>
+                <tbody class="orderShowList">
+                  <td></td>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 包裝轉換orderData頁面 -->
+          <div class="trans-right-orderData">
+            <!-- demo資料框框1 -->
+            <div class="box">
+              <table class="table">
+                <thead>
+                  <tr class="orderDataList">
+                    <th colspan="8"></th>
+                  </tr>
+                  <tr class="orderData">
+                    <th>
+                      <abbr title="order_detail_id" class="orderDetailID"
+                        >訂單明細編號</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="order_id" class="orderID">訂單編號</abbr>
+                    </th>
+                    <th>
+                      <abbr title="roomtype_id" class="roomTypeID"
+                        >房型編號</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="roomtype_name" class="roomTypeName"
+                        >房型名稱</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr title="roomtype_person" class="roomTypePerson"
+                        >房型人數</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr
+                        title="order_detail_room_price"
+                        class="orderDetailRoomPrice"
+                        >訂單明細房間價格</abbr
+                      >
+                    </th>
+                    <th>
+                      <abbr
+                        title="order_detail_room_quantity"
+                        class="orderDetailRoomQuantity"
+                        >訂單明細房間數量</abbr
+                      >
+                    </th>
+                    <th class="-none">
+                      <abbr title="order_detail_coupon_discount_price"
+                        >訂單明細總折扣金額</abbr
+                      >
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="orderDataList"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+
+    <!-- 引入js檔 -->
+    <script src="../../asset/js/jquery-3.6.3.min.js"></script>
+    <script src="js/roomManagement.js"></script>
+    <script src="js/bulma-calendar.min.js"></script>
+  </body>
+</html>

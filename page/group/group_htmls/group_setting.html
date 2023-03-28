@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io | 揪團</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../../asset/css/my-bulma.css" />
+    <!-- 自定義 CSS -->
+    <link rel="stylesheet" href="../../../asset/css/index-style.css" />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../../asset/js/components.js"
+      type="text/javascript"
+    ></script>
+
+    <!-- 初始化 Bulma -->
+    <script defer src="../../../asset/js/bulma-init.js"></script>
+    <!--GroupCss-->
+    <link rel="stylesheet" href=".././css/group.css" />
+  </head>
+  <body>
+    <!-- 導覽列 -->
+    <header-component></header-component>
+
+    <div class="columns">
+      <div class="column"></div>
+      <div class="column is-half">
+        <section class="section">
+          <!-- 標題 -->
+          <div class="content has-text-centered"><h1>揪團設定</h1></div>
+          <!-- 表單 -->
+          <form class="box" action="#" method="post" id="form_gp_setting">
+            <div class="field">
+              <label class="label" for="gp_name">揪團名稱</label>
+              <div class="control">
+                <input
+                  class="input input1"
+                  type="text"
+                  name="gp_name"
+                  id="gp_name"
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="gp_mem_num">揪團人數上限</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="number"
+                  name="number"
+                  id="gp_mem_num"
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>加入方式: </label>
+              <input type="radio" name="how_2_join" id="check_join" value="1" />
+              <label for="check_join">審核加入</label>
+              <input type="radio" name="how_2_join" id="any_join" value="2" />
+
+              <label for="any_join">直接加入</label>
+              <button
+                class="button is-primary has-text-centered is-small"
+                id="btn_uncheckmem"
+              >
+                申請者審核
+              </button>
+            </div>
+
+            <!--移除成員-->
+            <div class="field">
+              <label class="label" for="gp_name">移除成員</label>
+            </div>
+            <div id="group_setting_mem_to_del">
+              <!-- <div class="field">
+                <label>
+                  <input type="checkbox" name="to_add_mems" />
+                  <img
+                    class="group_setting_img_member_list"
+                    src="./test.png"
+                  />asdsadsa1
+                </label>
+              </div>
+              <div class="field">
+                <label>
+                  <input type="checkbox" name="to_add_mems" />
+                  <img
+                    class="group_setting_img_member_list"
+                    src="./test.png"
+                  />asdsadsa1
+                </label>
+              </div> -->
+            </div>
+            <!-- 表單按鈕 -->
+            <div class="field is-grouped">
+              <div class="control">
+                <button
+                  class="button is-primary has-text-centered"
+                  type="submit"
+                  id="btn_gp_amend"
+                >
+                  修改
+                </button>
+              </div>
+
+              <div class="control">
+                <button
+                  class="button is-info is-light has-text-centered"
+                  type="button"
+                  id="btn_gp_delete_group"
+                  style="
+                    background-color: rgb(246, 109, 129);
+                    color: whitesmoke;
+                  "
+                >
+                  刪除群組
+                </button>
+              </div>
+              <div class="control">
+                <button
+                  class="button is-info is-light has-text-centered"
+                  type="button"
+                  id="back"
+                >
+                  返回主頁
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+      <div class="column"></div>
+    </div>
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+    <script>
+      window.onload = function () {
+        //相對路徑宣告
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var contextPath = window.location.pathname.substring(
+          0,
+          window.location.pathname.indexOf("/", 1)
+        );
+        //api
+        const apiUrlGroup = baseUrl + contextPath + "/group";
+        const apiUrlGroupMembers = baseUrl + contextPath + "/groupmembers";
+        const apiUrlDiscussion = baseUrl + contextPath + "/discussion";
+
+        let gp_amend_el = document.getElementById("btn_gp_amend");
+        let gp_name_el = document.getElementById("gp_name");
+        let gp_mem_num_el = document.getElementById("gp_mem_num");
+        let set_check_join = document.getElementById("check_join");
+        let set_any_join = document.getElementById("any_join");
+        let btn_uncheckmem = document.getElementById("btn_uncheckmem");
+        let group_mem_total;
+        let gp_id_list = [];
+        let user_id;
+        let getUrlString = location.href;
+        var url = new URL(getUrlString);
+        let gpid = url.searchParams.get("groupid"); // 回傳 groupid
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        myHeaders.append(
+          "Cookie",
+          "JSESSIONID=079AEC6D76AA16D5891CFD9E68BAAFDB"
+        );
+        let url1 = apiUrlGroup + "?action=getOneGroup&groupid=";
+        let group_manager_id;
+
+        //得到群組目前人數
+        let getGpMemFunc = function () {
+          fetch(apiUrlGroupMembers + "?action=getGroupMems&groupid=" + gpid)
+            .then((response) => response.json())
+            .then((data) => {
+              group_mem_total = data.length;
+              $.each(data, function (index, item) {
+                gp_id_list.push(item.id);
+                if (item.id != group_manager_id) {
+                  var list_html = "";
+                  var mem_name = "";
+                  var mem_pic = "";
+                  var img_src = "";
+
+                  if (item.imgBase64Str != null) {
+                    img_src = "data:image/*;base64," + item.imgBase64Str;
+                  } else {
+                    img_src = "./test.png";
+                  }
+
+                  if (item.username != null) {
+                    mem_name = item.username;
+                  } else if (item.name != null) {
+                    mem_name = item.name;
+                  } else {
+                    mem_name = "暫無會員名";
+                  }
+                  list_html += '<div class="member_list_content">';
+                  if (item.id == group_manager_id) {
+                    list_html +=
+                      '<i style="color: yellow;" class="fa-solid fa-crown"></i>';
+                  }
+
+                  list_html += "<label>";
+                  list_html +=
+                    '<input class="to_del_mems" type="checkbox" name="to_add_mems" id="';
+                  list_html += item.id;
+                  list_html += '"/>';
+                  list_html += '<img class="group_main_img_member_list"';
+                  list_html += ' src="';
+                  list_html += img_src;
+                  list_html += '"/>';
+                  list_html += mem_name;
+                  list_html += "</label>";
+                  list_html += "</div>";
+                }
+                $("#group_setting_mem_to_del").append(list_html);
+              });
+            })
+            .catch((error) => {
+              console.log("error", error);
+            });
+        };
+
+        //加載時的fetch，得到使用者
+        fetch(apiUrlGroup + "?action=getUsingMember")
+          .then((response) => response.json())
+          .then((data) => {
+            user_id = data.id;
+          })
+          .then(
+            //加載時的fetch，取得群組資訊
+            fetch(url1 + gpid)
+              .then((response) => response.json())
+              .then((data) => {
+                group_manager_id = data[0].memberid;
+                $("#gp_name").val(data[0].groupname);
+                $("#gp_mem_num").val(data[0].groupmembercount);
+                if (data[0].ifjoingroupdirectly == "1") {
+                  $("#check_join").attr("checked", true);
+                } else if (data[0].ifjoingroupdirectly == "2") {
+                  $("#any_join").attr("checked", true);
+                }
+
+                //驗證使用者權限
+                if (!(user_id === group_manager_id)) {
+                  alert("沒有權限!");
+                  history.back();
+                }
+                getGpMemFunc();
+              })
+
+              .catch((error) => {
+                console.log(error);
+
+                if (error.toString().includes("TypeError")) {
+                  alert("請確認揪團資訊!");
+                  history.back();
+                }
+              })
+          );
+
+        //刪除揪團
+        //要記得除了刪除揪團還要刪除揪團成員表
+        //先多再一(先gp_mem再gp)
+        $("#btn_gp_delete_group").on("click", function (e) {
+          var r = confirm("確定要刪除此揪團嗎");
+          if (r == true) {
+            //先刪除成員
+            var myHeaders = new Headers();
+            myHeaders.append(
+              "Cookie",
+              "JSESSIONID=5E700E47190F0B030869E6F949949302"
+            );
+
+            var requestOptions = {
+              method: "DELETE",
+              headers: myHeaders,
+              redirect: "follow",
+            };
+
+            fetch(
+              apiUrlGroupMembers + "?action=delAllGroupMember&groupid=" + gpid,
+              requestOptions
+            )
+              .then((response) => response.text())
+              .then((result) => {
+                //再刪除討論
+                var myHeaders = new Headers();
+                myHeaders.append(
+                  "Cookie",
+                  "JSESSIONID=5E700E47190F0B030869E6F949949302"
+                );
+
+                var requestOptions = {
+                  method: "DELETE",
+                  headers: myHeaders,
+                  redirect: "follow",
+                };
+
+                fetch(
+                  apiUrlDiscussion + "?action=delAllDis&groupid=" + gpid,
+                  requestOptions
+                )
+                  .then((response) => response.text())
+                  .then((result) => {
+                    //再刪除揪團
+                    var myHeaders = new Headers();
+                    myHeaders.append(
+                      "Cookie",
+                      "JSESSIONID=5E700E47190F0B030869E6F949949302"
+                    );
+
+                    var requestOptions = {
+                      method: "DELETE",
+                      headers: myHeaders,
+                      redirect: "follow",
+                    };
+                    fetch(
+                      apiUrlGroup + "?action=delOneGroup&groupid=" + gpid,
+                      requestOptions
+                    )
+                      .then((response) => response.text())
+                      .then((result) => {
+                        alert("刪除成功!");
+                        location.href =
+                          baseUrl +
+                          contextPath +
+                          "/page/group/group_htmls/group_all.html";
+                      })
+                      .catch((error) => {
+                        alert("請稍後再試");
+                      });
+                  })
+                  .catch((error) => console.log("error", error));
+              })
+              .catch((error) => console.log("error", error));
+          } else {
+            e.preventDefault();
+          }
+        });
+
+        //修改
+        gp_amend_el.onclick = (e) => {
+          e.preventDefault();
+          if (gp_mem_num_el.value < group_mem_total) {
+            e.preventDefault();
+            alert("群組人數上限低於群組人數!");
+          } else if (
+            gp_mem_num_el.value != "" &&
+            gp_mem_num_el.value > 0 &&
+            gp_name_el.value != ""
+          ) {
+            e.preventDefault();
+            //刪除成員
+            var to_del_mems = $(".to_del_mems:checked");
+
+            let url_del_mems = apiUrlGroupMembers + "?action=delGroupMember";
+            if (to_del_mems.length > 0) {
+
+              url_del_mems += "&groupid=" + gpid;
+              $.each(to_del_mems, function (index, item) {
+                var mem = "&mem" + index + "=" + $(item).attr("id");
+                url_del_mems += mem;
+              });
+
+              //fetch
+              var myHeaders = new Headers();
+              myHeaders.append("Content-Type", "application/json");
+              myHeaders.append(
+                "Cookie",
+                "JSESSIONID=65AEB3628907BAC51411185C78D24BC4"
+              );
+
+              var requestOptions = {
+                method: "DELETE",
+                headers: myHeaders,
+
+                redirect: "follow",
+              };
+
+              fetch(url_del_mems, requestOptions)
+                .then((response) => response.text())
+                .then((result) => console.log(""))
+                .catch((error) => console.log("error", error));
+
+              //修改資訊
+            }
+            var requestOptions = {
+              method: "PUT",
+              redirect: "follow",
+            };
+            var url_set = "";
+            url_set += apiUrlGroup + "?action=groupSetting&groupid=";
+            url_set += gpid;
+            url_set += "&groupmembercount=";
+            url_set += $("#gp_mem_num").val();
+            url_set += "&groupname=";
+            url_set += $("#gp_name").val();
+            url_set += "&ifjoingroupdirectly=";
+            url_set += $("input[name='how_2_join']:checked").val();
+
+            fetch(url_set, requestOptions)
+              .then((response) => response.json())
+              .then((data) => {
+                alert("修改成功!");
+                let a =
+                  baseUrl +
+                  contextPath +
+                  "/page/group/group_htmls/group_main.html?groupid=";
+                location.href = a + data.groupid;
+              })
+              .catch((error) => console.log("error", error));
+          } else {
+            alert("請確認修改資訊!");
+            e.preventDefault();
+          }
+        };
+
+        //申請者審核按鈕
+        $(btn_uncheckmem).click(function (e) {
+          e.preventDefault();
+          let a =
+            baseUrl +
+            contextPath +
+            "/page/group/group_htmls/group_applying.html?groupid=";
+          location.href = a + gpid;
+        });
+        $("#back").click(() => {
+          location.href =
+            baseUrl +
+            contextPath +
+            "/page/group/group_htmls/group_main.html?groupid=" +
+            gpid;
+        });
+
+        //限制字數
+        var maxLength = 20;
+        var limitTestFunc = function () {
+          $(".input1").keyup(function () {
+            var length = $(this).val().length;
+            if (length >= maxLength) {
+              // 截取超出的字符
+              $(this).val($(this).val().substring(0, maxLength));
+            }
+          });
+        };
+        limitTestFunc();
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../asset/css/my-bulma.css" />
+    <!-- jQuery -->
+    <script src="../../asset/js/jquery-3.6.3.min.js"></script>
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../asset/js/components.js"
+      type="text/javascript"
+    ></script>
+    <!-- 初始化 -->
+    <!-- <script defer src="../../asset/js/bulma-init.js"></script> -->
+  </head>
+  <body>
+    <!-- 導覽列 -->
+    <header-component></header-component>
+
+    <!-- 內容 -->
+
+    <!-- 內容跟導航列間距 高度長20px -->
+    <div style="height: 20px"></div>
+
+    <!-- 飯店資料結構 欄位寬度佔畫面8/12 欄位居中 -->
+    <div
+      class="columns is-mobile is-centered"
+      style="background-color: #f3f4f5"
+    >
+      <div class="column is-9">
+        <!-- 付款頁面開始 -->
+        <!-- 大背景區塊 -->
+        <div
+          style="
+            min-height: 600px;
+            background-color: #ffffff;
+            border-radius: 15px 15px 15px 15px;
+            box-shadow: 0px 0px 5px 2px rgba(137, 200, 232, 0.5);
+          "
+        >
+          <div style="height: 30px"></div>
+          <div style="height: 40px">
+            <span class="is-size-3" style="padding-left: 5%">進行付款</span>
+          </div>
+          <!-- 水平線 -->
+          <div
+            style="
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <div
+              style="height: 1px; width: 90%; border: 1px solid #cbe3ec"
+            ></div>
+          </div>
+          <div>
+            <strong class="is-size-4" style="padding-left: 5%"
+              >未付款明細:</strong
+            >
+          </div>
+          <div style="height: 15px"></div>
+
+          <!-- 付款明細開始 -->
+          <div>
+            <div>
+              <strong class="is-size-5" style="padding-left: 5%"
+                >訂單編號:&emsp;<span id="pay_orderID"></span
+              ></strong>
+            </div>
+            <div style="height: 15px"></div>
+            <!-- 表格開始 -->
+            <div
+              style="
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <table
+                class="table is-hoverable is-bordered"
+                style="width: 850px"
+              >
+                <thead>
+                  <tr class="is-selected">
+                    <th style="text-align: center">飯店名稱</th>
+                    <th style="text-align: center">住宿期間</th>
+                    <th style="text-align: center">房型名稱</th>
+                    <th style="text-align: center">每晚房價</th>
+                    <th style="text-align: center">住宿天數</th>
+                    <th style="text-align: center">房間數量</th>
+                    <th style="text-align: center">小計</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody">
+                  <!-- orderList paste here -->
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td style="text-align: right" colspan="8">
+                      <strong
+                        >應付總額:&emsp;<span id="pay_totalPrice"></span
+                      ></strong>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- 表格結束 -->
+            <div style="height: 20px"></div>
+            <div>
+              <strong class="is-size-5" style="padding-left: 5%"
+                >選擇付款方式:</strong
+              >
+            </div>
+            <div
+              style="display: flex; flex-direction: row; align-items: center"
+            >
+              <div style="flex-basis: 38%"></div>
+              <div style="flex-basis: 5%">
+                <input type="radio" checked />
+              </div>
+
+              <div style="flex-basis: 20%">
+                <img
+                  src="../../asset/img/linepay.png"
+                  alt="無圖片"
+                  onerror="this.src='../../asset/img/noPicture.png'"
+                  style="
+                    width: auto;
+                    height: 80px;
+                    margin-top: 10px;
+                    border-radius: 10px 10px 10px 10px;
+                  "
+                />
+              </div>
+            </div>
+            <div
+              style="
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                height: 120px;
+              "
+            >
+              <button id="pay_btn" class="button is-link" style="width: 230px">
+                前往付款
+              </button>
+            </div>
+          </div>
+          <!-- 付款明細結束 -->
+        </div>
+        <!-- 付款頁面結束 -->
+      </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+
+    <script>
+      const loc = location.origin;
+      // const loc = "http://localhost:8080";
+      // console.log("loc假資料");
+      let pay_btn = $("#pay_btn");
+      let tbody = $("#tbody");
+      let pay_orderID = $("#pay_orderID");
+      let pay_orderCheckInDate = $(".pay_orderCheckInDate");
+      let pay_orderCheckOutDate = $(".pay_orderCheckOutDate");
+      let pay_companyName = $(".pay_companyName");
+      let pay_roomtypeName = $(".pay_roomtypeName");
+      let pay_detailRoomPrice = $(".pay_detailRoomPrice");
+      let pay_numberOfNights = $(".pay_numberOfNights");
+      let pay_detailRoomQuantity = $(".pay_detailRoomQuantity");
+      let pay_detailRoomTotalPrice = $(".pay_detailRoomTotalPrice");
+      let pay_totalPrice = $("#pay_totalPrice");
+      let orderID;
+
+      $(function () {
+        init();
+      });
+
+      function init() {
+        if (
+          sessionStorage.getItem("showPayTableFromTheOrderID", orderID) != null
+        ) {
+          orderID = sessionStorage.getItem(
+            "showPayTableFromTheOrderID",
+            orderID
+          );
+          // orderID = 28;
+          // console.log("orderID假資料");
+          showPayTable(orderID);
+        } else {
+          alert("查詢帳單失敗，按下確定至我的訂單再次付款!");
+          location.href(
+            `${loc}/lazy-trip-back/page/order/order_member_orders.html`
+          );
+        }
+      }
+
+      // 透過orderID連線找到該張訂單
+      function showPayTable(orderID) {
+        fetch(
+          `${loc}/lazy-trip-back/Order.do?type=showPayTableFromTheOrderID&orderID=${orderID}`
+        )
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (orderList) {
+            try {
+              pasteOrderList(orderList);
+              payBtn(orderList[0]);
+              console.log("get orderList資料成功");
+            } catch (e) {
+              console.log(e);
+            }
+          })
+          .catch(function (error) {
+            console.log("get orderList資料失敗");
+          });
+      }
+
+      function pasteOrderList(orderList) {
+        let pasteOrderHtml = "";
+        pay_orderID.text(orderList[0].orderID);
+        pay_totalPrice.text(orderList[0].orderTotalPrice);
+
+        for (let i = 0; i < orderList.length; i++) {
+          console.log(orderList[i]);
+          pasteOrderHtml += `<tr>
+                                      <td style="text-align: center; vertical-align: middle">
+                                        <span class="is-size-6 pay_companyName"
+                                          >${
+                                            orderList[i].companyVO.companyName
+                                          }</span
+                                        >
+                                      </td>
+                                      <td style="text-align: center; vertical-align: middle">
+                                        <span class="is-size-6"
+                                          ><span class="pay_orderCheckInDate">${orderList[
+                                            i
+                                          ].orderCheckInDate.replaceAll(
+                                            "-",
+                                            "/"
+                                          )}</span
+                                          ><span>~</span
+                                          ><span class="pay_orderCheckOutDate">${orderList[
+                                            i
+                                          ].orderCheckOutDate.replaceAll(
+                                            "-",
+                                            "/"
+                                          )}</span>
+                                        </span>
+                                      </td>
+                                      <td style="text-align: center; vertical-align: middle">
+                                        <span class="is-size-6 pay_roomtypeName">${
+                                          orderList[i].orderDetailVO
+                                            .roomTypeName
+                                        }</span>
+                                      </td>
+                                      <td style="text-align: center; vertical-align: middle">
+                                        <span class="is-size-6 pay_detailRoomPrice">${
+                                          orderList[i].orderDetailVO
+                                            .orderDetailRoomPrice
+                                        }</span>
+                                      </td>
+                                      <td style="text-align: center; vertical-align: middle">
+                                        <span class="is-size-6 pay_numberOfNights">${
+                                          orderList[i].orderNumberOfNights
+                                        }</span>
+                                      </td>
+                                      <td style="text-align: center; vertical-align: middle">
+                                        <span class="is-size-6 pay_detailRoomQuantity">${
+                                          orderList[i].orderDetailVO
+                                            .orderDetailRoomQuantity
+                                        }</span>
+                                      </td>
+                                      <td style="text-align: center; vertical-align: middle">
+                                        <strong class="is-size-6 pay_detailRoomTotalPrice"
+                                          >${
+                                            orderList[i].orderDetailVO
+                                              .orderDetailRoomPrice *
+                                            orderList[i].orderNumberOfNights *
+                                            orderList[i].orderDetailVO
+                                              .orderDetailRoomQuantity
+                                          }</strong
+                                        >
+                                      </td>
+                                    </tr>`;
+        }
+        tbody.append(pasteOrderHtml);
+      }
+
+      function payBtn(orderList) {
+        pay_btn.on("click", function () {
+          // 創建送出支付Json物件
+          let payJson = {
+            productName: orderList.companyVO.companyName,
+            amount: orderList.orderTotalPrice,
+            currency: "TWD",
+            confirmUrl: `${loc}/lazy-trip-back/Pay.do`,
+            linePayOrderID: new Date().getTime().toString(),
+            orderID: orderList.orderID,
+          };
+
+          // 送出Json物件
+          fetch(`${loc}/lazy-trip-back/Pay.do`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payJson),
+          })
+            .then(function (response) {
+              return response.json();
+            })
+            .then(function (payData) {
+              try {
+                console.log(payData);
+                alert("前往LinePay頁面，請登入LinePay並開始支付訂單");
+                location = payData.info.paymentUrl.web;
+              } catch (e) {
+                console.log(e);
+              }
+            })
+            .catch(function (error) {
+              console.log("get pay data資料失敗");
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

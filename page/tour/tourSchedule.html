@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>每日行程編輯</title>
+    <link rel="stylesheet" href="../../asset/css/my-bulma.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+      integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        list-style: none;
+      }
+      /* div {
+        border: 1px black solid;
+      } */
+      .top {
+        background-size: cover;
+      }
+
+      .left {
+        width: 400px;
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgb(0 0 0 / 50%);
+        height: 100vh;
+      }
+      i.fas {
+        cursor: pointer;
+      }
+      div > a.return {
+        border-radius: 50%;
+      }
+
+      /* date list */
+      .date_detail {
+        display: flex;
+        overflow-x: scroll;
+        width: 400px;
+      }
+      ul.date_detail li {
+        flex-shrink: 0;
+        background-color: #fff;
+        border: 1px solid gray;
+        margin: 5px;
+        padding: 2px 10px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      /* 每日行程資訊欄 美編 */
+      /* dayTripBlock */
+      section.dayTripBlock {
+        background: #fff;
+      }
+      /* 每日行程資訊欄 內部排版 */
+      /* section.dayTripBlock > ul, section.dayTripBlock li:not(:first-child) */
+      div.dayTripBlock_all > ul {
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
+        position: relative;
+        transition: all ease-in 0.3s;
+        padding: 8px;
+        overflow: hidden;
+      }
+      div.dayTripBlock_all > ul:hover {
+        box-shadow: 0 2px 8px rgb(0 0 0 / 50%);
+      }
+      div.dayTripBlock_all li:not(:first-child) {
+        margin: 0px 8px;
+      }
+      section li.dayTripBlock_locationInfoImg > img {
+        width: 70px;
+        height: 70px;
+        border-radius: 4px;
+        background-size: cover;
+      }
+
+      li.dayTripBlock_locationInfoBlock {
+        flex: 1;
+      }
+      li.dayTripBlock_locationInfoBlock ul {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+      }
+      div.dayTripBlock_all ul.dayTripBlock_locationInfoBlockDetail li {
+        margin: 0;
+      }
+      li.dayTripBlock_locationInfoBlockDetail_time {
+        text-align: left;
+      }
+
+      /* 每日行程的主標題 */
+      /* dayTripBlock_label */
+      .dayTripBlock_label {
+        background-color: #3bc0e8;
+        padding: 2px 5px 2px 5px;
+        border-radius: 4px;
+        margin: 10px;
+        display: inline-block;
+      }
+      .dayTripBlock_label span {
+        color: #fff;
+        font-weight: bold;
+      }
+      div.dayTripBlock_all div.dayTripBlock_carRouteTime {
+        display: flex;
+        margin: 10px;
+      }
+      div.dayTripBlock_all div.dayTripBlock_carRouteTime > span.icon {
+        font-size: 1.5rem;
+        margin-left: 20px;
+      }
+      div.dayTripBlock_all div.dayTripBlock_carRouteTime > p {
+        margin-left: 10px;
+      }
+
+      /* 每日行程的景點資訊欄 */
+      /* dayTripBlock_locationInfoBlockDetail_time, attraction_title, address */
+      .dayTripBlock_locationInfoBlockDetail_time span {
+        font-size: 0.85rem;
+        font-weight: bold;
+        color: #3bc0e8;
+      }
+      .attraction_title {
+        font-weight: bold;
+        font-size: 0.85rem;
+        color: black;
+      }
+      .address {
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      .attraction_detail_show {
+        overflow-y: scroll;
+        height: 300px;
+        border: 1px solid gray;
+        margin: 0px 10px 10px 10px;
+      }
+
+      /* 查詢景點輸入欄 */
+      /* li.location, .search_input, div, .icon */
+      li.location > .search_input,
+      .search_input > input#search_input {
+        width: 100%;
+      }
+      li.location > .search_input {
+        margin: 10px;
+      }
+      li.location > div {
+        margin: 10px 0px 10px 10px;
+      }
+      li.location > div > span.icon > i.fas.fa-map {
+        font-size: 1.2rem;
+      }
+
+      div.button_func {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+      }
+
+      div.create_plan_trip > ul {
+        padding: 10px;
+      }
+      li.attraction_start_time,
+      li.attraction_stay_time {
+        margin: 0px 10px 10px 10px;
+      }
+
+      li.delete,
+      li.edit {
+        margin-left: 8px;
+      }
+
+      li.note {
+        margin-left: 12px;
+      }
+      h3.day_trip_info > div {
+        margin: 10px 0px;
+      }
+      .attraction_note_lightbox {
+        /*   border: 1px solid red; */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: hsla(0, 0%, 0%, 0.5);
+      }
+      .none {
+        display: none;
+      }
+      div.box {
+        z-index: 990;
+      }
+      .attraction_note_lightbox > .contents {
+        background-color: white;
+        width: 90%;
+        max-width: 800px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #ddd;
+        padding: 10px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      #map {
+        height: 100vh;
+        width: 100%;
+        position: absolute;
+        left: 400px;
+        top: 0;
+        right: 0;
+        z-index: 0;
+      }
+
+      div.tour_info {
+        z-index: 5;
+        background-color: #fff;
+      }
+
+      /* 填寫景點欄位新增show class */
+      /* .add_info */
+      div.add_info {
+        width: 350px;
+        height: 100vh;
+        background-color: #fff;
+        position: absolute;
+        top: 0;
+        z-index: 1;
+      }
+      .add_info.show {
+        position: absolute;
+        top: 0;
+        transform: translateX(400px);
+        transition: ease-out 1s;
+        box-shadow: 0 2px 8px rgb(0 0 0 / 50%);
+        z-index: 1;
+      }
+      .create_plan_trip > ul {
+        display: flex;
+      }
+      .create_plan_trip > ul > .text {
+        text-align: center;
+        flex: 1;
+      }
+      @media (max-width: 770.98px) {
+        div.add_info.show,
+        div.add_info {
+          transform: translateX(0px);
+          width: 400px;
+        }
+      }
+
+      div.tour_info {
+        box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
+      }
+
+      /* 景點細節資訊的button */
+      /* div.button_func li, .add_attraction, .reset_attraction */
+      div.button_func li {
+        width: 100%;
+        margin: 5px;
+      }
+      .add_attraction,
+      .edit_attraction,
+      .reset_attraction {
+        width: 100%;
+      }
+      /* tour的標題與日期樣式 */
+      div.title_date > ul > .title,
+      div.title_date > ul > .date {
+        color: white;
+      }
+      /* button.button.add_trip */
+      button.button.add_trip {
+        width: 100%;
+      }
+      /* div.schedule.lodge */
+      div.schedule.lodge {
+        overflow-y: auto;
+        max-height: calc(100vh - 191px);
+        /* padding: 0 10px; */
+      }
+      /* scroll捲軸功能css */
+      /* 隱藏捲軸，只有當滑鼠移到捲軸區域時才顯示 */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        cursor: pointer;
+      }
+      /* 捲軸軌道（背景） */
+      ::-webkit-scrollbar-track {
+        background: white;
+        border-radius: 10px;
+      }
+      /* 捲軸滑塊 */
+      ::-webkit-scrollbar-thumb {
+        background: #dd5b0b;
+        border-radius: 10px;
+      }
+      /* 拖曳捲軸時的樣式 */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #7a3306;
+      }
+      /* 捲軸滑塊在滑鼠移過捲軸區域時顯示的樣式 */
+      ::-webkit-scrollbar-thumb:active {
+        background: #7a3306;
+      }
+      /* div.icon */
+      /* 返回主行程與sort icon */
+      div.icon {
+        width: 100%;
+        justify-content: space-between;
+      }
+      div.icon > div.return {
+        margin: 10px;
+        font-size: 1.2rem;
+        padding-top: 10px;
+      }
+      div.icon > div.sort {
+        margin: 10px;
+        font-size: 1.2rem;
+        padding-top: 10px;
+      }
+      li.date {
+        padding-bottom: 5px;
+      }
+      li.title {
+        font-size: 1.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="plan_trip">
+        <div>
+          <div class="left" style="display: flex">
+            <div class="tour_info">
+              <div class="top"></div>
+              <div class="bottom">
+                <ul class="date_detail"></ul>
+                <div class="schedule lodge"></div>
+              </div>
+            </div>
+          </div>
+          <div class="add_info">
+            <div class="create_plan_trip">
+              <ul>
+                <li>
+                  <div class="return">
+                    <a href="javascript:;" class="return">
+                      <span class="icon">
+                        <i class="fas fa-arrow-left"></i>
+                      </span>
+                    </a>
+                  </div>
+                </li>
+                <li class="text">新增景點</li>
+              </ul>
+            </div>
+            <div class="input_func">
+              <!--查詢景點輸入欄位-->
+              <ul>
+                <li class="location" style="display: flex">
+                  <div>
+                    <span class="icon">
+                      <i class="fas fa-map"></i>
+                    </span>
+                  </div>
+                  <div class="search_input">
+                    <input type="text" name="search_input" id="search_input" />
+                  </div>
+                </li>
+              </ul>
+              <div class="information">
+                <ul class="attraction_detail">
+                  <li>
+                    <div>
+                      <div class="attraction_detail_show"></div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="time_select">
+              <ul>
+                <li class="attraction_start_time">
+                  <label for="start_time">出發時間：</label>
+                  <input type="time" name="start_time" id="start_time" />
+                </li>
+                <li class="attraction_stay_time">
+                  <label for="stay_time">停留時間：</label>
+                  <input type="number" name="stay_time" id="stay_time" />
+                  <span>分鐘</span>
+                </li>
+              </ul>
+            </div>
+            <div class="button_func">
+              <ul style="display: flex; justify-content: space-around">
+                <li>
+                  <button type="reset" class="button reset_attraction">
+                    清除
+                  </button>
+                </li>
+                <li class="addAttractionBtn">
+                  <button class="button add_attraction">加入景點</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div id="map"></div>
+        </div>
+        <!-- 筆記彈跳視窗 -->
+        <div class="box attraction_note_lightbox none">
+          <div class="box contents">
+            <label for="attraction_note">筆記：</label>
+            <input
+              type="textarea"
+              name="attraction_note"
+              id="attraction_note"
+              placeholder="想要寫什麼呢...？"
+            />
+            <br />
+            <button class="button trip_add_btn">新增</button>
+            <button class="button trip_close_btn">取消</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="../../asset/js/jquery-3.6.3.min.js"></script>
+    <script src="js/tour_schedule.js"></script>
+    <script
+      async
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVt74yqJGFBhStd3r1MO9kLZoEXHZ7BBc&libraries=places&callback=initMap&region=TW&language=zh-TW"
+    ></script>
+  </body>
+</html>

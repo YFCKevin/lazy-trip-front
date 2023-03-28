@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io | 揪團</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../../asset/css/my-bulma.css" />
+    <!-- 自定義 CSS -->
+    <link rel="stylesheet" href="../../../asset/css/index-style.css" />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../../asset/js/components.js"
+      type="text/javascript"
+    ></script>
+
+    <!-- 初始化 Bulma -->
+    <script defer src="../../../asset/js/bulma-init.js"></script>
+    <!--GroupCss-->
+    <link rel="stylesheet" href=".././css/group.css" />
+  </head>
+  <body>
+    <!-- 導覽列 -->
+    <header-component></header-component>
+
+    <div class="columns">
+      <div class="column"></div>
+      <div class="column is-half">
+        <section class="section">
+          <!-- 標題 -->
+          <div class="content has-text-centered">
+            <h1>連結已失效，即將返回首頁</h1>
+          </div>
+          <!-- 表單 -->
+          <div class="content has-text-centered">
+            <h2 id="send" style="cursor: pointer">若沒有返回首頁請點擊這裡</h2>
+          </div>
+        </section>
+      </div>
+      <div class="column"></div>
+    </div>
+    <!-- 頁尾 -->
+    <footer-component></footer-component>
+    <script>
+      window.onload = function () {
+        //相對路徑宣告
+        var baseUrl = window.location.protocol + "//" + window.location.host;
+        var contextPath = window.location.pathname.substring(
+          0,
+          window.location.pathname.indexOf("/", 1)
+        );
+        let url = baseUrl + contextPath + "/index.jsp";
+        $("#send").click(function () {
+          location.href = url;
+        });
+
+        setTimeout(() => {
+          location.href = url;
+        }, 6000);
+      };
+    </script>
+  </body>
+</html>

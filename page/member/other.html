@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../asset/css/my-bulma.css" />
+    <!-- 自定義 CSS -->
+    <link rel="stylesheet" href="../../asset/css/index-style.css" />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- jquery -->
+    <script src="../../asset/js/jquery-3.6.3.min.js"></script>
+    <!-- cropper -->
+    <link rel="stylesheet" href="../../asset/css/croppie.css" />
+    <script src="../../asset/js/croppie.min.js"></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../asset/js/components.js?ver=2"
+      type="text/javascript"
+    ></script>
+    <script
+      defer
+      src="js/mem_component.js?ver=1"
+      type="text/javascript"
+    ></script>
+    <!-- 初始化 Bulma -->
+    <script defer src="../../asset/js/bulma-init.js?ver=2"></script>
+    <style>
+      div.mem_img > img {
+        border-radius: 100%;
+        width: 100px;
+        height: 100px;
+      }
+      div.upload_img > img {
+        border-radius: 100%;
+        width: 100px;
+        height: 100px;
+      }
+      span.mem_acc {
+        text-align: start;
+      }
+      span.gear {
+        border: 1px solid black;
+      }
+      div.upload_img > a > img {
+        border-radius: 100%;
+        width: 100px;
+        height: 100px;
+      }
+      div.img_test {
+        top: 40px;
+        /* color: white; */
+
+        position: absolute;
+        z-index: 5;
+      }
+      div.upload_img {
+        width: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <header-component></header-component>
+
+    <!-- 網頁主體 -->
+    <section class="section mt-6">
+      <div class="container mb-3 is-fluid is-max-widescreen">
+        <div class="tile is-ancestor">
+          <div class="tile is-parent box is-12">
+            <div class="tile is-child is-5">
+              <nav class="level">
+                <div class="level-left">
+                  <div class="level-item has-text-centered">
+                    <div class="mem_img ml-4">
+                      <img src="../../asset/img/default.png" alt="" />
+                    </div>
+                  </div>
+                  <div class="level-item has-text-centered">
+                    <span class="mem_username mb-6 is-size-3">AAA</span>
+                  </div>
+                </div>
+              </nav>
+
+              <div class="tabs is-medium mt-4">
+                <ul>
+                  <li class="is-active">
+                    <a class="tabs loaded" data-id="dynamic_msg">動態消息</a>
+                  </li>
+                  <li><a class="tabs" data-id="comment">評論</a></li>
+                  <li><a class="tabs" data-id="img">相片</a></li>
+                  <!-- <li><a class="tabs" data-id="tour">旅程</a></li> -->
+                </ul>
+              </div>
+            </div>
+            <div class="tile is-child"></div>
+            <div class="tile is-child is-2">
+              <!-- <button
+                class="button js-modal-trigger mt-3"
+                data-target="modal-self-edit"
+              >
+                <span class="icon">
+                  <i class="fa-solid fa-gear"></i>
+                </span>
+                <span>編輯個人資料</span> -->
+              <button class="button mt-3 add-friend">
+                <span class="icon">
+                  <i class="fa-solid fa-user-group"></i>
+                </span>
+                <span class="text">加為好友</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns">
+        <div class="column is-one-quarter">
+          <div class="card mb-3">
+            <div class="card-content ml-4">
+              <div class="content intro">
+                <p id="address">
+                  <span class="icon is-small is-left mr-2">
+                    <i class="fa-solid fa-building"></i></span
+                  >居住於
+                </p>
+
+                <p id="reg_date">
+                  <span class="icon is-small is-left mr-2">
+                    <i class="fa-solid fa-calendar"></i></span
+                  >加入於
+                </p>
+
+                <p id="intro">
+                  <span class="icon is-small is-left mr-2">
+                    <i class="fa-solid fa-envelope-open-text"></i> </span
+                  >簡介:
+                </p>
+                <textarea
+                  name=""
+                  id="intro"
+                  cols="20"
+                  rows="5"
+                  readonly
+                  style="resize: none"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-7">
+          <div id="dynamic_msg" class="content-tab">
+            <div class="columns is-centered is-vcentered" style="height: 30vh">
+              <div class="column is-narrow">
+                <div class="loader" style="width: 50px; height: 50px"></div>
+              </div>
+            </div>
+          </div>
+          <div id="comment" class="content-tab" style="display: none">
+            <div class="columns is-centered is-vcentered" style="height: 30vh">
+              <div class="column is-narrow">
+                <div class="loader" style="width: 50px; height: 50px"></div>
+              </div>
+            </div>
+          </div>
+          <div id="img" class="content-tab" style="display: none">
+            <div class="columns is-centered is-vcentered" style="height: 30vh">
+              <div class="column is-narrow">
+                <div class="loader" style="width: 50px; height: 50px"></div>
+              </div>
+            </div>
+          </div>
+          <div id="tour" class="content-tab" style="display: none"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer-component></footer-component>
+
+    <script>
+      $(function () {
+        const mem_username = $("span.mem_username");
+        const img = $("div.mem_img");
+        const img_upload = $("div.mem_img_upload > div > a");
+        const fig_img = $("figure.image.is-48x48 ");
+
+        const address = $("input#input-address");
+        const username = $("input#input-username");
+        const intro = $("textarea#input-intro");
+        let lookForMemberId = new URLSearchParams(location.search);
+        let otherMemId = lookForMemberId.get("member_id");
+        let memUsername;
+        let memBase64;
+
+        const ROOT = location.origin;
+        const ROOT_PROJ = "/lazy-trip-back";
+        const LOGIN = "/page/login.html";
+        const API_RELATION = "/api/relation";
+        const API_FRIEND_REQUEST = "/api/friend/request";
+
+        // ------------------------------
+
+        function getCookie(name) {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+
+        // ---------------------------------
+
+        $(document).on("click", "a.tabs", function () {
+          let tab_id = $(this).attr("data-id");
+          let tab_content = document.getElementsByClassName("content-tab");
+
+          $(this).closest("ul").find("li").removeClass("is-active");
+          $(this).closest("li").addClass("is-active");
+          for (let i = 0; i < tab_content.length; i++) {
+            tab_content[i].style.display = "none";
+          }
+          document.getElementById(tab_id).style.display = "block";
+
+          // 點擊分頁讀取內容功能
+          if ($(this).hasClass("loaded")) {
+          } else {
+            if (tab_id == "comment") {
+              $(this).addClass("loaded");
+              listComments();
+            }
+            if (tab_id == "img") {
+              $(this).addClass("loaded");
+              listImgs();
+            }
+            if (tab_id == "tour") {
+              $(this).addClass("loaded");
+            }
+          }
+        });
+
+        $("button.add-friend").on("click", function () {
+          if (getCookie("memId") == null) {
+            let loc = location.href;
+            sessionStorage.setItem("loc", loc);
+            location.href = ROOT + ROOT_PROJ + LOGIN;
+          } else {
+            fetch(
+              ROOT +
+                ROOT_PROJ +
+                API_FRIEND_REQUEST +
+                `?addressee_id=${otherMemId}&requester_id=${getCookie(
+                  "memId"
+                )}`,
+              {
+                method: "POST",
+              }
+            )
+              .then(function (resp) {
+                if (resp.ok) {
+                  alert("好友邀請成功");
+                  getRelationShip();
+                }
+              })
+              .catch(function (error) {
+                // 發生任何錯誤，就會執行 catch 裡的程式
+                console.log("錯誤資訊");
+                console.log(error); // 這裡取得錯誤資訊：error
+              });
+          }
+        });
+
+        function getRelationShip() {
+          if (getCookie("memId") != null) {
+            fetch(
+              ROOT +
+                ROOT_PROJ +
+                API_RELATION +
+                `?specifier_id=${getCookie("memId")}&other_id=${otherMemId}`
+            )
+              .then((resp) => resp.json())
+              .then((relation) => {
+                if (relation.isRelated == "true") {
+                  if (relation.type == "封鎖對方") {
+                    let html = `<p class="has-text-centered is-size-2 mt-6">您已被該用戶封鎖</p>`;
+                    $(".tabs a").css("pointer-events", "none");
+                    $(".tabs a").css("color", "rgb(148, 148, 148)");
+                    $("#dynamic_msg").html(html);
+                    $("button.add-friend").attr("disabled", true);
+                    $("button.add-friend span.text").text("對方封鎖");
+                  } else {
+                    $("button.add-friend").attr("disabled", true);
+                    $("button.add-friend span.text").text(relation.type);
+                    setTimeout(() => {
+                      listPosts();
+                    }, 1500);
+                  }
+                } else {
+                  setTimeout(() => {
+                    listPosts();
+                  }, 1500);
+                }
+              });
+          }
+        }
+
+        function getData() {
+          let mem_username = $(document).find("span.mem_username");
+
+          fetch(`find?id=${otherMemId}`)
+            .then((resp) => resp.json())
+            .then((member) => {
+              let mem_img;
+              if (member.hasOwnProperty("imgBase64Str")) {
+                mem_img = `<img src="data:image/*;base64,${member.imgBase64Str}" alt="Placeholder image"
+            class="is-rounded">`;
+                mem_img_upload = `
+              <img src="data:image/*;base64,${member.imgBase64Str}" alt="Placeholder image"
+            class="is-rounded">
+                    <div class="img_test">上傳個人圖片</div>`;
+              } else {
+                mem_img = `<img src="../../asset/img/default.png" alt="Placeholder image"
+            class="is-rounded">`;
+                mem_img_upload = `
+             <img src="../../asset/img/default.png" alt="Placeholder image"
+            class="is-rounded">
+                    <div class="img_test">上傳個人圖片</div>`;
+              }
+              img.empty();
+              fig_img.empty();
+              img_upload.empty();
+              img.prepend(mem_img);
+              fig_img.prepend(mem_img);
+              img_upload.prepend(mem_img_upload);
+              mem_username.text(member.username);
+              memUsername = member.username;
+              memBase64 = `data:image/*;base64,${member.imgBase64Str}`;
+
+              $("input[name=gender][value=" + member.gender + "]").prop(
+                "checked",
+                true
+              );
+
+              address.val(member.address);
+              username.val(member.username);
+              intro.val(member.intro);
+
+              if (member.address == null || member.address == "") {
+                $("p#address").empty();
+              } else {
+                let adr = member.address;
+                $("p#address").append(
+                  `<span> ${adr.substr(0, adr.indexOf("市") + 1)}</span>`
+                );
+              }
+              $("p#reg_date").append(`<span>${member.reg_date} </span>`);
+              if (member.intro == "" || member.intro == null) {
+                $("p#intro").remove();
+                $("textarea#intro").remove();
+              } else {
+                $("textarea#intro").val(member.intro);
+              }
+            });
+        }
+
+        function listPosts() {
+          fetch(`listposts?id=${otherMemId}`)
+            .then((resp) => resp.json())
+            .then((body) => {
+              let src = $("div.mem_img.ml-4 > img").attr("src");
+              $("div#dynamic_msg").empty();
+              for (let key in body) {
+                let check = false;
+                $("div#dynamic_msg > card-component").each(function () {
+                  var dataId = $(this).data("id");
+                  if (body[key].id == dataId) {
+                    check = true;
+                    return check;
+                  }
+                });
+                if (check) {
+                  $(document)
+                    .find("div#dynamic_msg")
+                    .find(`card-component.${body[key].id}`)
+                    .find("figure.is-4by3")
+                    .append(
+                      `<img src="data:image/*;base64,${body[key].imgbase64Str}" >`
+                    );
+                } else {
+                  $("div#dynamic_msg").append(
+                    `<card-component class="${body[key].id}" data-id="${body[key].id}" data-name="${memUsername}" "></card-component>`
+                  );
+                  if (body[key].hasOwnProperty("imgbase64Str")) {
+                    $(document)
+                      .find("div#dynamic_msg")
+                      .find(`card-component.${body[key].id}`)
+                      .find("figure.is-4by3")
+                      .append(
+                        `<img src="data:image/*;base64,${body[key].imgbase64Str}" class="active">`
+                      );
+                  } else {
+                    $(document)
+                      .find("div#dynamic_msg")
+                      .find(`card-component.${body[key].id}`)
+                      .find("figure.is-4by3")
+                      .remove();
+                  }
+                  $(document)
+                    .find("div#dynamic_msg")
+                    .find(`card-component.${body[key].id}`)
+                    .find("span.mem_username.is-5")
+                    .html(
+                      `${memUsername}<p class="mt-3 is-size-6 post-time" style="color: #949494;"></p>`
+                    );
+                  $(document)
+                    .find("div#dynamic_msg")
+                    .find(`card-component.${body[key].id}`)
+                    .find("div.content")
+                    .text(body[key].text);
+                  $(document)
+                    .find("div#dynamic_msg")
+                    .find(`card-component.${body[key].id}`)
+                    .find("p.post-time")
+                    .text(body[key].time);
+                  $(document)
+                    .find("div#dynamic_msg")
+                    .find(`card-component.${body[key].id}`)
+                    .find("figure.image.is-48x48")
+                    .prepend(`<img src="${src}" alt="Placeholder image"
+            class="is-rounded">`);
+                }
+              }
+
+              if (body.successful == true) {
+                // location.assign("main.html");
+              }
+            });
+        }
+
+        function listComments() {
+          fetch(`listcomments?id=${otherMemId}`)
+            .then((resp) => resp.json())
+            .then((body) => {
+              let src = $("div.mem_img.ml-4 > img").attr("src");
+              $("div#comment").empty();
+              for (let key in body) {
+                let check = false;
+                $("div#comment > card-component").each(function () {
+                  var dataId = $(this).data("id");
+                  if (body[key].id == dataId) {
+                    check = true;
+                    return check;
+                  }
+                });
+                if (check) {
+                  $(document)
+                    .find("div#comment")
+                    .find(`card-component.${body[key].id}`)
+                    .find("figure.is-4by3")
+                    .append(
+                      `<img src="data:image/*;base64,${body[key].imgbase64Str}" >`
+                    );
+                } else {
+                  $("div#comment").append(
+                    `<card-component class="${body[key].id}" data-id="${body[key].id}" data-name="${memUsername}" "></card-component>`
+                  );
+                  if (body[key].hasOwnProperty("imgbase64Str")) {
+                    $(document)
+                      .find("div#comment")
+                      .find(`card-component.${body[key].id}`)
+                      .find("figure.is-4by3")
+                      .append(
+                        `<img src="data:image/*;base64,${body[key].imgbase64Str}" class="active">`
+                      );
+                  } else {
+                    $(document)
+                      .find("div#comment")
+                      .find(`card-component.${body[key].id}`)
+                      .find("figure.is-4by3")
+                      .remove();
+                  }
+                  $(document)
+                    .find("div#comment")
+                    .find(`card-component.${body[key].id}`)
+                    .find("span.mem_username.is-5")
+                    .html(
+                      `${memUsername}<p class="mt-3 is-size-6 post-time" style="color: #949494;"></p>`
+                    );
+                  $(document)
+                    .find("div#comment")
+                    .find(`card-component.${body[key].id}`)
+                    .find("div.content")
+                    .text(body[key].text);
+                  $(document)
+                    .find("div#comment")
+                    .find(`card-component.${body[key].id}`)
+                    .find("p.post-time")
+                    .text(body[key].time);
+                  $(document)
+                    .find("div#comment")
+                    .find(`card-component.${body[key].id}`)
+                    .find("figure.image.is-48x48")
+                    .prepend(`<img src="${src}" alt="Placeholder image"
+            class="is-rounded">`);
+                }
+              }
+
+              if (body.successful == true) {
+                // location.assign("main.html");
+              }
+            });
+        }
+
+        function listImgs() {
+          fetch(`listimgs?id=${otherMemId}`)
+            .then((resp) => resp.json())
+            .then((body) => {
+              let src = $("div.mem_img.ml-4 > img").attr("src");
+              $("div#img").empty();
+              for (let key in body) {
+                let check = false;
+                $("div#img > card-component").each(function () {
+                  var dataId = $(this).data("id");
+                  if (body[key].id == dataId) {
+                    check = true;
+                    return check;
+                  }
+                });
+                if (check) {
+                  $(document)
+                    .find("div#img")
+                    .find(`card-component.${body[key].id}`)
+                    .find("figure.is-4by3")
+                    .append(
+                      `<img src="data:image/*;base64,${body[key].imgbase64Str}" >`
+                    );
+                } else {
+                  $("div#img").append(
+                    `<card-component class="${body[key].id}" data-id="${body[key].id}" data-name="${memUsername}" "></card-component>`
+                  );
+                  if (body[key].hasOwnProperty("imgbase64Str")) {
+                    $(document)
+                      .find("div#img")
+                      .find(`card-component.${body[key].id}`)
+                      .find("figure.is-4by3")
+                      .append(
+                        `<img src="data:image/*;base64,${body[key].imgbase64Str}" class="active">`
+                      );
+                  } else {
+                    $(document)
+                      .find("div#img")
+                      .find(`card-component.${body[key].id}`)
+                      .find("figure.is-4by3")
+                      .remove();
+                  }
+                  $(document)
+                    .find("div#img")
+                    .find(`card-component.${body[key].id}`)
+                    .find("span.mem_username.is-5")
+                    .html(
+                      `${memUsername}<p class="mt-3 is-size-6 post-time" style="color: #949494;"></p>`
+                    );
+                  $(document)
+                    .find("div#img")
+                    .find(`card-component.${body[key].id}`)
+                    .find("div.content")
+                    .text("");
+                  $(document)
+                    .find("div#img")
+                    .find(`card-component.${body[key].id}`)
+                    .find("p.post-time")
+                    .text(body[key].time);
+                  $(document)
+                    .find("div#img")
+                    .find(`card-component.${body[key].id}`)
+                    .find("figure.image.is-48x48")
+                    .prepend(`<img src="${src}" alt="Placeholder image"
+            class="is-rounded">`);
+                }
+              }
+
+              if (body.successful == true) {
+                // location.assign("main.html");
+              }
+            });
+        }
+
+        getData();
+
+        getRelationShip();
+
+        // 圖片輪播-----------------------
+        // 選取輪播圖片容器
+        var $slideshow = $(".slideshow");
+
+        // 選取所有圖片和箭頭
+        var $slides = $slideshow.find("img");
+        var $prev = $slideshow.find(".prev");
+        var $next = $slideshow.find(".next");
+        var currentIndex = 0;
+
+        $(document).on("click", "a.prev", function (e) {
+          e.preventDefault();
+          let img_nums = $(this).closest("div").find("img").length;
+
+          if (img_nums != 1) {
+            // 隱藏當前圖片
+            $(this).closest("figure").find("img").eq(currentIndex).fadeOut(100);
+            // $slides.eq(currentIndex).fadeOut();
+
+            // 減少索引
+            currentIndex--;
+
+            // 如果索引小於0，則從最大值開始
+            if (currentIndex < 0) {
+              currentIndex = img_nums - 1;
+            }
+            // 顯示上一張圖片
+            $(this).closest("figure").find("img").eq(currentIndex).fadeIn(100);
+            // $slides.eq(currentIndex).fadeIn();
+          }
+        });
+
+        $(document).on("click", "a.next", function (e) {
+          e.preventDefault();
+          let img_nums = $(this).closest("div").find("img").length;
+          if (img_nums != 1) {
+            // 隱藏當前圖片
+            $(this).closest("figure").find("img").eq(currentIndex).fadeOut();
+            // $slides.eq(currentIndex).fadeOut();
+
+            // 增加索引
+            currentIndex++;
+
+            // 如果索引超出最大值，則從頭開始
+            if (currentIndex >= img_nums) {
+              currentIndex = 0;
+            }
+
+            // 顯示下一張圖片
+            $(this).closest("figure").find("img").eq(currentIndex).fadeIn();
+            // $slides.eq(currentIndex).fadeIn();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

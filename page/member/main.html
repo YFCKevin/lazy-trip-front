@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LazyTrip.io</title>
+    <!-- Bulma 自訂 -->
+    <link rel="stylesheet" href="../../asset/css/my-bulma.css" />
+
+    <!-- 自定義 CSS -->
+    <link rel="stylesheet" href="../../asset/css/index-style.css" />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/0548105e54.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- jquery -->
+    <script src="../../asset/js/jquery-3.6.3.min.js"></script>
+    <!-- cropper -->
+    <link rel="stylesheet" href="../../asset/css/croppie.css" />
+    <script src="../../asset/js/croppie.min.js"></script>
+    <!-- 共用元件 -->
+    <script
+      defer
+      src="../../asset/js/components.js?ver=5"
+      type="text/javascript"
+    ></script>
+    <script defer src="js/mem_component.js" type="text/javascript"></script>
+    <!-- 初始化 Bulma -->
+    <script defer src="../../asset/js/bulma-init.js?ver=2"></script>
+
+    <style>
+      div.mem_img > img {
+        border-radius: 100%;
+        width: 100px;
+        height: 100px;
+      }
+      div.upload_img > img {
+        border-radius: 100%;
+        width: 100px;
+        height: 100px;
+      }
+      span.mem_acc {
+        text-align: start;
+      }
+      span.gear {
+        border: 1px solid black;
+      }
+      div.upload_img > a > img {
+        border-radius: 100%;
+        width: 100px;
+        height: 100px;
+      }
+      div.img_test {
+        top: 40px;
+        /* color: white; */
+
+        position: absolute;
+        z-index: 5;
+      }
+      div.upload_img {
+        width: 100px;
+      }
+      .preview > img {
+        width: 100px;
+        height: 100px;
+      }
+      .slideshow {
+        position: relative;
+      }
+
+      .slideshow img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        width: 100%;
+      }
+
+      .slideshow img.active {
+        display: block;
+      }
+
+      .slideshow a {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 30px;
+        color: #fff;
+        text-decoration: none;
+        z-index: 1;
+      }
+
+      .slideshow a.prev {
+        left: 10px;
+        color: black;
+      }
+
+      .slideshow a.next {
+        right: 10px;
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <header-component></header-component>
+
+    <!-- 網頁主體 -->
+    <section class="section mt-6">
+      <div class="container mb-3 is-fluid is-max-widescreen">
+        <div class="tile is-ancestor">
+          <div class="tile is-parent box is-12">
+            <div class="tile is-child is-5">
+              <nav class="level">
+                <div class="level-left">
+                  <div class="level-item has-text-centered">
+                    <div class="mem_img ml-4">
+                      <img src="../../asset/img/default.png" alt="" />
+                    </div>
+                  </div>
+                  <div class="level-item has-text-centered">
+                    <span class="mem_username mb-6 is-size-3">AAA</span>
+                  </div>
+                </div>
+              </nav>
+
+              <div class="tabs is-medium mt-4">
+                <ul>
+                  <li class="is-active">
+                    <a class="tabs loaded" data-id="dynamic_msg">動態消息</a>
+                  </li>
+                  <li><a class="tabs" data-id="comment">評論</a></li>
+                  <li><a class="tabs" data-id="img">相片</a></li>
+                  <!-- <li><a class="tabs" data-id="tour">旅程</a></li> -->
+                </ul>
+              </div>
+            </div>
+            <div class="tile is-child"></div>
+            <div class="tile is-child is-2">
+              <button
+                class="button js-modal-trigger mt-3 mb-4"
+                data-target="modal-self-edit"
+              >
+                <span class="icon">
+                  <i class="fa-solid fa-gear"></i>
+                </span>
+                <span>編輯個人資料</span>
+              </button>
+              <a class="button mt-4" href="resetps.html">
+                <span class="icon">
+                  <i class="fa-solid fa-key"></i>
+                </span>
+                <span>修改密碼</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns">
+        <div class="column is-one-quarter">
+          <div class="card mb-3">
+            <div class="card-content ml-4">
+              <div class="content intro">
+                <p id="address">
+                  <span class="icon is-small is-left mr-2">
+                    <i class="fa-solid fa-building"></i> </span
+                  >居住於
+                </p>
+
+                <p id="reg_date">
+                  <span class="icon is-small is-left mr-2">
+                    <i class="fa-solid fa-calendar"></i></span
+                  >加入於
+                </p>
+
+                <p id="intro">
+                  <span class="icon is-small is-left mr-2">
+                    <i class="fa-solid fa-envelope-open-text"></i> </span
+                  >簡介:
+                </p>
+                <textarea
+                  name=""
+                  id="intro"
+                  cols="20"
+                  rows="5"
+                  readonly
+                  style="resize: none"
+                ></textarea>
+              </div>
+              <button
+                class="button js-modal-trigger"
+                data-target="modal-self-intro"
+              >
+                <span class="icon">
+                  <i class="fa-solid fa-gear"></i>
+                </span>
+                <span>編輯簡介</span>
+              </button>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-content">
+              <div class="content ml-4">
+                <button
+                  class="button js-modal-trigger"
+                  data-target="modal-share-img"
+                >
+                  <span class="icon">
+                    <i class="fa-solid fa-image"></i>
+                  </span>
+                  <span>分享圖片</span>
+                </button>
+              </div>
+              <div class="content ml-4">
+                <button
+                  class="button js-modal-trigger"
+                  data-target="modal-post-comment"
+                >
+                  <span class="icon">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </span>
+                  <span>撰寫評論</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-7">
+          <div id="dynamic_msg" class="content-tab">
+            <div class="columns is-centered is-vcentered" style="height: 30vh">
+              <div class="column is-narrow">
+                <div class="loader" style="width: 50px; height: 50px"></div>
+              </div>
+            </div>
+          </div>
+          <div id="comment" class="content-tab" style="display: none">
+            <div class="columns is-centered is-vcentered" style="height: 30vh">
+              <div class="column is-narrow">
+                <div class="loader" style="width: 50px; height: 50px"></div>
+              </div>
+            </div>
+          </div>
+          <div id="img" class="content-tab" style="display: none">
+            <div class="columns is-centered is-vcentered" style="height: 30vh">
+              <div class="column is-narrow">
+                <div class="loader" style="width: 50px; height: 50px"></div>
+              </div>
+            </div>
+          </div>
+          <div id="tour" class="content-tab" style="display: none"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 編輯個人資料 -->
+    <div id="modal-self-edit" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">編輯個人資料</p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <div class="field">
+            <label class="label" for="input-name">姓名</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                name="name"
+                placeholder=""
+                id="input-name"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="input-phone">電話</label>
+            <div class="control">
+              <input
+                class="input"
+                type="number"
+                name="phone"
+                placeholder="0912345678"
+                id="input-phone"
+              />
+            </div>
+          </div>
+
+          <div class="field gender">
+            <label class="label" for="input-gender">性別</label>
+            <div class="control">
+              <label><input type="radio" name="gender" value="男" />男</label>
+              <label><input type="radio" name="gender" value="女" />女</label>
+              <label
+                ><input type="radio" name="gender" value="其他" />其他</label
+              >
+            </div>
+          </div>
+
+          <div class="field birthday">
+            <label class="label" for="input-birthday">生日</label>
+            <div class="control">
+              <input
+                class="input"
+                type="date"
+                name="birthday"
+                id="input-birthday"
+                min="1900-01-01"
+              />
+            </div>
+          </div>
+
+          <!-- Content ... -->
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success btn_edit">保存</button>
+          <button class="button">取消</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- 編輯簡介 modal -->
+    <div id="modal-self-intro" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">編輯簡介</p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <div class="field">
+            <div class="control">
+              <div class="mem_img_upload">
+                <div class="upload_img">
+                  <a
+                    class="js-modal-trigger"
+                    role="button"
+                    data-target="modal-self-img"
+                    ><img src="../../asset/img/default.png" alt="" />
+                    <div class="img_test">上傳個人圖片</div></a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="input-address">住址</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                name="address"
+                placeholder="OO市XX區YY路N巷M號"
+                id="input-address"
+              />
+            </div>
+          </div>
+
+          <div class="field username">
+            <label class="label" for="input-username">暱稱</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                name="username"
+                placeholder="暱稱"
+                id="input-username"
+              />
+            </div>
+          </div>
+
+          <div class="field intro">
+            <label class="label" for="input-intro">個人簡介</label>
+            <textarea
+              class="textarea is-medium"
+              placeholder="個人簡介"
+              id="input-intro"
+              style="resize: none"
+            >
+            </textarea>
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success btn_intro">保存</button>
+          <button class="button">取消</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- 上傳個人圖片 modal -->
+    <div id="modal-self-img" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card" style="width: 1000px">
+        <header class="modal-card-head">
+          <p class="modal-card-title">上傳圖片</p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <div class="field">
+            <div class="control">
+              <label class="button"
+                ><input
+                  id="upload_img"
+                  style="display: none"
+                  type="file"
+                  accept="image/*"
+                /><i class="fa fa-photo"></i> 上傳圖片</label
+              >
+              <button id="crop_img" class="button">
+                <i class="fa fa-scissors"></i> 裁剪圖片
+              </button>
+
+              <nav class="level">
+                <div class="level-left">
+                  <div class="oldImgInfo" style="width: 200px"></div>
+                  <div class="ml-4" id="oldImg" style="display: none"></div>
+                  <div class="level-item">
+                    <div id="newImgInfo"></div>
+                    <div id="newImg"></div>
+                  </div>
+                </div>
+              </nav>
+              <div id="oldImg" style="display: none"></div>
+
+              <!-- <div id="newImgInfo"></div>
+              <div id="newImg"></div> -->
+            </div>
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success btn_upload_avatar">保存</button>
+          <button class="button">取消</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- 分享圖片 -->
+    <div id="modal-share-img" class="modal">
+      <div
+        class="modal-background"
+        style="background-color: opacity ':' 0.3"
+      ></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">分享圖片</p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <form
+            id="shareImg"
+            enctype="multipart/form-data"
+            method="post"
+            action="post"
+          >
+            <div class="field shareImg">
+              <label class="label" for="img">分享圖片</label>
+              <div class="file is-medium is-boxed">
+                <label class="file-label">
+                  <input
+                    class="file-input upl"
+                    type="file"
+                    name="img"
+                    accept="image/*"
+                    multiple
+                  />
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fa-solid fa-image"></i>
+                    </span>
+                    <span class="file-label"> 上傳圖片 </span>
+                  </span>
+                </label>
+              </div>
+              <div class="preview mt-3"></div>
+            </div>
+          </form>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success btn_shareImg">發送</button>
+          <button class="button">取消</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- 發佈評論 -->
+    <div id="modal-post-comment" class="modal">
+      <div
+        class="modal-background"
+        style="background-color: opacity ':' 0.3"
+      ></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">發佈評論</p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <form
+            id="imgForm"
+            enctype="multipart/form-data"
+            method="post"
+            action="post"
+          >
+            <div class="field comment">
+              <p class="mt-1"></p>
+              <label class="label" for="textarea-comment">發表您的評論</label>
+              <textarea
+                class="textarea is-medium"
+                placeholder="這家的枕頭令人流連忘返!"
+                id="textarea-comment"
+                name="comment"
+                maxlength="150"
+              ></textarea>
+
+              <div class="count is-pulled-right"></div>
+            </div>
+            <div class="field comment">
+              <label class="label" for="input-intro">分享圖片(選填)</label>
+              <div class="file is-medium is-boxed">
+                <label class="file-label">
+                  <input
+                    class="file-input upl"
+                    type="file"
+                    name="img"
+                    accept="image/*"
+                    multiple
+                  />
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fa-solid fa-image"></i>
+                    </span>
+                    <span class="file-label"> 上傳圖片 </span>
+                  </span>
+                </label>
+              </div>
+              <div class="preview mt-3"></div>
+            </div>
+          </form>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success btn_comment">發送</button>
+          <button class="button">取消</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- 成功用訊息視窗 -->
+    <div
+      id="message-box"
+      style="
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 40%;
+        padding: 10px;
+      "
+    ></div>
+
+    <!-- 發佈評論
+    <div id="modal-success" class="modal">
+      <div
+        class="modal-background"
+        style="background-color: black; opacity: 0.05"
+      ></div>
+      <div
+        class="modal-card is-outlined"
+        style="
+          width: 200px;
+          border-color: rgb(189, 188, 188);
+          border-style: solid;
+          border-radius: 5%;
+        "
+      >
+        <div class="box has-text-centered">
+          <p>修改成功</p>
+        </div>
+      </div>
+    </div> -->
+
+    <footer-component></footer-component>
+
+    <script>
+      $(function () {
+        const img = $("div.mem_img");
+        const img_upload = $("div.mem_img_upload > div > a");
+
+        const name = $("input#input-name");
+        const phone = $("input#input-phone");
+        const address = $("input#input-address");
+        const username = $("input#input-username");
+        const birth = document.getElementById("input-birthday");
+        const intro = $("textarea#input-intro");
+
+        const comment = $("textarea#comment");
+        let context = $("form#imgForm").find("textarea");
+        let count = $("form#imgForm").find(".count");
+        let maxLength = $("form#imgForm").find("textarea").attr("maxlength");
+        let flag = false;
+        let memUsername;
+        let memBase64;
+
+        birth.max = new Date(
+          new Date().getTime() - new Date().getTimezoneOffset() * 60000
+        )
+          .toISOString()
+          .split("T")[0];
+        // ------------------------------
+
+        function getCookie(name) {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+
+        function getData() {
+          let x = new URLSearchParams(location.search);
+          let msg = x.get("message");
+          let mem_username = $(document).find("span.mem_username");
+
+          fetch(`find?id=${getCookie("memId")}`)
+            .then((resp) => resp.json())
+            .then((member) => {
+              let mem_img;
+              if (member.hasOwnProperty("imgBase64Str")) {
+                mem_img = `<img src="data:image/*;base64,${member.imgBase64Str}" alt="Placeholder image"
+                class="is-rounded">`;
+                mem_img_upload = `
+              <img src="data:image/*;base64,${member.imgBase64Str}" alt="Placeholder image"
+                class="is-rounded">
+                    <div class="img_test">上傳個人圖片</div>`;
+              } else {
+                mem_img = `<img src="../../asset/img/default.png" alt="Placeholder image"
+                class="is-rounded">`;
+                mem_img_upload = `
+              <img src="../../asset/img/default.png" alt="Placeholder image"
+              class="is-rounded">
+                    <div class="img_test">上傳個人圖片</div>`;
+              }
+              img.empty();
+              // fig_img.empty();
+              img_upload.empty();
+              img.prepend(mem_img);
+              // fig_img.prepend(mem_img);
+              img_upload.prepend(mem_img_upload);
+              mem_username.text(member.username);
+              memUsername = member.username;
+              memBase64 = `data:image/*;base64,${member.imgBase64Str}`;
+
+              $("input[name=gender][value=" + member.gender + "]").prop(
+                "checked",
+                true
+              );
+              name.val(member.name);
+              phone.val(member.phone);
+              address.val(member.address);
+              username.val(member.username);
+              birth.value = `${member.birthday}`;
+              intro.val(member.intro);
+
+              if (member.address == null || member.address == "") {
+                $("p#address").empty();
+              } else {
+                let adr = member.address;
+                $("p#address").html(
+                  `<span class="icon is-small is-left mr-2">
+                    <i class="fa-solid fa-building"></i> </span
+                  >居住於<span> ${adr.substr(0, adr.indexOf("市") + 1)}</span>`
+                );
+              }
+              $("p#reg_date").html(`<span class="icon is-small is-left mr-2">
+                    <i class="fa-solid fa-calendar"></i></span
+                  >加入於 <span> ${member.reg_date} </span>`);
+              if (member.intro == "" || member.intro == null) {
+                $("textarea#intro").remove();
+              } else {
+                $("textarea#intro").val(member.intro);
+              }
+            });
+
+          if (msg === "success") {
+            let html = `
+            <div class="notification is-link">
+
+              您的評論已經成功發佈!
+            </div>;`;
+            $("div#message-box").append(html);
+            $("div#message-box").fadeIn(1000, function () {
+              setTimeout(() => {
+                $("div#message-box").fadeOut(1000, function () {});
+              }, 3000);
+            });
+          }
+        }
+
+        function listPosts() {
+          fetch("listposts")
+            .then((resp) => resp.json())
+            .then((body) => {
+              let src = $("div.mem_img.ml-4 > img").attr("src");
+              $("div#dynamic_msg").empty();
+
+              for (let key in body) {
+                let check = false;
+                $("div#dynamic_msg > card-component").each(function () {
+                  var dataId = $(this).data("id");
+                  if (body[key].id == dataId) {
+                    check = true;
+                    return check;
+                  }
+                });
+                if (check) {
+                  $(document)
+                    .find("div#dynamic_msg")
+                    .find(`card-component.${body[key].id}`)
+                    .find("figure.is-4by3")
+                    .append(
+                      `<img src="data:image/*;base64,${body[key].imgbase64Str}" >`
+                    );
+                } else {
+                  $("div#dynamic_msg").append(
+                    `<card-component class="${body[key].id}" data-id="${body[key].id}" data-name="${memUsername}" "></card-component>`
+                  );
+                  if (body[key].hasOwnProperty("imgbase64Str")) {
+                    $(document)
+                      .find("div#dynamic_msg")
+                      .find(`card-component.${body[key].id}`)
+                      .find("figure.is-4by3")
+                      .append(
+                        `<img src="data:image/*;base64,${body[key].imgbase64Str}" class="active">`
+                      );
+                  } else {
+                    $(document)
+                      .find("div#dynamic_msg")
+                      .find(`card-component.${body[key].id}`)
+                      .find("figure.is-4by3")
+                      .remove();
+                  }
+                  $(document)
+                    .find("div#dynamic_msg")
+                    .find(`card-component.${body[key].id}`)
+                    .find("span.mem_username.is-5")
+                    .html(
+                      `${memUsername}<p class="mt-3 is-size-6 post-time" style="color: #949494;"></p>`
+                    );
+                  $(document)
+                    .find("div#dynamic_msg")
+                    .find(`card-component.${body[key].id}`)
+                    .find("div.content")
+                    .text(body[key].text);
+                  $(document)
+                    .find("div#dynamic_msg")
+                    .find(`card-component.${body[key].id}`)
+                    .find("p.post-time")
+                    .text(body[key].time);
+                  $(document)
+                    .find("div#dynamic_msg")
+                    .find(`card-component.${body[key].id}`)
+                    .find("figure.image.is-48x48")
+                    .prepend(`<img src="${memBase64}" alt="Placeholder image"
+                        class="is-rounded">`);
+                }
+              }
+
+              if (body.successful == true) {
+                // location.assign("main.html");
+              }
+            });
+        }
+
+        function listComments() {
+          fetch("listcomments")
+            .then((resp) => resp.json())
+            .then((body) => {
+              let src = $("div.mem_img.ml-4 > img").attr("src");
+              $("div#comment").empty();
+              for (let key in body) {
+                let check = false;
+                $("div#comment > card-component").each(function () {
+                  var dataId = $(this).data("id");
+                  if (body[key].id == dataId) {
+                    check = true;
+                    return check;
+                  }
+                });
+                if (check) {
+                  $(document)
+                    .find("div#comment")
+                    .find(`card-component.${body[key].id}`)
+                    .find("figure.is-4by3")
+                    .append(
+                      `<img src="data:image/*;base64,${body[key].imgbase64Str}" >`
+                    );
+                } else {
+                  $("div#comment").append(
+                    `<card-component class="${body[key].id}" data-id="${body[key].id}" data-name="${memUsername}" "></card-component>`
+                  );
+                  if (body[key].hasOwnProperty("imgbase64Str")) {
+                    $(document)
+                      .find("div#comment")
+                      .find(`card-component.${body[key].id}`)
+                      .find("figure.is-4by3")
+                      .append(
+                        `<img src="data:image/*;base64,${body[key].imgbase64Str}" class="active">`
+                      );
+                  } else {
+                    $(document)
+                      .find("div#comment")
+                      .find(`card-component.${body[key].id}`)
+                      .find("figure.is-4by3")
+                      .remove();
+                  }
+                  $(document)
+                    .find("div#comment")
+                    .find(`card-component.${body[key].id}`)
+                    .find("span.mem_username.is-5")
+                    .html(
+                      `${memUsername}<p class="mt-3 is-size-6 post-time" style="color: #949494;"></p>`
+                    );
+                  $(document)
+                    .find("div#comment")
+                    .find(`card-component.${body[key].id}`)
+                    .find("div.content")
+                    .text(body[key].text);
+                  $(document)
+                    .find("div#comment")
+                    .find(`card-component.${body[key].id}`)
+                    .find("p.post-time")
+                    .text(body[key].time);
+                  $(document)
+                    .find("div#comment")
+                    .find(`card-component.${body[key].id}`)
+                    .find("figure.image.is-48x48")
+                    .prepend(`<img src="${src}" alt="Placeholder image"
+            class="is-rounded">`);
+                }
+              }
+
+              if (body.successful == true) {
+                // location.assign("main.html");
+              }
+            });
+        }
+
+        function listImgs() {
+          fetch("listimgs")
+            .then((resp) => resp.json())
+            .then((body) => {
+              let src = $("div.mem_img.ml-4 > img").attr("src");
+              $("div#img").empty();
+              for (let key in body) {
+                let check = false;
+                $("div#img > card-component").each(function () {
+                  var dataId = $(this).data("id");
+                  if (body[key].id == dataId) {
+                    check = true;
+                    return check;
+                  }
+                });
+                if (check) {
+                  $(document)
+                    .find("div#img")
+                    .find(`card-component.${body[key].id}`)
+                    .find("figure.is-4by3")
+                    .append(
+                      `<img src="data:image/*;base64,${body[key].imgbase64Str}" >`
+                    );
+                } else {
+                  $("div#img").append(
+                    `<card-component class="${body[key].id}" data-id="${body[key].id}" data-name="${memUsername}" "></card-component>`
+                  );
+                  if (body[key].hasOwnProperty("imgbase64Str")) {
+                    $(document)
+                      .find("div#img")
+                      .find(`card-component.${body[key].id}`)
+                      .find("figure.is-4by3")
+                      .append(
+                        `<img src="data:image/*;base64,${body[key].imgbase64Str}" class="active">`
+                      );
+                  } else {
+                    $(document)
+                      .find("div#img")
+                      .find(`card-component.${body[key].id}`)
+                      .find("figure.is-4by3")
+                      .remove();
+                  }
+                  $(document)
+                    .find("div#img")
+                    .find(`card-component.${body[key].id}`)
+                    .find("span.mem_username.is-5")
+                    .html(
+                      `${memUsername}<p class="mt-3 is-size-6 post-time" style="color: #949494;"></p>`
+                    );
+                  $(document)
+                    .find("div#img")
+                    .find(`card-component.${body[key].id}`)
+                    .find("div.content")
+                    .text("");
+                  $(document)
+                    .find("div#img")
+                    .find(`card-component.${body[key].id}`)
+                    .find("p.post-time")
+                    .text(body[key].time);
+                  $(document)
+                    .find("div#img")
+                    .find(`card-component.${body[key].id}`)
+                    .find("figure.image.is-48x48")
+                    .prepend(`<img src="${src}" alt="Placeholder image"
+            class="is-rounded">`);
+                }
+              }
+
+              if (body.successful == true) {
+                // location.assign("main.html");
+              }
+            });
+        }
+
+        updateCount = function () {
+          count.text(`${maxLength - context.val().length} 字`);
+          if (maxLength - context.val().length == 0) {
+            count.css("color", "red");
+          } else {
+            count.css("color", "black");
+          }
+        };
+
+        // ---------------------------------
+        context.on("input", function () {
+          updateCount();
+        });
+
+        $(document).on("click", "a.tabs", function () {
+          // 切換tabs功能
+          let tab_id = $(this).attr("data-id");
+          let tab_content = document.getElementsByClassName("content-tab");
+
+          $(this).closest("ul").find("li").removeClass("is-active");
+          $(this).closest("li").addClass("is-active");
+          for (let i = 0; i < tab_content.length; i++) {
+            tab_content[i].style.display = "none";
+          }
+          document.getElementById(tab_id).style.display = "block";
+
+          // 點擊分頁讀取內容功能
+          if ($(this).hasClass("loaded")) {
+          } else {
+            if (tab_id == "comment") {
+              $(this).addClass("loaded");
+              listComments();
+            }
+            if (tab_id == "img") {
+              $(this).addClass("loaded");
+              listImgs();
+            }
+            if (tab_id == "tour") {
+              $(this).addClass("loaded");
+            }
+          }
+        });
+
+        $("button.btn_edit").on("click", function () {
+          let gender = $("input[type=radio][name=gender]:checked");
+
+          fetch("save", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: parseInt(getCookie("memId")),
+              name: name.val().trim(),
+              phone: phone.val().trim(),
+              // address: address.val().trim(),
+              // username: username.val().trim(),
+              gender: gender.val(),
+              birthday: birth.value,
+            }),
+          })
+            .then((resp) => resp.json())
+            .then((body) => {
+              alert(`successful: ${body.successful} message: ${body.message}`);
+              if (body.successful == true) {
+                location.assign("main.html");
+              }
+            });
+        });
+
+        $("button.btn_intro").on("click", function () {
+          fetch("saveintro", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: parseInt(getCookie("memId")),
+              address: address.val().trim(),
+              username: username.val().trim(),
+              intro: intro.val().trim(),
+            }),
+          })
+            .then((resp) => resp.json())
+            .then((body) => {
+              alert(`successful: ${body.successful} message: ${body.message}`);
+              if (body.successful == true) {
+                location.assign("main.html");
+              }
+            });
+        });
+
+        $("button.btn_upload_avatar").on("click", function () {
+          let base64 = $("#update_avatar").attr("src").split(",")[1];
+          fetch("upload", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: getCookie("memId"),
+              imgBase64Str: base64,
+            }),
+          }).then((resp) => {
+            if (resp.ok) {
+              listPosts();
+              getData();
+            }
+          });
+        });
+
+        $("button.btn_comment").on("click", function () {
+          if (context.val().length == 0) {
+            $("div.field.comment").find("p.mt-1").text("文字不能為空");
+            $("div.field.comment").find("p.mt-1").css("color", "red");
+            $("div#modal-post-comment").attr("class", "modal is-active");
+          } else {
+            $("form#imgForm").submit();
+            // $("div#modal-post-comment").attr("class", "modal");
+          }
+          // location.href = "main.html";
+        });
+
+        $("button.btn_shareImg").on("click", function () {
+          $("form#shareImg").submit();
+          // location.href = "main.html";
+        });
+
+        updateCount();
+        getData();
+        setTimeout(() => {
+          listPosts();
+        }, 1500);
+
+        // image upload
+        (function ($) {
+          var width_crop = 300, // 圖片裁切寬度 px 值
+            height_crop = 300, // 圖片裁切高度 px 值
+            type_crop = "circle", // 裁切形狀: square 為方形, circle 為圓形
+            width_preview = 350, // 預覽區塊寬度 px 值
+            height_preview = 350, // 預覽區塊高度 px 值
+            compress_ratio = 0.85, // 圖片壓縮比例 0~1
+            type_img = "jpeg", // 圖檔格式 jpeg png webp
+            oldImg = new Image(),
+            myCrop,
+            file,
+            oldImgDataUrl;
+
+          // 裁切初始參數設定
+          myCrop = $("#oldImg").croppie({
+            viewport: {
+              // 裁切區塊
+              width: width_crop,
+              height: height_crop,
+              type: type_crop,
+            },
+            boundary: {
+              // 預覽區塊
+              width: width_preview,
+              height: height_preview,
+            },
+          });
+
+          function readFile(input) {
+            if (input.files && input.files[0]) {
+              file = input.files[0];
+            } else {
+              alert("瀏覽器不支援此功能！建議使用最新版本 Chrome");
+              return;
+            }
+
+            if (file.type.indexOf("image") == 0) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                oldImgDataUrl = e.target.result;
+                oldImg.src = oldImgDataUrl; // 載入 oldImg 取得圖片資訊
+                myCrop.croppie("bind", {
+                  url: oldImgDataUrl,
+                });
+              };
+
+              reader.readAsDataURL(file);
+            } else {
+              alert("您上傳的不是圖檔！");
+            }
+          }
+
+          function displayCropImg(src) {
+            var html = "<img src='" + src + "' id='update_avatar'/>";
+            $("#newImg").html(html);
+          }
+
+          $("#upload_img").on("change", function () {
+            $("#oldImg").show();
+            readFile(this);
+          });
+
+          oldImg.onload = function () {
+            var width = this.width,
+              height = this.height,
+              fileSize = Math.round(file.size / 1000),
+              html = "";
+            // html += "<div class='oldImgInfo' style='width:200px'>";
+            html += "<p>原始圖片尺寸 " + width + "x" + height + "</p>";
+            html += "<p>檔案大小約 " + fileSize + "k</p>";
+            // html += "</div>";
+
+            $(".oldImgInfo").html(html);
+          };
+
+          function displayNewImgInfo(src) {
+            var html = "",
+              filesize = src.length * 0.75;
+
+            html +=
+              "<p>裁切圖片尺寸 " + width_crop + "x" + height_crop + "</p>";
+            html += "<p>檔案大小約 " + Math.round(filesize / 1000) + "k</p>";
+            $("#newImgInfo").html(html);
+          }
+
+          $("#crop_img").on("click", function () {
+            myCrop
+              .croppie("result", {
+                type: "canvas",
+                size: { width: 100, heiht: 100, type: "circle" },
+                format: "canvas",
+                quality: compress_ratio,
+              })
+              .then(function (src) {
+                displayCropImg(src);
+                displayNewImgInfo(src);
+              });
+          });
+        })(jQuery);
+
+        // 評論with圖片
+        var Preview = new (function () {
+          var root = $("form#imgForm");
+          // 連續的圖片編碼
+          var imgcode = "";
+          // 選取發生改變
+          this.change_file = function () {
+            root.on("change", ".upl", function () {
+              show(this);
+            });
+          };
+
+          // 批次圖片，先清空後再插入
+          var show = function (input) {
+            if (input.files && input.files[0]) {
+              clean();
+              each_img(input.files);
+            }
+          };
+
+          // 批次讀取，最後再一次寫入
+          var each_img = function (files) {
+            $.each(files, function (index, file) {
+              var src = URL.createObjectURL(file);
+              create_imgcode(src);
+            });
+
+            // 放置預覽元素後重設
+            root.find(".preview").html(imgcode);
+            reset();
+          };
+
+          // 建立圖片
+          var create_imgcode = function (src) {
+            imgcode += '<img class="img mr-3" src="' + src + '">';
+          };
+
+          // 清空預覽區域
+          var clean = function () {
+            root.find(".preview").empty();
+          };
+
+          // 還原 input[type=file]
+          var reset = function () {
+            imgcode = "";
+            // root.find(".upl").val(null);
+          };
+        })();
+
+        var Preview2 = new (function () {
+          var root = $("form#shareImg");
+          // 連續的圖片編碼
+          var imgcode = "";
+          // 選取發生改變
+          this.change_file = function () {
+            root.on("change", ".upl", function () {
+              show(this);
+            });
+          };
+
+          // 批次圖片，先清空後再插入
+          var show = function (input) {
+            if (input.files && input.files[0]) {
+              clean();
+              each_img(input.files);
+            }
+          };
+
+          // 批次讀取，最後再一次寫入
+          var each_img = function (files) {
+            $.each(files, function (index, file) {
+              var src = URL.createObjectURL(file);
+              create_imgcode(src);
+            });
+
+            // 放置預覽元素後重設
+            root.find(".preview").html(imgcode);
+            reset();
+          };
+
+          // 建立圖片
+          var create_imgcode = function (src) {
+            imgcode += '<img class="img mr-3" src="' + src + '">';
+          };
+
+          // 清空預覽區域
+          var clean = function () {
+            root.find(".preview").empty();
+          };
+
+          // 還原 input[type=file]
+          var reset = function () {
+            imgcode = "";
+            // root.find(".upl").val(null);
+          };
+        })();
+
+        // 執行
+        Preview.change_file();
+        Preview2.change_file();
+
+        // 圖片輪播
+        // 選取輪播圖片容器
+        var $slideshow = $(".slideshow");
+
+        // 選取所有圖片和箭頭
+        var $slides = $slideshow.find("img");
+        var $prev = $slideshow.find(".prev");
+        var $next = $slideshow.find(".next");
+        var currentIndex = 0;
+
+        $(document).on("click", "a.prev", function (e) {
+          e.preventDefault();
+          let img_nums = $(this).closest("div").find("img").length;
+
+          if (img_nums != 1) {
+            // 隱藏當前圖片
+            $(this).closest("figure").find("img").eq(currentIndex).fadeOut(100);
+            // $slides.eq(currentIndex).fadeOut();
+
+            // 減少索引
+            currentIndex--;
+
+            // 如果索引小於0，則從最大值開始
+            if (currentIndex < 0) {
+              currentIndex = img_nums - 1;
+            }
+            // 顯示上一張圖片
+            $(this).closest("figure").find("img").eq(currentIndex).fadeIn(100);
+            // $slides.eq(currentIndex).fadeIn();
+          }
+        });
+
+        $(document).on("click", "a.next", function (e) {
+          e.preventDefault();
+          let img_nums = $(this).closest("div").find("img").length;
+          if (img_nums != 1) {
+            // 隱藏當前圖片
+            $(this).closest("figure").find("img").eq(currentIndex).fadeOut();
+            // $slides.eq(currentIndex).fadeOut();
+
+            // 增加索引
+            currentIndex++;
+
+            // 如果索引超出最大值，則從頭開始
+            if (currentIndex >= img_nums) {
+              currentIndex = 0;
+            }
+
+            // 顯示下一張圖片
+            $(this).closest("figure").find("img").eq(currentIndex).fadeIn();
+            // $slides.eq(currentIndex).fadeIn();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
